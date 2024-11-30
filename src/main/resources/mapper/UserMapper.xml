@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="springbootvinylecommercebackend.mapper.UserMapper">
+
+	<resultMap id="userResultMap"
+		type="springbootvinylecommercebackend.model.User">
+
+		<result column="ID" property="id"></result>
+		<result column="USERNAME" property="username"></result>
+		<result column="PASSWORD" property="password"></result>
+		<result column="AVATAR" property="avatar"></result>
+		<result column="EMAIL" property="email"></result>
+		<result column="ROLE" property="role"></result>
+		<result column="PHONE" property="phone"></result>
+		<result column="BIRTHDAY" property="birthday"></result>
+		<result column="FULLNAME" property="fullname"></result>
+		<result column="ADDRESS" property="address"></result>
+	
+	</resultMap>
+
+	<select id="getAllUsers" resultMap="userResultMap">
+		SELECT usr.ID
+		,usr.USERNAME
+		,usr.PASSWORD
+		,usr.AVATAR
+		,usr.EMAIL
+		,usr.ROLE
+		,usr.PHONE
+		,usr.BIRTHDAY
+		,usr.FULLNAME
+		,usr.ADDRESS
+		FROM USER usr
+		WHERE 1 = 1
+	</select>
+
+
+	<select id="checkLogin" resultMap="userResultMap">
+		SELECT usr.ID
+		,usr.USERNAME
+		,usr.PASSWORD
+		,usr.AVATAR
+		,usr.EMAIL
+		,usr.ROLE
+		,usr.PHONE
+		,usr.BIRTHDAY
+		,usr.FULLNAME
+		,usr.ADDRESS
+		FROM USER usr
+		WHERE usr.username = #{username}
+		AND usr.password =
+		#{password}
+		LIMIT 1
+
+	</select>
+
+	<insert id="saveUserRegister">
+		INSERT INTO USER (
+		ID
+		, USERNAME
+		, PASSWORD
+		, AVATAR
+		, EMAIL
+		, ROLE
+		, PHONE
+		, BIRTHDAY
+		, FULLNAME
+		, ADDRESS
+		) VALUES (
+		  #{id}
+		, #{username}
+		, #{password}
+		, #{avatar}
+		, #{email}
+		, #{role}
+		, #{phone}
+		, #{birthday}
+		, #{fullname}
+		, #{address}
+
+		)
+
+
+
+	</insert>
+
+	<update id="updateUserInfo">
+		UPDATE USER
+		<set>
+			ID=#{id}
+			<if test="phone != null">
+				, PHONE=#{phone}
+			</if>
+			<if test="username != null">
+				, USERNAME=#{username}
+
+			</if>
+
+			<if test="email != null">
+				, EMAIL=#{email}
+
+			</if>
+
+			<if test="birthday != null">
+				, BIRTHDAY=#{birthday}
+
+			</if>
+
+			<if test="address != null">
+				, ADDRESS=#{address}
+
+			</if>
+
+			<if test="fullname != null">
+				, FULLNAME=#{fullname}
+
+			</if>
+
+			<if test="password != null">
+				, PASSWORD=#{password}
+
+			</if>
+		</set>
+		WHERE ID = #{id} 
+
+	</update>
+
+	<select id="getUserByUsername" resultMap="userResultMap">
+		SELECT usr.ID
+		,usr.USERNAME
+		,usr.PASSWORD
+		,usr.AVATAR
+		,usr.EMAIL
+		,usr.ROLE
+		,usr.PHONE
+		,usr.BIRTHDAY
+		,usr.FULLNAME
+		,usr.ADDRESS
+		FROM USER usr
+		WHERE usr.username = #{username}
+	</select>
+
+</mapper>

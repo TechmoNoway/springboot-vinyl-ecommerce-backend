@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="springbootvinylecommercebackend.mapper.OrderMapper">
+
+	<resultMap type="springbootvinylecommercebackend.model.Order"
+		id="orderResultMap">
+		<result column="ID" property="id" />
+		<result column="USERID" property="userId" />
+		<result column="USERADDRESS" property="userAddress" />
+		<result column="USERPHONE" property="userPhone" />
+		<result column="NOTE" property="note" />
+		<result column="TOTALPRICE" property="totalPrice" />
+		<result column="FULLNAME" property="fullname" />
+		<result column="ORDERDATE" property="orderDate" />
+		<result column="EMAIL" property="email" />
+		
+	</resultMap>
+
+	<select id="getAllOrders">
+		SELECT ord.ID
+		, ord.USERID
+		, ord.USERADDRESS
+		,
+		ord.USERPHONE
+		, ord.NOTE
+		, ord.TOTALPRICE
+		, ord.FULLNAME
+		, ord.ORDERDATE
+		, ord.EMAIL
+		FROM ORDERS ord
+		WHERE 1 = 1
+
+
+	</select>
+
+	<insert id="saveOrder">
+		INSERT INTO ORDERS 
+		(	ID
+			, USERID
+			, USERADDRESS
+			, USERPHONE
+			, NOTE
+			, TOTALPRICE
+			, FULLNAME
+			, ORDERDATE
+			, EMAIL
+		) 
+		VALUES 
+		(
+		#{id}
+		, #{userId}
+		, #{userAddress}
+		, #{userPhone}
+		, #{note}
+		, #{totalPrice}
+		, #{fullname}
+		, #{orderDate}
+		, #{email}
+		);
+
+	</insert>
+
+
+
+</mapper>
