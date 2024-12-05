@@ -1,4 +1,4 @@
-package springbootvinylecommercebackend.model;
+package springbootvinylecommercebackend.dto.request;
 
 import java.sql.Date;
 

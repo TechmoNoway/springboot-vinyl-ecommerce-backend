@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import springbootvinylecommercebackend.model.AuthenticationRequest;
-import springbootvinylecommercebackend.model.AuthenticationResponse;
-import springbootvinylecommercebackend.model.RegisterRequest;
+import springbootvinylecommercebackend.dto.request.AuthenticationRequest;
+import springbootvinylecommercebackend.dto.response.AuthenticationResponse;
+import springbootvinylecommercebackend.dto.request.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController

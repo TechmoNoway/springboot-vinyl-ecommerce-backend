@@ -4,22 +4,22 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import springbootvinylecommercebackend.model.Disc;
+import springbootvinylecommercebackend.model.Product;
 
 public interface DiscService {
 	
-	List<Disc> getAllDisc();
+	List<Product> getAllDisc();
 	
-	List<Disc> getLessDiscByName(@Param("searchParam") String searchParam);
+	List<Product> getLessDiscByName(@Param("searchParam") String searchParam);
 	
-	List<Disc> getBestDiscs();
+	List<Product> getBestDiscs();
 	
-	List<Disc> getMoreDiscByName(@Param("searchParam") String searchParam);
+	List<Product> getMoreDiscByName(@Param("searchParam") String searchParam);
 	
-	List<Disc> getDiscByNameASC(@Param("searchParam") String searchParam);
+	List<Product> getDiscByNameASC(@Param("searchParam") String searchParam);
 	
-	List<Disc> getDiscByNameDESC(@Param("searchParam") String searchParam);
+	List<Product> getDiscByNameDESC(@Param("searchParam") String searchParam);
 	
-	List<Disc> getDiscByNameFiltered(String searchParam, String categoryName, String moodName, String releaseYear, String stockStatus);
+	List<Product> getDiscByNameFiltered(String searchParam, String categoryName, String moodName, String releaseYear, String stockStatus);
           
 }

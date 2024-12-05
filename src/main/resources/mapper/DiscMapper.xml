@@ -5,7 +5,7 @@
 <mapper namespace="springbootvinylecommercebackend.mapper.DiscMapper">
 
 
-	<resultMap type="springbootvinylecommercebackend.model.Disc"
+	<resultMap type="springbootvinylecommercebackend.model.Product"
 		id="discResultMap">
 		<result column="ID" property="id" />
 		<result column="ALBUMNAME" property="albumName" />

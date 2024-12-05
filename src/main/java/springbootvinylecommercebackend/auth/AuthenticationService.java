@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import springbootvinylecommercebackend.config.JwtService;
 import springbootvinylecommercebackend.mapper.UserMapper;
-import springbootvinylecommercebackend.model.AuthenticationRequest;
-import springbootvinylecommercebackend.model.AuthenticationResponse;
-import springbootvinylecommercebackend.model.RegisterRequest;
+import springbootvinylecommercebackend.dto.request.AuthenticationRequest;
+import springbootvinylecommercebackend.dto.response.AuthenticationResponse;
+import springbootvinylecommercebackend.dto.request.RegisterRequest;
 import springbootvinylecommercebackend.model.User;
 import lombok.RequiredArgsConstructor;
 
