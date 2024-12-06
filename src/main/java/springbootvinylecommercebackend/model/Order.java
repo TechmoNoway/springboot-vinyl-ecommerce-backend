@@ -1,6 +1,7 @@
 package springbootvinylecommercebackend.model;
 
 import java.sql.Date;
+import java.util.List;
 
 import lombok.*;
 
@@ -19,4 +20,5 @@ public class Order {
 	private Long totalPrice;
 	private Date orderDate;
 	private String email;
+	private List<OrderItem> items;
 }

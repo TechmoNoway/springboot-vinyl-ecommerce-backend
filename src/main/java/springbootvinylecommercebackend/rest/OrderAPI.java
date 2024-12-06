@@ -1,10 +1,9 @@
-package springbootvinylecommercebackend.restcontroller;
+package springbootvinylecommercebackend.rest;
 
 import java.util.HashMap;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,14 +14,13 @@ import springbootvinylecommercebackend.model.Order;
 import springbootvinylecommercebackend.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 
-@RestController
-@CrossOrigin("http://localhost:3000")
 @Slf4j
-@RequestMapping("/api/order")
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/api/v1/order")
 public class OrderAPI {
-	
-	@Autowired
-	OrderService orderService;
+
+	private final OrderService orderService;
 	
 	@GetMapping("/getAllOrders")
 	ResponseEntity<?> doGetAllOrders(){
@@ -37,12 +35,10 @@ public class OrderAPI {
 			result.put("success", false);
 			result.put("message", "Fail to call API getAllOrders");
 			result.put("data", null);
-			e.printStackTrace();
+			log.error("Error: ", e);
 		}
 
 		return ResponseEntity.ok(result);
-		
-		
 	}
 	
 	@PostMapping("/saveOrder")
@@ -60,13 +56,10 @@ public class OrderAPI {
 			result.put("success", false);
 			result.put("message", "Fail to call API getAllOrders");
 			result.put("data", null);
-			e.printStackTrace();
+			log.error("Error: ", e);
 		}
 
 		return ResponseEntity.ok(result);
-		
-		
-		
 	}
 	
 	

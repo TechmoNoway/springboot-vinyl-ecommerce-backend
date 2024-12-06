@@ -1,6 +1,7 @@
 package springbootvinylecommercebackend.mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -18,5 +19,5 @@ public interface UserMapper {
 	
 	void updateUserInfo(User user);
 	
-	User getUserByUsername(@Param("username")String username);
+	Optional<User> getUserByUsername(@Param("username")String username);
 }

@@ -1,11 +1,10 @@
-package springbootvinylecommercebackend.restcontroller;
+package springbootvinylecommercebackend.rest;
 
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,23 +17,22 @@ import springbootvinylecommercebackend.model.User;
 import springbootvinylecommercebackend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
-@RestController
-@CrossOrigin("http://localhost:3000")
 @Slf4j
-@RequestMapping("/api/user")
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/api/v1/user")
 public class UserAPI {
 
-	@Autowired
-	UserService userService;
 
-	@PostMapping("/checklogin")
-	ResponseEntity<?> doCheckLogin(@RequestParam("username") String username,
-			@RequestParam("password") String password) {
+	private final UserService userService;
+
+	@PostMapping("/login")
+	ResponseEntity<?> doLogin(@RequestParam("username") String username, @RequestParam("password") String password) {
 
 		HashMap<String, Object> result = new HashMap<>();
 
 		try {
-			User data = userService.checkLogin(username, password);
+			User data = userService.login(username, password);
 			result.put("success", true);
 			result.put("message", "Success to call API checkLogin");
 			result.put("data", data);
@@ -47,21 +45,21 @@ public class UserAPI {
 		return ResponseEntity.ok(result);
 	}
 
-	@PostMapping("/saveUserRegister")
-	ResponseEntity<?> doSaveUserRegister(@RequestBody User userParam) {
+	@PostMapping("/register")
+	ResponseEntity<?> doRegister(@RequestBody User userParam) {
 
 		HashMap<String, Object> result = new HashMap<>();
 
 		try {
 			userService.saveUserRegister(userParam);
 			result.put("success", true);
-			result.put("message", "Success to call API SaveUserRegister");
+			result.put("message", "Success to call API doRegister");
 			result.put("data", userParam);
 		} catch (Exception e) {
 			result.put("success", false);
-			result.put("message", "Fail to call API SaveUserRegister");
+			result.put("message", "Fail to call API doRegister");
 			result.put("data", null);
-			e.printStackTrace();
+			log.error("Error: ", e);
 		}
 
 		return ResponseEntity.ok(result);
@@ -69,20 +67,20 @@ public class UserAPI {
 	}
 
 	@GetMapping("/getAllUsers")
-	ResponseEntity<?> doGetAllUser() {
+	ResponseEntity<?> doGetAllUsers() {
 
 		HashMap<String, Object> result = new HashMap<>();
 
 		try {
 			List<User> data = userService.getAllUsers();
 			result.put("success", true);
-			result.put("message", "Success to call API GetAllUsers");
+			result.put("message", "Success to call API doGetAllUsers");
 			result.put("data", data);
 		} catch (Exception e) {
 			result.put("success", false);
-			result.put("message", "Fail to call API GetAllUsers");
+			result.put("message", "Fail to call API doGetAllUsers");
 			result.put("data", null);
-			e.printStackTrace();
+			log.error("Error: ", e);
 		}
 
 		return ResponseEntity.ok(result);
@@ -103,7 +101,7 @@ public class UserAPI {
 			result.put("success", false);
 			result.put("message", "Fail to call API getUserByUsername");
 			result.put("data", null);
-			e.printStackTrace();
+			log.error("Error: ", e);
 		}
 
 		return ResponseEntity.ok(result);
@@ -123,7 +121,7 @@ public class UserAPI {
 			result.put("success", false);
 			result.put("message", "Fail to call API Update User Info");
 			result.put("data", null);
-			e.printStackTrace();
+			log.error("Error: ", e);
 		}
 
 		return ResponseEntity.ok(result);
