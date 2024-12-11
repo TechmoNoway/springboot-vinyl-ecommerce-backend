@@ -1,14 +1,12 @@
 package springbootvinylecommercebackend.model;
 
 import java.sql.Date;
+import java.time.Instant;
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import springbootvinylecommercebackend.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,17 +25,20 @@ public class User implements UserDetails {
 	private Long id;
 	private String username;
 	private String password;
-	private String avatar;
+	private String avatarUrl;
 	private String email;
 	private String phone;
+	private String gender;
 	private Date birthday;
 	private String fullname;
 	private String address;
-	private Role role;
+	private Long roleId;
+	private Instant createdAt;
+	private Instant updatedAt;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(role.name()));
+		return null;
 	}
 
 	@Override

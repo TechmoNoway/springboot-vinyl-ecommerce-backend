@@ -13,11 +13,11 @@ public interface UserMapper {
 	
 	List<User> getAllUsers();
 	
-	User checkLogin(@Param("username") String username, @Param("password") String password);
+	User checkUserExist(@Param("username") String username, @Param("password") String password);
 
-	void saveUserRegister(User userParam);	
+	void saveUser(User userParam);
 	
-	void updateUserInfo(User user);
+	void updateUser(User user);
 	
 	Optional<User> getUserByUsername(@Param("username")String username);
 }

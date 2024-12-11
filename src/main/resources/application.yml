@@ -17,7 +17,7 @@ spring:
             enable: true
 mybatis:
   mapper-locations: classpath:/mapper/*Mapper.xml
-  type-aliases-package: com.allxone.mybatisprojectbackend.model
+  type-aliases-package: com.trikynguci.springbootvinylecommercebackend.model
 application:
   security:
     jwt:

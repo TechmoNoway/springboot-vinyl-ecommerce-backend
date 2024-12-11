@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class RegisterRequest {	
 	private Long id;
 	private String username;
