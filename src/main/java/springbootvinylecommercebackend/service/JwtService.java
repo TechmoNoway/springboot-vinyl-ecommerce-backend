@@ -29,4 +29,5 @@ public interface JwtService {
     Claims extractAllClaims(String accessToken);
 
     Key getSignInKey();
+
 }

@@ -1,9 +1,9 @@
 package springbootvinylecommercebackend.service.impl;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import springbootvinylecommercebackend.dto.request.LoginRequest;
@@ -18,8 +18,6 @@ import springbootvinylecommercebackend.service.JwtService;
 import springbootvinylecommercebackend.service.TokenService;
 import springbootvinylecommercebackend.util.UserConvert;
 
-import java.io.IOException;
-
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -29,7 +27,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final ApplicationEventPublisher publisher;
     private final TokenService tokenService;
-    private final UserConvert userConvert;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public RegisterResponse register(RegisterRequest request) {
@@ -59,12 +57,26 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public LoginResponse authenticate(LoginRequest request) {
-        return null;
-    }
+    public LoginResponse login(LoginRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                )
+        );
 
-    @Override
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        User user = userMapper.getUserByUsername(request.getUsername()).orElseThrow();
+        if (!user.isEnabled()) {
+            throw new RuntimeException();
+        }
+        String jwtToken = jwtService.generateToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+        tokenService.revokeAllUserTokens(user.getId());
+        tokenService.saveToken(user.getId(), jwtToken);
+        return LoginResponse.builder()
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
+                .user(UserConvert.toDto(user))
+                .build();
     }
 }

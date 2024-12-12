@@ -10,17 +10,17 @@ import springbootvinylecommercebackend.model.Product;
 @Mapper
 public interface ProductMapper {
 	
-	List<Product> getAllProduct();
+	List<Product> getAllProducts();
 		
-	List<Product> getLessProductByName(@Param("searchParam") String searchParam);
+	List<Product> getLessProductsByName(@Param("searchParam") String searchParam);
 	
 	List<Product> getBestProducts();
 	
-	List<Product> getMoreProductByName(@Param("searchParam") String searchParam);
+	List<Product> getMoreProductsByName(@Param("searchParam") String searchParam);
 	
-	List<Product> getProductByNameASC(@Param("searchParam") String searchParam);
+	List<Product> getProductsByNameASC(@Param("searchParam") String searchParam);
 	
-	List<Product> getProductByNameDESC(@Param("searchParam") String searchParam);
+	List<Product> getProductsByNameDESC(@Param("searchParam") String searchParam);
 	
-	List<Product> getProductByNameFiltered(@Param("searchParam") String searchParam, @Param("categoryName") String categoryName, @Param("moodName") String moodName, @Param("releaseYear") String releaseYear, @Param("stockStatus") String stockStatus);
+	List<Product> getProductsByNameFiltered(@Param("searchParam") String searchParam, @Param("categoryName") String categoryName, @Param("moodName") String moodName, @Param("releaseYear") String releaseYear, @Param("stockStatus") String stockStatus);
 }

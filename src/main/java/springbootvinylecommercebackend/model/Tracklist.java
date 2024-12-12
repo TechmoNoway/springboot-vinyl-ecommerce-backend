@@ -10,8 +10,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TrackList {
+public class Tracklist {
     private Long id;
-    private Long vinylId;
     private List<Song> songs;
 }

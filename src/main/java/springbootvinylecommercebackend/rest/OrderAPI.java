@@ -17,14 +17,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/order")
+@RequestMapping("/api/v1/orders")
 public class OrderAPI {
 
 	private final OrderService orderService;
 	
 	@GetMapping("/getAllOrders")
 	ResponseEntity<?> doGetAllOrders(){
-		
 		HashMap<String, Object> result = new HashMap<>();
 
 		try {
@@ -43,7 +42,6 @@ public class OrderAPI {
 	
 	@PostMapping("/saveOrder")
 	ResponseEntity<?> doSaveOrder(@RequestBody Order order){
-		
 		HashMap<String, Object> result = new HashMap<>();
 
 		try {

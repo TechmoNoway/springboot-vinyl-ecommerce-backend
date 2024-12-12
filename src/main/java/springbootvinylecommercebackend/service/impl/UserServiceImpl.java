@@ -19,16 +19,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User login(String username, String password) {
-        return userMapper.checkLogin(username, password);
-    }
-
-    @Override
-    public void saveUserRegister(User userParam) {
-        userMapper.saveUserRegister(userParam);
-    }
-
-    @Override
     public List<User> getAllUsers() {
         return userMapper.getAllUsers();
     }
@@ -36,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUserInfo(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userMapper.updateUserInfo(user);
+        userMapper.updateUser(user);
     }
 
     @Override

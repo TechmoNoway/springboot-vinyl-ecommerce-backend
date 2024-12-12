@@ -4,141 +4,125 @@
 
 <mapper namespace="springbootvinylecommercebackend.mapper.UserMapper">
 
-	<resultMap id="userResultMap"
-		type="springbootvinylecommercebackend.model.User">
-
-		<result column="ID" property="id"></result>
-		<result column="USERNAME" property="username"></result>
-		<result column="PASSWORD" property="password"></result>
-		<result column="AVATAR" property="avatar"></result>
-		<result column="EMAIL" property="email"></result>
-		<result column="ROLE" property="role"></result>
-		<result column="PHONE" property="phone"></result>
-		<result column="BIRTHDAY" property="birthday"></result>
-		<result column="FULLNAME" property="fullname"></result>
-		<result column="ADDRESS" property="address"></result>
-	
+	<resultMap id="userResultMap" type="springbootvinylecommercebackend.model.User">
+		<result column="id" property="id"/>
+		<result column="username" property="username"/>
+		<result column="password" property="password"/>
+		<result column="avatar_url" property="avatarUrl"/>
+		<result column="email" property="email"/>
+		<result column="phone" property="phone"/>
+		<result column="gender" property="gender"/>
+		<result column="fullname" property="fullname"/>
+		<result column="birthday" property="birthday"/>
+		<result column="address" property="address"/>
+		<result column="role_id" property="role"/>
+		<result column="created_at" property="role" javaType="java.time.Instant"/>
+		<result column="updated_at" property="role" javaType="java.time.Instant"/>
 	</resultMap>
 
 	<select id="getAllUsers" resultMap="userResultMap">
-		SELECT usr.ID
-		,usr.USERNAME
-		,usr.PASSWORD
-		,usr.AVATAR
-		,usr.EMAIL
-		,usr.ROLE
-		,usr.PHONE
-		,usr.BIRTHDAY
-		,usr.FULLNAME
-		,usr.ADDRESS
-		FROM USER usr
-		WHERE 1 = 1
+		SELECT usr.id
+			 , usr.username
+			 , usr.password
+			 , usr.avatar_url
+			 , usr.email
+			 , usr.phone
+			 , usr.gender
+			 , usr.fullname
+			 , usr.birthday
+			 , usr.address
+			 , usr.role_id
+			 , usr.created_at
+			 , usr.updated_at
+		FROM user usr
 	</select>
 
-
-	<select id="checkLogin" resultMap="userResultMap">
-		SELECT usr.ID
-		,usr.USERNAME
-		,usr.PASSWORD
-		,usr.AVATAR
-		,usr.EMAIL
-		,usr.ROLE
-		,usr.PHONE
-		,usr.BIRTHDAY
-		,usr.FULLNAME
-		,usr.ADDRESS
-		FROM USER usr
-		WHERE usr.username = #{username}
-		AND usr.password =
-		#{password}
-		LIMIT 1
-
-	</select>
-
-	<insert id="saveUserRegister">
-		INSERT INTO USER (
-		ID
-		, USERNAME
-		, PASSWORD
-		, AVATAR
-		, EMAIL
-		, ROLE
-		, PHONE
-		, BIRTHDAY
-		, FULLNAME
-		, ADDRESS
+	<insert id="saveUser">
+		INSERT INTO user (
+		id
+		, username
+		, password
+		, avatar_url
+		, email
+		, phone
+		, gender
+		, fullname
+		, birthday
+		, address
+		, role_id
+		, created_at
+		, updated_at
 		) VALUES (
 		  #{id}
 		, #{username}
 		, #{password}
-		, #{avatar}
+		, #{avatarUrl}
 		, #{email}
-		, #{role}
 		, #{phone}
-		, #{birthday}
+		, #{gender}
 		, #{fullname}
+		, #{birthday}
 		, #{address}
-
+		, #{role_id}
+		, #{created_at}
+		, #{updated_at}
 		)
-
-
-
 	</insert>
 
-	<update id="updateUserInfo">
-		UPDATE USER
+	<update id="updateUser">
+		UPDATE user
 		<set>
 			ID=#{id}
-			<if test="phone != null">
-				, PHONE=#{phone}
-			</if>
 			<if test="username != null">
-				, USERNAME=#{username}
-
+				, username=#{username}
 			</if>
-
+			<if test="avatar_url != null">
+				, avatar_url=#{avatarUrl}
+			</if>
 			<if test="email != null">
-				, EMAIL=#{email}
-
+				, email=#{email}
 			</if>
-
-			<if test="birthday != null">
-				, BIRTHDAY=#{birthday}
-
+			<if test="phone != null">
+				, phone=#{phone}
 			</if>
-
-			<if test="address != null">
-				, ADDRESS=#{address}
-
+			<if test="gender != null">
+				, gender=#{gender}
 			</if>
-
 			<if test="fullname != null">
-				, FULLNAME=#{fullname}
-
+				, fullname=#{fullname}
 			</if>
-
+			<if test="birthday != null">
+				, birthday=#{birthday}
+			</if>
+			<if test="address != null">
+				, address=#{address}
+			</if>
+			<if test="role_id != null">
+				, role_id=#{role_id}
+			</if>
 			<if test="password != null">
-				, PASSWORD=#{password}
-
+				, password=#{password}
 			</if>
 		</set>
-		WHERE ID = #{id} 
-
+		WHERE id = #{id}
 	</update>
 
 	<select id="getUserByUsername" resultMap="userResultMap">
-		SELECT usr.ID
-		,usr.USERNAME
-		,usr.PASSWORD
-		,usr.AVATAR
-		,usr.EMAIL
-		,usr.ROLE
-		,usr.PHONE
-		,usr.BIRTHDAY
-		,usr.FULLNAME
-		,usr.ADDRESS
-		FROM USER usr
-		WHERE usr.username = #{username}
-	</select>
+        SELECT usr.id
+             , usr.username
+             , usr.password
+             , usr.avatar_url
+             , usr.email
+             , usr.phone
+             , usr.gender
+             , usr.fullname
+             , usr.birthday
+             , usr.address
+             , usr.role_id
+        	 , usr.created_at
+			 , usr.updated_at
+        FROM USER usr
+        WHERE usr.username = #{username}
+    </select>
 
 </mapper>

@@ -3,262 +3,213 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="springbootvinylecommercebackend.mapper.ProductMapper">
-
-
 	<resultMap type="springbootvinylecommercebackend.model.Product"
-		id="discResultMap">
-		<result column="ID" property="id" />
-		<result column="ALBUMNAME" property="albumName" />
-		<result column="PRICE" property="price" />
-		<result column="IMAGE" property="image" />
-		<result column="COUNTRY" property="country" />
-		<result column="ARTIST" property="artist" />
-		<result column="RELEASEYEAR" property="releaseYear" />
-		<result column="STATUS" property="status" />
-		<result column="PLATFORM" property="platform" />
-		<result column="CATEGORY" property="category" />
-		<result column="DEMOAUDIO" property="demoAudio" />
-		<result column="STUDIO" property="studio" />
-		<result column="MANUFACTUREYEAR" property="manufactureYear" />
-		<result column="STOCKSTATUS" property="stockStatus" />
-		<result column="DESCRIPTION" property="description" />
-		<result column="MOOD" property="mood" />
-		<result column="QUANTITY" property="quantity" />
-		<result column="STOCKQUANTITY" property="stockQuantity"/>
+		id="productResultMap">
+		<result column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="price" property="price" />
+		<result column="stock_quantity" property="stockQuantity" />
+		<result column="poster_url" property="posterUrl" />
+		<result column="region" property="region" />
+		<result column="artist" property="artist" />
+		<result column="release_year" property="releaseYear" />
+		<result column="status" property="status" />
+		<result column="platform" property="platform" />
+		<result column="demo_audio_url" property="demoAudioUrl" />
+		<result column="studio_name" property="studioName" />
+		<result column="manufacture_year" property="manufacture_year" />
+		<result column="stock_status" property="stockStatus" />
+		<result column="description" property="description" />
+		<result column="mood" property="mood" />
+		<result column="created_at" property="createdAt" />
+		<result column="updated_at" property="updatedAt" />
+		<collection column="id" property="categories" javaType="List" ofType="Category" select="springbootvinylecommercebackend.mapper.CategoryMapper.getCategoriesByProductId"/>
 	</resultMap>
 
-	<select id="getAllDisc" resultMap="discResultMap">
-		select dsc.ID
-		, dsc.ALBUMNAME
-		,
-		dsc.PRICE
-		, dsc.IMAGE
-		, dsc.COUNTRY
-		, dsc.ARTIST
-		, dsc.RELEASEYEAR
-		,
-		dsc.STATUS
-		, dsc.PLATFORM
-		, dsc.CATEGORY
-		, dsc.DEMOAUDIO
-		, dsc.STUDIO
-		,
-		dsc.MANUFACTUREYEAR
-		, dsc.STOCKSTATUS
-		, dsc.DESCRIPTION
-		, dsc.MOOD
-		,
-		dsc.QUANTITY
-		, dsc.STOCKQUANTITY
-		FROM
-		DISC dsc
-		WHERE 1 = 1
+	<select id="getAllProducts" resultMap="productResultMap">
+        select dsc.id
+             , dsc.title
+             , dsc.price
+             , dsc.stock_quantity
+             , dsc.region
+             , dsc.artist
+             , dsc.release_year
+             , dsc.status
+             , dsc.platform
+             , dsc.demo_audio_url
+             , dsc.studio_name
+             , dsc.manufacture_year
+             , dsc.stock_status
+             , dsc.description
+             , dsc.mood
+             , dsc.created_at
+             , dsc.updated_at
+             , dsc.tracklist_id
+        FROM DISC dsc
+    </select>
 
+	<select id="getLessProductByName" resultMap="productResultMap">
+		select dsc.id
+			 , dsc.title
+			 , dsc.price
+			 , dsc.stock_quantity
+			 , dsc.region
+			 , dsc.artist
+			 , dsc.release_year
+			 , dsc.status
+			 , dsc.platform
+			 , dsc.demo_audio_url
+			 , dsc.studio_name
+			 , dsc.manufacture_year
+			 , dsc.stock_status
+			 , dsc.description
+			 , dsc.mood
+			 , dsc.created_at
+			 , dsc.updated_at
+			 , dsc.tracklist_id
+		from disc dsc
+		where upper(dsc.title) like upper(concat('%', #{searchParam}, '%'))
+		OR upper(dsc.title) LIKE upper(concat('%', #{searchParam}, '%'))
+		limit 5
 	</select>
 
-	<select id="getLessDiscByName" resultMap="discResultMap">
-		SELECT dsc.ID
-		,
-		dsc.ALBUMNAME
-		, dsc.PRICE
-		, dsc.IMAGE
-		, dsc.COUNTRY
-		, dsc.ARTIST
-		,
-		dsc.RELEASEYEAR
-		, dsc.STATUS
-		, dsc.PLATFORM
-		, dsc.CATEGORY
-		,
-		dsc.DEMOAUDIO
-		, dsc.STUDIO
-		, dsc.MANUFACTUREYEAR
-		, dsc.STOCKSTATUS
-		,
-		dsc.DESCRIPTION
-		,
-		dsc.MOOD
-		, dsc.QUANTITY
-		, dsc.STOCKQUANTITY
-		FROM DISC dsc
-		WHERE
-		UPPER(dsc.ALBUMNAME) LIKE
-		UPPER(CONCAT('%', #{searchParam}, '%'))
-		OR
-		UPPER(dsc.ARTIST) LIKE
-		UPPER(CONCAT('%', #{searchParam}, '%'))
-		LIMIT 5
-
+	<select id="getBestProducts" resultMap="productResultMap">
+		select dsc.id
+			 , dsc.title
+			 , dsc.price
+			 , dsc.stock_quantity
+			 , dsc.region
+			 , dsc.artist
+			 , dsc.release_year
+			 , dsc.status
+			 , dsc.platform
+			 , dsc.demo_audio_url
+			 , dsc.studio_name
+			 , dsc.manufacture_year
+			 , dsc.stock_status
+			 , dsc.description
+			 , dsc.mood
+			 , dsc.created_at
+			 , dsc.updated_at
+			 , dsc.tracklist_id
+		from
+		disc dsc
+		limit 8
 	</select>
 
-	<select id="getBestDiscs" resultMap="discResultMap">
-		select dsc.ID
-		, dsc.ALBUMNAME
-		, dsc.PRICE
-		, dsc.IMAGE
-		, dsc.COUNTRY
-		, dsc.ARTIST
-		, dsc.RELEASEYEAR
-		,
-		dsc.STATUS
-		, dsc.PLATFORM
-		, dsc.CATEGORY
-		, dsc.DEMOAUDIO
-		, dsc.STUDIO
-		,
-		dsc.MANUFACTUREYEAR
-		, dsc.STOCKSTATUS
-		, dsc.DESCRIPTION
-		, dsc.MOOD
-		,
-		dsc.QUANTITY
-		FROM
-		DISC dsc
-		WHERE 1 = 1
-		LIMIT 8
-
+	<select id="getMoreProductsByName" resultMap="productResultMap">
+		select dsc.id
+			 , dsc.title
+			 , dsc.price
+			 , dsc.stock_quantity
+			 , dsc.region
+			 , dsc.artist
+			 , dsc.release_year
+			 , dsc.status
+			 , dsc.platform
+			 , dsc.demo_audio_url
+			 , dsc.studio_name
+			 , dsc.manufacture_year
+			 , dsc.stock_status
+			 , dsc.description
+			 , dsc.mood
+			 , dsc.created_at
+			 , dsc.updated_at
+			 , dsc.tracklist_id
+		from disc dsc
+		where upper(dsc.ALBUMNAME) like
+		upper(concat('%', #{searchParam}, '%'))
+		OR upper(dsc.ARTIST) like
+		upper(concat('%', #{searchParam}, '%'))
 	</select>
 
-	<select id="getMoreDiscByName" resultMap="discResultMap">
-		SELECT dsc.ID
-		,
-		dsc.ALBUMNAME
-		, dsc.PRICE
-		, dsc.IMAGE
-		, dsc.COUNTRY
-		, dsc.ARTIST
-		,
-		dsc.RELEASEYEAR
-		, dsc.STATUS
-		, dsc.PLATFORM
-		, dsc.CATEGORY
-		, dsc.DEMOAUDIO
-		, dsc.STUDIO
-		, dsc.MANUFACTUREYEAR
-		, dsc.STOCKSTATUS
-		, dsc.DESCRIPTION
-		,
-		dsc.MOOD
-		, dsc.QUANTITY
-		, dsc.STOCKQUANTITY
-		FROM DISC dsc
-		WHERE UPPER(dsc.ALBUMNAME) LIKE
-		UPPER(CONCAT('%', #{searchParam}, '%'))
-		OR UPPER(dsc.ARTIST) LIKE
-		UPPER(CONCAT('%', #{searchParam}, '%'))
-
-
+	<select id="getProductsByNameASC" resultMap="productResultMap">
+		select dsc.id
+			 , dsc.title
+			 , dsc.price
+			 , dsc.stock_quantity
+			 , dsc.region
+			 , dsc.artist
+			 , dsc.release_year
+			 , dsc.status
+			 , dsc.platform
+			 , dsc.demo_audio_url
+			 , dsc.studio_name
+			 , dsc.manufacture_year
+			 , dsc.stock_status
+			 , dsc.description
+			 , dsc.mood
+			 , dsc.created_at
+			 , dsc.updated_at
+			 , dsc.tracklist_id
+		from disc dsc
+		where upper(dsc.title) like
+		upper(concat('%', #{searchParam}, '%'))
+		order by dsc.price asc
 	</select>
 
-	<select id="getDiscByNameASC" resultMap="discResultMap">
-		SELECT dsc.ID
-		,
-		dsc.ALBUMNAME
-		, dsc.PRICE
-		, dsc.IMAGE
-		, dsc.COUNTRY
-		, dsc.ARTIST
-		,
-		dsc.RELEASEYEAR
-		, dsc.STATUS
-		, dsc.PLATFORM
-		, dsc.CATEGORY
-		, dsc.DEMOAUDIO
-		, dsc.STUDIO
-		, dsc.MANUFACTUREYEAR
-		, dsc.STOCKSTATUS
-		, dsc.DESCRIPTION
-		,
-		dsc.MOOD
-		, dsc.QUANTITY
-		, dsc.STOCKQUANTITY
-		FROM DISC dsc
-		WHERE UPPER(dsc.ALBUMNAME) LIKE
-		UPPER(CONCAT('%', #{searchParam}, '%'))
-		ORDER BY dsc.PRICE ASC
-
-	</select>
-
-	<select id="getDiscByNameDESC" resultMap="discResultMap">
-		SELECT dsc.ID
-		,
-		dsc.ALBUMNAME
-		, dsc.PRICE
-		, dsc.IMAGE
-		, dsc.COUNTRY
-		, dsc.ARTIST
-		,
-		dsc.RELEASEYEAR
-		, dsc.STATUS
-		, dsc.PLATFORM
-		, dsc.CATEGORY
-		, dsc.DEMOAUDIO
-		, dsc.STUDIO
-		, dsc.MANUFACTUREYEAR
-		, dsc.STOCKSTATUS
-		, dsc.DESCRIPTION
-		,
-		dsc.MOOD
-		, dsc.QUANTITY
-		, dsc.STOCKQUANTITY
-		FROM DISC dsc
-		WHERE UPPER(dsc.ALBUMNAME) LIKE
-		UPPER(CONCAT('%', #{searchParam}, '%'))
-		ORDER BY dsc.PRICE DESC
-
+	<select id="getDiscByNameDESC" resultMap="productResultMap">
+		select dsc.id
+			 , dsc.title
+			 , dsc.price
+			 , dsc.stock_quantity
+			 , dsc.region
+			 , dsc.artist
+			 , dsc.release_year
+			 , dsc.status
+			 , dsc.platform
+			 , dsc.demo_audio_url
+			 , dsc.studio_name
+			 , dsc.manufacture_year
+			 , dsc.stock_status
+			 , dsc.description
+			 , dsc.mood
+			 , dsc.created_at
+			 , dsc.updated_at
+			 , dsc.tracklist_id
+		from disc dsc
+		where upper(dsc.title) like
+		upper(concat('%', #{searchParam}, '%'))
+		order by dsc.price desc
 	</select>
 
 	<select id="getDiscByNameFiltered">
-		SELECT
-		dsc.ID
-		, dsc.ALBUMNAME
-		, dsc.PRICE
-		, dsc.IMAGE
-		, dsc.COUNTRY
-		,
-		dsc.ARTIST
-		, dsc.RELEASEYEAR
-		, dsc.STATUS
-		, dsc.PLATFORM
-		, dsc.CATEGORY
-		,
-		dsc.DEMOAUDIO
-		, dsc.STUDIO
-		, dsc.MANUFACTUREYEAR
-		, dsc.STOCKSTATUS
-		,
-		dsc.DESCRIPTION
-		, dsc.MOOD
-		, dsc.QUANTITY
-		, dsc.STOCKQUANTITY
-		FROM DISC dsc
+		select dsc.id
+			, dsc.title
+			, dsc.price
+			, dsc.stock_quantity
+			, dsc.region
+			, dsc.artist
+			, dsc.release_year
+			, dsc.status
+			, dsc.platform
+			, dsc.demo_audio_url
+			, dsc.studio_name
+			, dsc.manufacture_year
+			, dsc.stock_status
+			, dsc.description
+			, dsc.mood
+			, dsc.created_at
+			, dsc.updated_at
+			, dsc.tracklist_id
+		from disc dsc
 		<where>
 			<if test="!searchParam.isEmpty()">
-				AND UPPER(dsc.ALBUMNAME) LIKE UPPER(CONCAT('%', #{searchParam}, '%'))
+				and upper(dsc.title) like upper(concat('%', #{searchParam}, '%'))
 			</if>
-			
-			<if test="!categoryName.isEmpty()">
-				AND UPPER(dsc.CATEGORY) = UPPER(#{categoryName})
+
+			<if test="!mood.isEmpty()">
+				and upper(dsc.mood) = upper(#{moodName})
 			</if>
-			
-			<if test="!moodName.isEmpty()">
-				AND UPPER(dsc.MOOD) = UPPER(#{moodName})
-			
-			</if>
-			
+
 			<if test="!releaseYear.isEmpty()">
-				AND UPPER(dsc.RELEASEYEAR) = UPPER(#{releaseYear})
+				and upper(dsc.release_year) = upper(#{releaseYear})
 			</if>
-			
+
 			<if test="!stockStatus.isEmpty()">
-				AND UPPER(dsc.STOCKSTATUS) = UPPER(#{stockStatus})
+				and upper(dsc.stock_status) = upper(#{stockStatus})
 			</if>
-
 		</where>
-
-
-
-
 	</select>
 
 

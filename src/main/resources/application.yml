@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url:
-    username:
-    password:
-    driver-class-name:
+    url: jdbc:mysql://localhost:3306/disc_shop?createDatabaseIfNotExist=true
+    username: root
+    password: 332003
+    driver-class-name: com.mysql.cj.jdbc.Driver
   mail:
     host: smtp.gmail.com
     port: 587

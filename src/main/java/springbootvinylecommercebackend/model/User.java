@@ -21,7 +21,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
-
 	private Long id;
 	private String username;
 	private String password;
@@ -29,8 +28,8 @@ public class User implements UserDetails {
 	private String email;
 	private String phone;
 	private String gender;
-	private Date birthday;
 	private String fullname;
+	private Date birthday;
 	private String address;
 	private Long roleId;
 	private Instant createdAt;

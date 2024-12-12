@@ -15,25 +15,24 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/Product")
+@RequestMapping("/api/v1/products")
 public class ProductAPI {
 
 	private final ProductService ProductService;
 
-	@GetMapping("/getAllProduct")
+	@GetMapping("/getAllProducts")
 	ResponseEntity<?> doGetAllProduct() {
-
 		HashMap<String, Object> result = new HashMap<>();
 
 		try {
 			result.put("success", true);
-			result.put("message", "Success to call API getAllProduct");
+			result.put("message", "Success to call API getAllProducts");
 			result.put("data", ProductService.getAllProduct());
 		} catch (Exception e) {
 			result.put("success", false);
-			result.put("message", "Fail to call API getAllProduct");
+			result.put("message", "Fail to call API getAllProducts");
 			result.put("data", null);
-			log.error("Error", e);
+			log.error("Error: ", e);
 		}
 
 		return ResponseEntity.ok(result);
@@ -51,16 +50,14 @@ public class ProductAPI {
 			result.put("success", false);
 			result.put("message", "Fail to call API getLessProductByName");
 			result.put("data", null);
-			log.error("Error", e);
+			log.error("Error: ", e);
 		}
 
 		return ResponseEntity.ok(result);
-
 	}
 	
 	@GetMapping("/getBestProducts")
 	ResponseEntity<?> doGetBestProducts() {
-
 		HashMap<String, Object> result = new HashMap<>();
 
 		try {
@@ -71,7 +68,7 @@ public class ProductAPI {
 			result.put("success", false);
 			result.put("message", "Fail to call API get Best Products");
 			result.put("data", null);
-			log.error("Error", e);
+			log.error("Error: ", e);
 		}
 
 		return ResponseEntity.ok(result);
@@ -89,11 +86,10 @@ public class ProductAPI {
 			result.put("success", false);
 			result.put("message", "Fail to call API getMoreProductByName");
 			result.put("data", null);
-			log.error("Error", e);
+			log.error("Error: ", e);
 		}
 
 		return ResponseEntity.ok(result);
-
 	}
 	
 	@GetMapping("/getProductByNameASC")
