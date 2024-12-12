@@ -45,7 +45,7 @@
              , dsc.created_at
              , dsc.updated_at
              , dsc.tracklist_id
-        FROM DISC dsc
+        from product dsc
     </select>
 
 	<select id="getLessProductByName" resultMap="productResultMap">
@@ -67,7 +67,7 @@
 			 , dsc.created_at
 			 , dsc.updated_at
 			 , dsc.tracklist_id
-		from disc dsc
+		from product dsc
 		where upper(dsc.title) like upper(concat('%', #{searchParam}, '%'))
 		OR upper(dsc.title) LIKE upper(concat('%', #{searchParam}, '%'))
 		limit 5
@@ -93,7 +93,7 @@
 			 , dsc.updated_at
 			 , dsc.tracklist_id
 		from
-		disc dsc
+		product dsc
 		limit 8
 	</select>
 
@@ -116,10 +116,10 @@
 			 , dsc.created_at
 			 , dsc.updated_at
 			 , dsc.tracklist_id
-		from disc dsc
-		where upper(dsc.ALBUMNAME) like
+		from product dsc
+		where upper(dsc.title) like
 		upper(concat('%', #{searchParam}, '%'))
-		OR upper(dsc.ARTIST) like
+		OR upper(dsc.artist) like
 		upper(concat('%', #{searchParam}, '%'))
 	</select>
 
@@ -142,7 +142,7 @@
 			 , dsc.created_at
 			 , dsc.updated_at
 			 , dsc.tracklist_id
-		from disc dsc
+		from product dsc
 		where upper(dsc.title) like
 		upper(concat('%', #{searchParam}, '%'))
 		order by dsc.price asc
@@ -167,7 +167,7 @@
 			 , dsc.created_at
 			 , dsc.updated_at
 			 , dsc.tracklist_id
-		from disc dsc
+		from product dsc
 		where upper(dsc.title) like
 		upper(concat('%', #{searchParam}, '%'))
 		order by dsc.price desc
@@ -192,7 +192,7 @@
 			, dsc.created_at
 			, dsc.updated_at
 			, dsc.tracklist_id
-		from disc dsc
+		from product dsc
 		<where>
 			<if test="!searchParam.isEmpty()">
 				and upper(dsc.title) like upper(concat('%', #{searchParam}, '%'))

@@ -6,62 +6,53 @@
 
 	<resultMap type="springbootvinylecommercebackend.model.Order"
 		id="orderResultMap">
-		<result column="ID" property="id" />
-		<result column="USERID" property="userId" />
-		<result column="USERADDRESS" property="userAddress" />
-		<result column="USERPHONE" property="userPhone" />
-		<result column="NOTE" property="note" />
-		<result column="TOTALPRICE" property="totalPrice" />
-		<result column="FULLNAME" property="fullname" />
-		<result column="ORDERDATE" property="orderDate" />
-		<result column="EMAIL" property="email" />
-		
+		<result column="id" property="id" />
+		<result column="customer_id" property="customerId" />
+		<result column="user_address" property="customerAddress" />
+		<result column="customer_phone" property="customerPhone" />
+		<result column="note" property="note" />
+		<result column="total_price" property="totalPrice" />
+		<result column="fullname" property="fullname" />
+		<result column="order_date" property="orderDate" />
+		<result column="email" property="email" />
 	</resultMap>
 
 	<select id="getAllOrders">
-		SELECT ord.ID
-		, ord.USERID
-		, ord.USERADDRESS
-		,
-		ord.USERPHONE
-		, ord.NOTE
-		, ord.TOTALPRICE
-		, ord.FULLNAME
-		, ord.ORDERDATE
-		, ord.EMAIL
-		FROM ORDERS ord
-		WHERE 1 = 1
-
-
+		select ord.id
+		, ord.customer_id
+		, ord.customer_address
+		, ord.customer_phone
+		, ord.note
+		, ord.total_price
+		, ord.fullname
+		, ord.order_date
+		, ord.email
+		, ord.created_at
+		from `order` ord
 	</select>
 
 	<insert id="saveOrder">
-		INSERT INTO ORDERS 
-		(	ID
-			, USERID
-			, USERADDRESS
-			, USERPHONE
-			, NOTE
-			, TOTALPRICE
-			, FULLNAME
-			, ORDERDATE
-			, EMAIL
-		) 
-		VALUES 
-		(
-		#{id}
-		, #{userId}
-		, #{userAddress}
-		, #{userPhone}
-		, #{note}
-		, #{totalPrice}
-		, #{fullname}
-		, #{orderDate}
-		, #{email}
-		);
+        insert into `order`
+        ( id
+        , customer_id
+        , customer_address
+        , customer_phone
+        , note
+        , total_price
+        , fullname
+        , order_date
+        , email
+        , created_at)
+        VALUES ( #{id}
+               , #{customerId}
+               , #{customerAddress}
+               , #{customerPhone}
+               , #{note}
+               , #{totalPrice}
+               , #{fullname}
+               , #{orderDate}
+               , #{email}
+               , #{createdAt});
 
-	</insert>
-
-
-
+    </insert>
 </mapper>
