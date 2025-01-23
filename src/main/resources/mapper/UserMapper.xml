@@ -6,7 +6,6 @@
 
 	<resultMap id="userResultMap" type="springbootvinylecommercebackend.model.User">
 		<result column="id" property="id"/>
-		<result column="username" property="username"/>
 		<result column="password" property="password"/>
 		<result column="avatar_url" property="avatarUrl"/>
 		<result column="email" property="email"/>
@@ -22,7 +21,6 @@
 
 	<select id="getAllUsers" resultMap="userResultMap">
 		SELECT usr.id
-			 , usr.username
 			 , usr.password
 			 , usr.avatar_url
 			 , usr.email
@@ -40,7 +38,6 @@
 	<insert id="saveUser">
 		INSERT INTO user (
 		id
-		, username
 		, password
 		, avatar_url
 		, email
@@ -54,7 +51,6 @@
 		, updated_at
 		) VALUES (
 		  #{id}
-		, #{username}
 		, #{password}
 		, #{avatarUrl}
 		, #{email}
@@ -73,9 +69,6 @@
 		UPDATE user
 		<set>
 			ID=#{id}
-			<if test="username != null">
-				, username=#{username}
-			</if>
 			<if test="avatar_url != null">
 				, avatar_url=#{avatarUrl}
 			</if>
@@ -107,9 +100,8 @@
 		WHERE id = #{id}
 	</update>
 
-	<select id="getUserByUsername" resultMap="userResultMap">
+	<select id="getUserByEmail" resultMap="userResultMap">
         SELECT usr.id
-             , usr.username
              , usr.password
              , usr.avatar_url
              , usr.email
@@ -122,7 +114,7 @@
         	 , usr.created_at
 			 , usr.updated_at
         FROM USER usr
-        WHERE usr.username = #{username}
+        WHERE usr.email = #{email}
     </select>
 
 </mapper>

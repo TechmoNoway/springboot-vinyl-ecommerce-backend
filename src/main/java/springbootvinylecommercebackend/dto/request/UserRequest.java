@@ -8,7 +8,6 @@ import java.time.Instant;
 @Data
 public class UserRequest {
     private Long id;
-    private String username;
     private String avatarUrl;
     private String email;
     private String phone;

@@ -10,7 +10,6 @@ import springbootvinylecommercebackend.dto.request.LoginRequest;
 import springbootvinylecommercebackend.dto.request.RegisterRequest;
 import springbootvinylecommercebackend.dto.response.LoginResponse;
 import springbootvinylecommercebackend.dto.response.RegisterResponse;
-import springbootvinylecommercebackend.event.RegistrationEvent;
 import springbootvinylecommercebackend.mapper.UserMapper;
 import springbootvinylecommercebackend.model.User;
 import springbootvinylecommercebackend.service.AuthService;
@@ -32,7 +31,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public RegisterResponse register(RegisterRequest request) {
         User user = User.builder()
-                .username(request.getUsername())
                 .email(request.getEmail())
                 .fullname(request.getFullname())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -44,9 +42,6 @@ public class AuthServiceImpl implements AuthService {
 
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
-
-        RegistrationEvent registrationEvent = new RegistrationEvent(user, jwtToken);
-        publisher.publishEvent(registrationEvent);
 
         tokenService.saveToken(user.getId(), jwtToken);
         return RegisterResponse.builder()
@@ -60,12 +55,12 @@ public class AuthServiceImpl implements AuthService {
     public LoginResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
+                        request.getEmail(),
                         request.getPassword()
                 )
         );
 
-        User user = userMapper.getUserByUsername(request.getUsername()).orElseThrow();
+        User user = userMapper.getUserByEmail(request.getEmail()).orElseThrow();
         if (!user.isEnabled()) {
             throw new RuntimeException();
         }

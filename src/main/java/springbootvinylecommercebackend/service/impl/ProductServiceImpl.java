@@ -17,7 +17,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProduct() {
-        return mapper.getAllProduct();
+        return mapper.getAllProducts();
     }
 
     @Override
@@ -25,10 +25,10 @@ public class ProductServiceImpl implements ProductService {
         List<Product> result = null;
 
         if (!searchParam.isEmpty()) {
-            result = mapper.getLessProductByName(searchParam);
+            result = mapper.getLessProductsByName(searchParam);
             return result;
         }
-        return result;
+        return null;
     }
 
     @Override
@@ -38,23 +38,23 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getMoreProductByName(String searchParam) {
-        return mapper.getMoreProductByName(searchParam);
+        return mapper.getMoreProductsByName(searchParam);
     }
 
     @Override
     public List<Product> getProductByNameASC(String searchParam) {
-        return mapper.getProductByNameASC(searchParam);
+        return mapper.getProductsByNameASC(searchParam);
     }
 
     @Override
     public List<Product> getProductByNameDESC(String searchParam) {
 
-        return mapper.getProductByNameDESC(searchParam);
+        return mapper.getProductsByNameDESC(searchParam);
     }
 
     @Override
     public List<Product> getProductByNameFiltered(String searchParam, String categoryName, String moodName,
                                                   String releaseYear, String stockStatus) {
-        return mapper.getProductByNameFiltered(searchParam, categoryName, moodName, releaseYear, stockStatus);
+        return mapper.getProductsByNameFiltered(searchParam, categoryName, moodName, releaseYear, stockStatus);
     }
 }

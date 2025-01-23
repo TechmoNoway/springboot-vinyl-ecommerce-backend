@@ -59,9 +59,9 @@ public class TokenServiceImpl implements TokenService {
         }
         refreshToken = authHeader.substring(7);
 //        extract email
-        String username = jwtService.extractUsername(refreshToken);
-        if (username != null) {
-            User user = this.userMapper.getUserByUsername(username).orElseThrow();
+        String email = jwtService.extractUsername(refreshToken);
+        if (email != null) {
+            User user = this.userMapper.getUserByEmail(email).orElseThrow();
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
                 revokeAllUserTokens(user.getId());

@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUserByUsername(String username) {
-        return Optional.ofNullable(userMapper.getUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found")));
+    public Optional<User> getUserByEmail(String email) {
+        return Optional.ofNullable(userMapper.getUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found")));
     }
 }
