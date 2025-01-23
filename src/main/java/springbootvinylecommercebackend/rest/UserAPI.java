@@ -46,19 +46,19 @@ public class UserAPI {
 
 	}
 	
-	@GetMapping("/getUserByUsername")
-	ResponseEntity<?> doGetUserByUserName(@RequestParam("username") String username) {
+	@GetMapping("/getUserByEmail")
+	ResponseEntity<?> doGetUserByEmail(@RequestParam("email") String email) {
 
 		HashMap<String, Object> result = new HashMap<>();
 
 		try {
-			Optional<User> data = userService.getUserByUsername(username);
+			Optional<User> data = userService.getUserByEmail(email);
 			result.put("success", true);
-			result.put("message", "Success to call API getUserByUsername");
+			result.put("message", "Success to call API getUserByEmail");
 			result.put("data", data);
 		} catch (Exception e) {
 			result.put("success", false);
-			result.put("message", "Fail to call API getUserByUsername");
+			result.put("message", "Fail to call API getUserByEmail");
 			result.put("data", null);
 			log.error("Error: ", e);
 		}

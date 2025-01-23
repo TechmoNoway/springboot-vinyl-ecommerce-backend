@@ -38,7 +38,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void sendOrderSuccessMail(String userEmail) {
         String from = "nguyentriky0604@gmail";
-        String to = userEmail;
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = null;
@@ -49,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
             helper = new MimeMessageHelper(message, true);
             helper.setSubject("Thank You For Order Our Product");
             helper.setFrom(from);
-            helper.setTo(to);
+            helper.setTo(userEmail);
             helper.setText(htmlContent, true);
         } catch (MessagingException | IOException e) {
             e.printStackTrace();

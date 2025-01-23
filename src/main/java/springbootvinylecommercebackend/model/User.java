@@ -22,7 +22,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class User implements UserDetails {
 	private Long id;
-	private String username;
 	private String password;
 	private String avatarUrl;
 	private String email;
@@ -38,6 +37,11 @@ public class User implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
 	}
 
 	@Override

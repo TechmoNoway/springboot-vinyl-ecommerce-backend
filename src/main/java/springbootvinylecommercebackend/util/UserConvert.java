@@ -10,7 +10,6 @@ public class UserConvert {
     public static UserResponse toDto(User user) {
         return UserResponse.builder()
                 .id(user.getId())
-                .username(user.getUsername())
                 .avatarUrl(user.getAvatarUrl())
                 .email(user.getEmail())
                 .fullname(user.getFullname())
@@ -27,7 +26,6 @@ public class UserConvert {
     public static User toUser(UserRequest UserRequest) {
         return User.builder()
                 .id(UserRequest.getId())
-                .username(UserRequest.getUsername())
                 .avatarUrl(UserRequest.getAvatarUrl())
                 .email(UserRequest.getEmail())
                 .fullname(UserRequest.getFullname())
