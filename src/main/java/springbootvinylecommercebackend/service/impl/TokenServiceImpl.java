@@ -24,7 +24,6 @@ public class TokenServiceImpl implements TokenService {
     private final TokenMapper tokenMapper;
     private final JwtService jwtService;
     private final UserMapper userMapper;
-    private final TokenService tokenService;
 
     public void saveToken(Long userId, String jwtToken) {
         Token token = Token.builder()
@@ -65,7 +64,16 @@ public class TokenServiceImpl implements TokenService {
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
                 revokeAllUserTokens(user.getId());
-                tokenService.saveToken(user.getId(), accessToken);
+
+                Token token = Token.builder()
+                        .userId(user.getId())
+                        .accessToken(accessToken)
+                        .tokenType(TokenType.BEARER)
+                        .expired(false)
+                        .revoked(false)
+                        .build();
+                tokenMapper.saveToken(token);
+
                 var authResponse = LoginResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
