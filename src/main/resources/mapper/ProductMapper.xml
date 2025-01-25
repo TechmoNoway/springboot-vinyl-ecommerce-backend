@@ -17,7 +17,7 @@
 		<result column="platform" property="platform" />
 		<result column="demo_audio_url" property="demoAudioUrl" />
 		<result column="studio_name" property="studioName" />
-		<result column="manufacture_year" property="manufacture_year" />
+		<result column="manufacture_year" property="manufactureYear" />
 		<result column="stock_status" property="stockStatus" />
 		<result column="description" property="description" />
 		<result column="mood" property="mood" />
