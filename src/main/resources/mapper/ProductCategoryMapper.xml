@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="springbootvinylecommercebackend.mapper.ProductCategoryMapper">
+
+    <resultMap id="productCategoryResultMap" type="springbootvinylecommercebackend.model.ProductCategory">
+        <result column="category_id" property="categoryId" />
+        <result column="category_name" property="categoryName" />
+    </resultMap>
+
+    <select id="getAllCategoriesByProductId" resultMap="productCategoryResultMap">
+        SELECT pc.category_id, pc.category_name
+        FROM product_category pc
+        WHERE pc.product_id = #{productId}
+    </select>
+
+
+</mapper>

@@ -23,7 +23,7 @@
 		<result column="mood" property="mood" />
 		<result column="created_at" property="createdAt" />
 		<result column="updated_at" property="updatedAt" />
-		<collection column="id" property="categories" javaType="List" ofType="Category" select="springbootvinylecommercebackend.mapper.CategoryMapper.getCategoriesByProductId"/>
+		<collection column="id" property="categories" javaType="List" ofType="ProductCategory" select="springbootvinylecommercebackend.mapper.ProductCategoryMapper.getAllCategoriesByProductId"/>
 	</resultMap>
 
 	<select id="getAllProducts" resultMap="productResultMap">
