@@ -31,6 +31,7 @@
              , dsc.title
              , dsc.price
              , dsc.stock_quantity
+             , dsc.poster_url
              , dsc.region
              , dsc.artist
              , dsc.release_year

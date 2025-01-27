@@ -4,8 +4,8 @@
 
 <mapper namespace="springbootvinylecommercebackend.mapper.CategoryMapper">
     <resultMap id="categoryResultMap" type="springbootvinylecommercebackend.model.Category">
-        <result column="id" property="id" />
-        <result column="name" property="name" />
+        <result column="category_id" property="id" />
+        <result column="category_name" property="name" />
     </resultMap>
 
     <select id="getAllCategories" resultMap="categoryResultMap">
