@@ -38,6 +38,42 @@ public class ProductAPI {
 		return ResponseEntity.ok(result);
 	}
 
+	@GetMapping("/getReadyProducts")
+	ResponseEntity<?> doGetReadyProducts() {
+		HashMap<String, Object> result = new HashMap<>();
+
+		try {
+			result.put("success", true);
+			result.put("message", "Success to call API getReadyProducts");
+			result.put("data", ProductService.getReadyProducts());
+		} catch (Exception e) {
+			result.put("success", false);
+			result.put("message", "Fail to call API getReadyProducts");
+			result.put("data", null);
+			log.error("Error: ", e);
+		}
+
+		return ResponseEntity.ok(result);
+	}
+
+	@GetMapping("/getProductByTitle")
+	ResponseEntity<?> doGetProductByTitle(@RequestParam("title") String title) {
+		HashMap<String, Object> result = new HashMap<>();
+
+		try {
+			result.put("success", true);
+			result.put("message", "Success to call API getProductByTitle");
+			result.put("data", ProductService.getProductByTitle(title));
+		} catch (Exception e) {
+			result.put("success", false);
+			result.put("message", "Fail to call API getProductByTitle");
+			result.put("data", null);
+			log.error("Error: ", e);
+		}
+
+		return ResponseEntity.ok(result);
+	}
+
 	@GetMapping("/getLessProductByName")
 	ResponseEntity<?> doGetLessProductByName(@RequestParam("searchParam") String searchParam) {
 		HashMap<String, Object> result = new HashMap<>();
@@ -56,23 +92,7 @@ public class ProductAPI {
 		return ResponseEntity.ok(result);
 	}
 	
-	@GetMapping("/getBestProducts")
-	ResponseEntity<?> doGetBestProducts() {
-		HashMap<String, Object> result = new HashMap<>();
 
-		try {
-			result.put("success", true);
-			result.put("message", "Success to call API get Best Products");
-			result.put("data", ProductService.getBestProducts());
-		} catch (Exception e) {
-			result.put("success", false);
-			result.put("message", "Fail to call API get Best Products");
-			result.put("data", null);
-			log.error("Error: ", e);
-		}
-
-		return ResponseEntity.ok(result);
-	}
 	
 	@GetMapping("/getMoreProductByName")
 	ResponseEntity<?> doGetMoreProductByName(@RequestParam("searchParam") String searchParam) {

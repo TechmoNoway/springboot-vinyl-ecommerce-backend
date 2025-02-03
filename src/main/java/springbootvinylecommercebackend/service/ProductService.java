@@ -10,10 +10,13 @@ public interface ProductService {
 	
 	List<Product> getAllProduct();
 	
+	List<Product> getReadyProducts();
+
+	Product getProductByTitle(@Param("title") String title);
+
 	List<Product> getLessProductByName(@Param("searchParam") String searchParam);
-	
-	List<Product> getBestProducts();
-	
+
+
 	List<Product> getMoreProductByName(@Param("searchParam") String searchParam);
 	
 	List<Product> getProductByNameASC(@Param("searchParam") String searchParam);

@@ -12,10 +12,12 @@ public interface ProductMapper {
 	
 	List<Product> getAllProducts();
 		
+	List<Product> getReadyProducts();
+
+	Product getProductByTitle(@Param("title") String title);
+
 	List<Product> getLessProductsByName(@Param("searchParam") String searchParam);
-	
-	List<Product> getBestProducts();
-	
+
 	List<Product> getMoreProductsByName(@Param("searchParam") String searchParam);
 	
 	List<Product> getProductsByNameASC(@Param("searchParam") String searchParam);

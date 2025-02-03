@@ -14,10 +14,21 @@ import springbootvinylecommercebackend.service.ProductService;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper mapper;
+    private final ProductMapper productMapper;
 
     @Override
     public List<Product> getAllProduct() {
         return mapper.getAllProducts();
+    }
+
+    @Override
+    public List<Product> getReadyProducts() {
+        return mapper.getReadyProducts();
+    }
+
+    @Override
+    public Product getProductByTitle(String title) {
+        return productMapper.getProductByTitle(title);
     }
 
     @Override
@@ -29,11 +40,6 @@ public class ProductServiceImpl implements ProductService {
             return result;
         }
         return null;
-    }
-
-    @Override
-    public List<Product> getBestProducts() {
-        return mapper.getBestProducts();
     }
 
     @Override

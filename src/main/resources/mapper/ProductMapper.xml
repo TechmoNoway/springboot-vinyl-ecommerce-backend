@@ -49,11 +49,60 @@
         from product dsc
     </select>
 
+	<select id="getReadyProducts" resultMap="productResultMap">
+		select dsc.id
+			 , dsc.title
+			 , dsc.price
+			 , dsc.stock_quantity
+			 , dsc.poster_url
+			 , dsc.region
+			 , dsc.artist
+			 , dsc.release_year
+			 , dsc.status
+			 , dsc.platform
+			 , dsc.demo_audio_url
+			 , dsc.studio_name
+			 , dsc.manufacture_year
+			 , dsc.stock_status
+			 , dsc.description
+			 , dsc.mood
+			 , dsc.created_at
+			 , dsc.updated_at
+			 , dsc.tracklist_id
+		from product dsc
+		limit 8
+	</select>
+
+	<select id="getProductByTitle" resultMap="productResultMap">
+		select dsc.id
+			 , dsc.title
+			 , dsc.price
+			 , dsc.stock_quantity
+			 , dsc.poster_url
+			 , dsc.region
+			 , dsc.artist
+			 , dsc.release_year
+			 , dsc.status
+			 , dsc.platform
+			 , dsc.demo_audio_url
+			 , dsc.studio_name
+			 , dsc.manufacture_year
+			 , dsc.stock_status
+			 , dsc.description
+			 , dsc.mood
+			 , dsc.created_at
+			 , dsc.updated_at
+			 , dsc.tracklist_id
+		from product dsc
+		where upper(dsc.title) = upper(#{title})
+	</select>
+
 	<select id="getLessProductByName" resultMap="productResultMap">
 		select dsc.id
 			 , dsc.title
 			 , dsc.price
 			 , dsc.stock_quantity
+			 , dsc.poster_url
 			 , dsc.region
 			 , dsc.artist
 			 , dsc.release_year
@@ -74,35 +123,12 @@
 		limit 5
 	</select>
 
-	<select id="getBestProducts" resultMap="productResultMap">
-		select dsc.id
-			 , dsc.title
-			 , dsc.price
-			 , dsc.stock_quantity
-			 , dsc.region
-			 , dsc.artist
-			 , dsc.release_year
-			 , dsc.status
-			 , dsc.platform
-			 , dsc.demo_audio_url
-			 , dsc.studio_name
-			 , dsc.manufacture_year
-			 , dsc.stock_status
-			 , dsc.description
-			 , dsc.mood
-			 , dsc.created_at
-			 , dsc.updated_at
-			 , dsc.tracklist_id
-		from
-		product dsc
-		limit 8
-	</select>
-
 	<select id="getMoreProductsByName" resultMap="productResultMap">
 		select dsc.id
 			 , dsc.title
 			 , dsc.price
 			 , dsc.stock_quantity
+			 , dsc.poster_url
 			 , dsc.region
 			 , dsc.artist
 			 , dsc.release_year
@@ -129,6 +155,7 @@
 			 , dsc.title
 			 , dsc.price
 			 , dsc.stock_quantity
+			 , dsc.poster_url
 			 , dsc.region
 			 , dsc.artist
 			 , dsc.release_year
@@ -154,6 +181,7 @@
 			 , dsc.title
 			 , dsc.price
 			 , dsc.stock_quantity
+			 , dsc.poster_url
 			 , dsc.region
 			 , dsc.artist
 			 , dsc.release_year
