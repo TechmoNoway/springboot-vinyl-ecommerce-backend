@@ -97,7 +97,7 @@
 		where upper(dsc.title) = upper(#{title})
 	</select>
 
-	<select id="getLessProductByName" resultMap="productResultMap">
+	<select id="searchProductsByTitle" resultMap="productResultMap">
 		select dsc.id
 			 , dsc.title
 			 , dsc.price

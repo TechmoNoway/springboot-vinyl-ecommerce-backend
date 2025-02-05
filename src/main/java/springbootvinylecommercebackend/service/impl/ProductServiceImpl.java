@@ -32,11 +32,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getLessProductByName(String searchParam) {
+    public List<Product> searchProductsByTitle(String searchParam) {
         List<Product> result = null;
 
         if (!searchParam.isEmpty()) {
-            result = mapper.getLessProductsByName(searchParam);
+            result = mapper.searchProductsByTitle(searchParam);
             return result;
         }
         return null;

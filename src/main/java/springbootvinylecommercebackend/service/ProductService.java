@@ -14,7 +14,7 @@ public interface ProductService {
 
 	Product getProductByTitle(@Param("title") String title);
 
-	List<Product> getLessProductByName(@Param("searchParam") String searchParam);
+	List<Product> searchProductsByTitle(@Param("searchParam") String searchParam);
 
 
 	List<Product> getMoreProductByName(@Param("searchParam") String searchParam);

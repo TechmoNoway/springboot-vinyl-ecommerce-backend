@@ -16,7 +16,7 @@ public interface ProductMapper {
 
 	Product getProductByTitle(@Param("title") String title);
 
-	List<Product> getLessProductsByName(@Param("searchParam") String searchParam);
+	List<Product> searchProductsByTitle(@Param("searchParam") String searchParam);
 
 	List<Product> getMoreProductsByName(@Param("searchParam") String searchParam);
 	
