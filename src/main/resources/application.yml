@@ -34,14 +34,9 @@ springdoc:
     display-request-duration: true
     show-extensions: true
     show-common-extensions: true
-payment:
-  vnPay:
-    url: https://sandbox.vnpayment.vn/paymentv2/Payment/Error.html?code=03
-    tmnCode: HZVR8FCM
-    secretKey: DQZS8BAYS9SOKSQMYUMELQ428NX43BOG
-    returnUrl: http://localhost:4242/api/v1/payment/vn-pay-callback
-    version: 2.1.0
-    command: pay
-    orderType: other
+vietqr:
+
+  clientId: c89a7308-c86a-4ae7-9fb5-414993c7fca3
+  apiKey: 76c40c1e-c595-4662-a777-0260ec3f1cfb
 server:
   port: 4242
