@@ -40,6 +40,8 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.mysql:mysql-connector-j'
+	implementation 'vn.payos:payos-java:1.0.3'
+
 }
 
 tasks.named('test') {

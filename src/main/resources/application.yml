@@ -35,7 +35,6 @@ springdoc:
     show-extensions: true
     show-common-extensions: true
 vietqr:
-
   clientId: c89a7308-c86a-4ae7-9fb5-414993c7fca3
   apiKey: 76c40c1e-c595-4662-a777-0260ec3f1cfb
 server:

@@ -91,9 +91,25 @@ public class ProductAPI {
 
 		return ResponseEntity.ok(result);
 	}
-	
 
-	
+	@GetMapping("/getProductByNameFiltered")
+	ResponseEntity<?> doGetProductByNameFiltered (@RequestParam("searchParam") String searchParam, @RequestParam("categoryName")String categoryName, @RequestParam("moodName") String moodName, @RequestParam("releaseYear") String releaseYear, @RequestParam("stockStatus") String stockStatus){
+		HashMap<String, Object> result = new HashMap<>();
+
+		try {
+			result.put("success", true);
+			result.put("message", "Success to call API getProductByNameFiltered");
+			result.put("data", ProductService.getProductByNameFiltered(searchParam, categoryName, moodName, releaseYear, stockStatus));
+		} catch (Exception e) {
+			result.put("success", false);
+			result.put("message", "Fail to call API getProductByNameFiltered");
+			result.put("data", null);
+			log.error("Error", e);
+		}
+
+		return ResponseEntity.ok(result);
+	}
+
 	@GetMapping("/getMoreProductByName")
 	ResponseEntity<?> doGetMoreProductByName(@RequestParam("searchParam") String searchParam) {
 		HashMap<String, Object> result = new HashMap<>();
@@ -148,22 +164,5 @@ public class ProductAPI {
 		return ResponseEntity.ok(result);
 	}
 	
-	@GetMapping("/getProductByNameFiltered")
-	ResponseEntity<?> doGetProductByNameFiltered (@RequestParam("searchParam") String searchParam, @RequestParam("categoryName")String categoryName, @RequestParam("moodName") String moodName, @RequestParam("releaseYear") String releaseYear, @RequestParam("stockStatus") String stockStatus){
-		HashMap<String, Object> result = new HashMap<>();
-		
-		try {
-			result.put("success", true);
-			result.put("message", "Success to call API getProductByNameFiltered");
-			result.put("data", ProductService.getProductByNameFiltered(searchParam, categoryName, moodName, releaseYear, stockStatus));
-		} catch (Exception e) {
-			result.put("success", false);
-			result.put("message", "Fail to call API getProductByNameFiltered");
-			result.put("data", null);
-			log.error("Error", e);
-		}
-		
-		return ResponseEntity.ok(result);
-	}
 
 }
