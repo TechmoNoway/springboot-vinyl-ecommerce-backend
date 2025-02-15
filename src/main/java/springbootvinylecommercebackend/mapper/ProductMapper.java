@@ -18,6 +18,15 @@ public interface ProductMapper {
 
 	List<Product> searchProductsByTitle(@Param("searchParam") String searchParam);
 
+	List<Product> getAllProductsFilteredAndSorted(@Param("title") String title,
+													@Param("category") String category,
+													@Param("platform") String platform,
+													@Param("stockStatus") String stockStatus,
+													@Param("studioName") String studioName,
+													@Param("manufactureYear") String manufactureYear,
+													@Param("status") String status,
+													@Param("sortType") String sortType);
+
 	List<Product> getMoreProductsByName(@Param("searchParam") String searchParam);
 	
 	List<Product> getProductsByNameASC(@Param("searchParam") String searchParam);

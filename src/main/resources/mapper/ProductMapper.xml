@@ -122,6 +122,67 @@
 		OR upper(dsc.title) LIKE upper(concat('%', #{searchParam}, '%'))
 		limit 5
 	</select>
+	
+	<select id="getAllProductsFilteredAndSorted" resultMap="productResultMap">
+		select dsc.id
+			 , dsc.title
+			 , dsc.price
+			 , dsc.stock_quantity
+			 , dsc.poster_url
+			 , dsc.region
+			 , dsc.artist
+			 , dsc.release_year
+			 , dsc.status
+			 , dsc.platform
+			 , dsc.demo_audio_url
+			 , dsc.studio_name
+			 , dsc.manufacture_year
+			 , dsc.stock_status
+			 , dsc.description
+			 , dsc.mood
+			 , dsc.created_at
+			 , dsc.updated_at
+			 , dsc.tracklist_id
+		from product dsc
+		left join product_category pc on dsc.id = pc.product_id
+		<where>
+			<if test="!title.isEmpty()">
+				and upper(dsc.title) like upper(concat('%', #{title}, '%'))
+			</if>
+
+			<if test="!category.isEmpty()">
+				and upper(pc.category_name) = upper(#{category})
+			</if>
+
+		    <if test="!platform.isEmpty()">
+				and upper(dsc.platform) = upper(#{platform})
+			</if>
+
+			<if test="!stockStatus.isEmpty()">
+				and upper(dsc.stock_status) = upper(#{stockStatus})
+			</if>
+
+		    <if test="!studioName.isEmpty()">
+				and upper(dsc.studio_name) = upper(#{studio})
+			</if>
+
+		    <if test="!manufactureYear.isEmpty()">
+				and upper(dsc.manufacture_year) = upper(#{manufactureYear})
+			</if>
+
+			<if test="!status.isEmpty()">
+				and upper(dsc.status) = upper(#{status})
+			</if>
+		</where>
+		<choose>
+			<when test="sortType == 'ASC'">
+				order by dsc.price asc
+			</when>
+			<when test="sortType == 'DESC'">
+				order by dsc.price desc
+			</when>
+		</choose>
+	</select>
 
 	<select id="getMoreProductsByName" resultMap="productResultMap">
 		select dsc.id

@@ -4,6 +4,7 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import springbootvinylecommercebackend.dto.request.GetAllProductsFilteredAndSorteredRequest;
 import springbootvinylecommercebackend.mapper.ProductMapper;
 import springbootvinylecommercebackend.model.Product;
 import springbootvinylecommercebackend.service.ProductService;
@@ -43,6 +44,41 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getAllProductsFilteredAndSorted(String title, String category, String platform, String stockStatus, String studioName, String manufactureYear, String status, String sortType) {
+        System.out.println("title: " + title);
+        System.out.println("category: " + category);
+        System.out.println("platform: " + platform);
+        System.out.println("stockStatus: " + stockStatus);
+        System.out.println("studioName: " + studioName);
+        System.out.println("manufactureYear: " + manufactureYear);
+        System.out.println("status: " + status);
+        System.out.println("sortType: " + sortType);
+        if (title == null) {
+            title = "";
+        }
+        if (category == null) {
+            category = "";
+        }
+        if (platform == null) {
+            platform = "";
+        }
+        if (stockStatus == null) {
+            stockStatus = "";
+        }
+        if (studioName == null) {
+            studioName = "";
+        }
+        if (manufactureYear == null) {
+            manufactureYear = "";
+        }
+        if (status == null) {
+            status = "";
+        }
+
+        return mapper.getAllProductsFilteredAndSorted(title, category, platform, stockStatus, studioName, manufactureYear, status, sortType);
+    }
+
+    @Override
     public List<Product> getMoreProductByName(String searchParam) {
         return mapper.getMoreProductsByName(searchParam);
     }
@@ -58,9 +94,5 @@ public class ProductServiceImpl implements ProductService {
         return mapper.getProductsByNameDESC(searchParam);
     }
 
-    @Override
-    public List<Product> getProductByNameFiltered(String searchParam, String categoryName, String moodName,
-                                                  String releaseYear, String stockStatus) {
-        return mapper.getProductsByNameFiltered(searchParam, categoryName, moodName, releaseYear, stockStatus);
-    }
+
 }

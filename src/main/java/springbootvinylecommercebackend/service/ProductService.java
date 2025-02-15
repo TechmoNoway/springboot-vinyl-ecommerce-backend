@@ -12,17 +12,17 @@ public interface ProductService {
 	
 	List<Product> getReadyProducts();
 
-	Product getProductByTitle(@Param("title") String title);
+	Product getProductByTitle(String title);
 
 	List<Product> searchProductsByTitle(@Param("searchParam") String searchParam);
 
+	List<Product> getAllProductsFilteredAndSorted(String title, String category, String platform, String stockStatus, String studioName, String manufactureYear, String status, String sortType);
 
-	List<Product> getMoreProductByName(@Param("searchParam") String searchParam);
+	List<Product> getMoreProductByName(String searchParam);
 	
-	List<Product> getProductByNameASC(@Param("searchParam") String searchParam);
+	List<Product> getProductByNameASC(String searchParam);
 	
-	List<Product> getProductByNameDESC(@Param("searchParam") String searchParam);
+	List<Product> getProductByNameDESC(String searchParam);
 	
-	List<Product> getProductByNameFiltered(String searchParam, String categoryName, String moodName, String releaseYear, String stockStatus);
-          
+
 }
