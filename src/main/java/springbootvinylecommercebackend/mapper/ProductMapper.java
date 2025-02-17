@@ -33,5 +33,4 @@ public interface ProductMapper {
 	
 	List<Product> getProductsByNameDESC(@Param("searchParam") String searchParam);
 	
-	List<Product> getProductsByNameFiltered(@Param("searchParam") String searchParam, @Param("categoryName") String categoryName, @Param("moodName") String moodName, @Param("releaseYear") String releaseYear, @Param("stockStatus") String stockStatus);
 }

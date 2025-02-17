@@ -23,6 +23,7 @@ public class Product {
 	private String releaseYear;
 	private String status;
 	private String platform;
+	private String set;
 	private String demoAudioUrl;
 	private String studioName;
 	private String manufactureYear;

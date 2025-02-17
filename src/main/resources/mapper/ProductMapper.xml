@@ -15,6 +15,7 @@
 		<result column="release_year" property="releaseYear" />
 		<result column="status" property="status" />
 		<result column="platform" property="platform" />
+		<result column="set" property="set" />
 		<result column="demo_audio_url" property="demoAudioUrl" />
 		<result column="studio_name" property="studioName" />
 		<result column="manufacture_year" property="manufactureYear" />
@@ -84,6 +85,7 @@
 			 , dsc.release_year
 			 , dsc.status
 			 , dsc.platform
+		     , dsc.set
 			 , dsc.demo_audio_url
 			 , dsc.studio_name
 			 , dsc.manufacture_year
@@ -134,6 +136,7 @@
 			 , dsc.release_year
 			 , dsc.status
 			 , dsc.platform
+		     , dsc.set
 			 , dsc.demo_audio_url
 			 , dsc.studio_name
 			 , dsc.manufacture_year
@@ -163,7 +166,7 @@
 			</if>
 
 		    <if test="!studioName.isEmpty()">
-				and upper(dsc.studio_name) = upper(#{studio})
+				and upper(dsc.studio_name) = upper(#{studioName})
 			</if>
 
 		    <if test="!manufactureYear.isEmpty()">
@@ -181,6 +184,8 @@
 			<when test="sortType == 'DESC'">
 				order by dsc.price desc
 			</when>
+			<when test="sortType == 'DEFAULT'">
+			</when>
 		</choose>
 	</select>
 
@@ -195,6 +200,7 @@
 			 , dsc.release_year
 			 , dsc.status
 			 , dsc.platform
+		     , dsc.set
 			 , dsc.demo_audio_url
 			 , dsc.studio_name
 			 , dsc.manufacture_year
@@ -222,6 +228,7 @@
 			 , dsc.release_year
 			 , dsc.status
 			 , dsc.platform
+		     , dsc.set
 			 , dsc.demo_audio_url
 			 , dsc.studio_name
 			 , dsc.manufacture_year
@@ -248,6 +255,7 @@
 			 , dsc.release_year
 			 , dsc.status
 			 , dsc.platform
+		     , dsc.set
 			 , dsc.demo_audio_url
 			 , dsc.studio_name
 			 , dsc.manufacture_year
@@ -262,45 +270,5 @@
 		upper(concat('%', #{searchParam}, '%'))
 		order by dsc.price desc
 	</select>
-
-	<select id="getDiscByNameFiltered">
-		select dsc.id
-			, dsc.title
-			, dsc.price
-			, dsc.stock_quantity
-			, dsc.region
-			, dsc.artist
-			, dsc.release_year
-			, dsc.status
-			, dsc.platform
-			, dsc.demo_audio_url
-			, dsc.studio_name
-			, dsc.manufacture_year
-			, dsc.stock_status
-			, dsc.description
-			, dsc.mood
-			, dsc.created_at
-			, dsc.updated_at
-			, dsc.tracklist_id
-		from product dsc
-		<where>
-			<if test="!searchParam.isEmpty()">
-				and upper(dsc.title) like upper(concat('%', #{searchParam}, '%'))
-			</if>
-
-			<if test="!mood.isEmpty()">
-				and upper(dsc.mood) = upper(#{moodName})
-			</if>
-
-			<if test="!releaseYear.isEmpty()">
-				and upper(dsc.release_year) = upper(#{releaseYear})
-			</if>
-
-			<if test="!stockStatus.isEmpty()">
-				and upper(dsc.stock_status) = upper(#{stockStatus})
-			</if>
-		</where>
-	</select>
-
 
 </mapper>

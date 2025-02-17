@@ -45,14 +45,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProductsFilteredAndSorted(String title, String category, String platform, String stockStatus, String studioName, String manufactureYear, String status, String sortType) {
-        System.out.println("title: " + title);
-        System.out.println("category: " + category);
-        System.out.println("platform: " + platform);
-        System.out.println("stockStatus: " + stockStatus);
-        System.out.println("studioName: " + studioName);
-        System.out.println("manufactureYear: " + manufactureYear);
-        System.out.println("status: " + status);
-        System.out.println("sortType: " + sortType);
         if (title == null) {
             title = "";
         }
