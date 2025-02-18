@@ -33,4 +33,19 @@ public class UserServiceImpl implements UserService {
     public Optional<User> getUserByEmail(String email) {
         return Optional.ofNullable(userMapper.getUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found")));
     }
+
+    @Override
+    public User getUserById(Long id) {
+        return null;
+    }
+
+    @Override
+    public void saveUser(User user) {
+
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+
+    }
 }

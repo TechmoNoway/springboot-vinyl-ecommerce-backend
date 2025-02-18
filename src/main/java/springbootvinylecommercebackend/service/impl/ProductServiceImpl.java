@@ -3,6 +3,7 @@ package springbootvinylecommercebackend.service.impl;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import springbootvinylecommercebackend.dto.request.GetAllProductsFilteredAndSorteredRequest;
 import springbootvinylecommercebackend.mapper.ProductMapper;
@@ -23,6 +24,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(value = "products", key = "'readyProducts'")
     public List<Product> getReadyProducts() {
         return mapper.getReadyProducts();
     }
@@ -44,6 +46,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(value = "products", key = "'allProducts'")
     public List<Product> getAllProductsFilteredAndSorted(String title, String category, String platform, String stockStatus, String studioName, String manufactureYear, String status, String sortType) {
         if (title == null) {
             title = "";
@@ -70,21 +73,6 @@ public class ProductServiceImpl implements ProductService {
         return mapper.getAllProductsFilteredAndSorted(title, category, platform, stockStatus, studioName, manufactureYear, status, sortType);
     }
 
-    @Override
-    public List<Product> getMoreProductByName(String searchParam) {
-        return mapper.getMoreProductsByName(searchParam);
-    }
-
-    @Override
-    public List<Product> getProductByNameASC(String searchParam) {
-        return mapper.getProductsByNameASC(searchParam);
-    }
-
-    @Override
-    public List<Product> getProductByNameDESC(String searchParam) {
-
-        return mapper.getProductsByNameDESC(searchParam);
-    }
 
 
 }

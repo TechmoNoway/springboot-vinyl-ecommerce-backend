@@ -27,10 +27,4 @@ public interface ProductMapper {
 													@Param("status") String status,
 													@Param("sortType") String sortType);
 
-	List<Product> getMoreProductsByName(@Param("searchParam") String searchParam);
-	
-	List<Product> getProductsByNameASC(@Param("searchParam") String searchParam);
-	
-	List<Product> getProductsByNameDESC(@Param("searchParam") String searchParam);
-	
 }

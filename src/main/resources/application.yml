@@ -15,6 +15,13 @@ spring:
           auth: true
           starttls:
             enable: true
+  cache:
+    type: redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 600000
 mybatis:
   mapper-locations: classpath:/mapper/*Mapper.xml
   type-aliases-package: com.trikynguci.springbootvinylecommercebackend.model
@@ -34,6 +41,7 @@ springdoc:
     display-request-duration: true
     show-extensions: true
     show-common-extensions: true
+
 vietqr:
   clientId: c89a7308-c86a-4ae7-9fb5-414993c7fca3
   apiKey: 76c40c1e-c595-4662-a777-0260ec3f1cfb

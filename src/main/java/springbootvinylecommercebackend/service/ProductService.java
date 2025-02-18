@@ -18,11 +18,4 @@ public interface ProductService {
 
 	List<Product> getAllProductsFilteredAndSorted(String title, String category, String platform, String stockStatus, String studioName, String manufactureYear, String status, String sortType);
 
-	List<Product> getMoreProductByName(String searchParam);
-	
-	List<Product> getProductByNameASC(String searchParam);
-	
-	List<Product> getProductByNameDESC(String searchParam);
-	
-
 }

@@ -1,6 +1,7 @@
 package springbootvinylecommercebackend.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import springbootvinylecommercebackend.mapper.CategoryMapper;
 import springbootvinylecommercebackend.model.Category;
@@ -15,6 +16,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
 
     @Override
+    @Cacheable(value = "categories", key = "'allCategories'")
     public List<Category> getAllCategories() {
         return categoryMapper.getAllCategories();
     }
