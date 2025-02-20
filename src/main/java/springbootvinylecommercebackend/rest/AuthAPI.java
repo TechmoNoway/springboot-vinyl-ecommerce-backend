@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import springbootvinylecommercebackend.dto.request.LoginRequest;
 import springbootvinylecommercebackend.dto.request.RegisterRequest;
 import springbootvinylecommercebackend.service.AuthService;
+import springbootvinylecommercebackend.service.EmailService;
 import springbootvinylecommercebackend.service.TokenService;
 
 import java.util.HashMap;
@@ -24,7 +25,10 @@ import java.util.Map;
 public class AuthAPI {
 
     private final AuthService authService;
+
     private final TokenService tokenService;
+
+    private final EmailService emailService;
 
     @PostMapping("/login")
     public ResponseEntity<?> doLogin(@RequestBody LoginRequest loginRequest){

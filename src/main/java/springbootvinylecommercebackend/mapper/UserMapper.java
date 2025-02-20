@@ -15,6 +15,8 @@ public interface UserMapper {
 	
 	User checkUserExist(@Param("email") String email, @Param("password") String password);
 
+	Boolean existsByEmail(@Param("email") String email);
+
 	void saveUser(User userParam);
 	
 	void updateUser(User user);

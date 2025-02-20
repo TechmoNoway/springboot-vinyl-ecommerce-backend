@@ -1,5 +1,6 @@
 package springbootvinylecommercebackend.service.impl;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +14,7 @@ import springbootvinylecommercebackend.dto.response.RegisterResponse;
 import springbootvinylecommercebackend.mapper.UserMapper;
 import springbootvinylecommercebackend.model.User;
 import springbootvinylecommercebackend.service.AuthService;
+import springbootvinylecommercebackend.service.EmailService;
 import springbootvinylecommercebackend.service.JwtService;
 import springbootvinylecommercebackend.service.TokenService;
 import springbootvinylecommercebackend.util.UserConvert;
@@ -27,15 +29,21 @@ public class AuthServiceImpl implements AuthService {
     private final ApplicationEventPublisher publisher;
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
+    private final EmailService emailService;
 
     @Override
-    public RegisterResponse register(RegisterRequest request) {
+    public void register(RegisterRequest request) throws MessagingException {
+
+        if (userMapper.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        String tempPassword = emailService.sendRegistrationEmail(request.getEmail());
+
         User user = User.builder()
                 .email(request.getEmail())
-                .fullname(request.getFullname())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .phone(request.getPhone())
-                .birthday(request.getBirthday())
+                .fullname(request.getEmail().substring(0, request.getEmail().indexOf("@")))
+                .password(passwordEncoder.encode(tempPassword))
                 .build();
 
         userMapper.saveUser(user);
@@ -44,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
         String refreshToken = jwtService.generateRefreshToken(user);
 
         tokenService.saveToken(user.getId(), jwtToken);
-        return RegisterResponse.builder()
+        RegisterResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .user(UserConvert.toDto(user))
@@ -52,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public LoginResponse login(LoginRequest request) {
+    public void login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -68,7 +76,7 @@ public class AuthServiceImpl implements AuthService {
         String refreshToken = jwtService.generateRefreshToken(user);
         tokenService.revokeAllUserTokens(user.getId());
         tokenService.saveToken(user.getId(), jwtToken);
-        return LoginResponse.builder()
+        LoginResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .user(UserConvert.toDto(user))

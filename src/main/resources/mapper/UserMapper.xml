@@ -117,4 +117,11 @@
         WHERE usr.email = #{email}
     </select>
 
+	<select id="existsByEmail" resultType="boolean">
+		SELECT EXISTS(
+			SELECT 1
+			FROM user usr
+			WHERE usr.email = #{email}
+		)
+	</select>
 </mapper>
