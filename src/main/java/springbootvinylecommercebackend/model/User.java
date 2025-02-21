@@ -1,5 +1,6 @@
 package springbootvinylecommercebackend.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.time.Instant;
 import java.util.Collection;
@@ -20,7 +21,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String password;
 	private String avatarUrl;

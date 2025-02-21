@@ -119,14 +119,14 @@ public class ProductAPI {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/getMoreProductByName")
-    ResponseEntity<?> doGetMoreProductByName(@RequestParam("searchParam") String searchParam) {
+    @GetMapping("/getMoreProductByTitle")
+    ResponseEntity<?> doGetMoreProductByTitle(@RequestParam("title") String title) {
         HashMap<String, Object> result = new HashMap<>();
 
         try {
             result.put("success", true);
             result.put("message", "Success to call API getMoreProductByName");
-            result.put("data", ProductService.getMoreProductByName(searchParam));
+            result.put("data", ProductService.getProductByTitle(title));
         } catch (Exception e) {
             result.put("success", false);
             result.put("message", "Fail to call API getMoreProductByName");
@@ -137,41 +137,7 @@ public class ProductAPI {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/getProductByNameASC")
-    ResponseEntity<?> doGetProductByNameASC(@RequestParam("searchParam") String searchParam) {
-        HashMap<String, Object> result = new HashMap<>();
 
-        try {
-            result.put("success", true);
-            result.put("message", "Success to call API getProductByNameASC");
-            result.put("data", ProductService.getProductByNameASC(searchParam));
-        } catch (Exception e) {
-            result.put("success", false);
-            result.put("message", "Fail to call API getProductByNameASC");
-            result.put("data", null);
-            log.error("Error", e);
-        }
-
-        return ResponseEntity.ok(result);
-    }
-
-    @GetMapping("/getProductByNameDESC")
-    ResponseEntity<?> doGetProductByNameDESC(@RequestParam("searchParam") String searchParam) {
-        HashMap<String, Object> result = new HashMap<>();
-
-        try {
-            result.put("success", true);
-            result.put("message", "Success to call API getProductByNameDESC");
-            result.put("data", ProductService.getProductByNameDESC(searchParam));
-        } catch (Exception e) {
-            result.put("success", false);
-            result.put("message", "Fail to call API getProductByNameDESC");
-            result.put("data", null);
-            log.error("Error", e);
-        }
-
-        return ResponseEntity.ok(result);
-    }
 
 
 }

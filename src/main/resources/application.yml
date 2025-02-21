@@ -7,8 +7,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username:
-    password:
+    username: kyntps24779@fpt.edu.vn
+    password: etpcyqhxzlmhjsgi
     properties:
       mail:
         smtp:
@@ -19,9 +19,11 @@ spring:
     type: redis
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: redis-19977.c295.ap-southeast-1-1.ec2.redns.redis-cloud.com
+      port: 19977
       timeout: 600000
+      password: a1o7fdtainqkwHAlt1Mg1J3zdzpDrIhj
+      username: default
 mybatis:
   mapper-locations: classpath:/mapper/*Mapper.xml
   type-aliases-package: com.trikynguci.springbootvinylecommercebackend.model
@@ -41,7 +43,6 @@ springdoc:
     display-request-duration: true
     show-extensions: true
     show-common-extensions: true
-
 vietqr:
   clientId: c89a7308-c86a-4ae7-9fb5-414993c7fca3
   apiKey: 76c40c1e-c595-4662-a777-0260ec3f1cfb

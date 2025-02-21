@@ -4,11 +4,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springbootvinylecommercebackend.dto.request.LoginRequest;
 import springbootvinylecommercebackend.dto.request.RegisterRequest;
 import springbootvinylecommercebackend.service.AuthService;
@@ -49,11 +47,11 @@ public class AuthAPI {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> doRegister(@RequestBody RegisterRequest registerRequest){
+    public ResponseEntity<?> doRegister(@RequestParam("email") String email){
         Map<String, Object> result = new HashMap<>();
 
         try {
-            authService.register(registerRequest);
+            authService.register(email);
             result.put("success", true);
             result.put("message", "Success to call api doLogin");
             result.put("data", null);

@@ -8,7 +8,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import springbootvinylecommercebackend.dto.request.LoginRequest;
-import springbootvinylecommercebackend.dto.request.RegisterRequest;
 import springbootvinylecommercebackend.dto.response.LoginResponse;
 import springbootvinylecommercebackend.dto.response.RegisterResponse;
 import springbootvinylecommercebackend.mapper.UserMapper;
@@ -32,31 +31,33 @@ public class AuthServiceImpl implements AuthService {
     private final EmailService emailService;
 
     @Override
-    public void register(RegisterRequest request) throws MessagingException {
+    public void register(String email) throws MessagingException {
 
-        if (userMapper.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
+        if (userMapper.existsByEmail(email)) {
+            System.out.println("Email already exists");
+        } else {
+            String tempPassword = emailService.sendRegistrationEmail(email);
+            System.out.println(email);
+            User user = User.builder()
+                    .email(email)
+                    .fullname(email.substring(0, email.indexOf("@")))
+                    .password(passwordEncoder.encode(tempPassword))
+                    .build();
+
+            userMapper.saveUser(user);
+
+            String jwtToken = jwtService.generateToken(user);
+            String refreshToken = jwtService.generateRefreshToken(user);
+
+            tokenService.saveToken(user.getId(), jwtToken);
+            RegisterResponse.builder()
+                    .accessToken(jwtToken)
+                    .refreshToken(refreshToken)
+                    .user(UserConvert.toDto(user))
+                    .build();
         }
 
-        String tempPassword = emailService.sendRegistrationEmail(request.getEmail());
 
-        User user = User.builder()
-                .email(request.getEmail())
-                .fullname(request.getEmail().substring(0, request.getEmail().indexOf("@")))
-                .password(passwordEncoder.encode(tempPassword))
-                .build();
-
-        userMapper.saveUser(user);
-
-        String jwtToken = jwtService.generateToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
-
-        tokenService.saveToken(user.getId(), jwtToken);
-        RegisterResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .user(UserConvert.toDto(user))
-                .build();
     }
 
     @Override

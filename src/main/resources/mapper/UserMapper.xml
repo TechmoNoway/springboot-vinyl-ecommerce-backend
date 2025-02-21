@@ -35,33 +35,15 @@
 		FROM user usr
 	</select>
 
-	<insert id="saveUser">
+	<insert id="saveUser" >
 		INSERT INTO user (
-		id
 		, password
-		, avatar_url
 		, email
-		, phone
-		, gender
 		, fullname
-		, birthday
-		, address
-		, role_id
-		, created_at
-		, updated_at
 		) VALUES (
-		  #{id}
-		, #{password}
-		, #{avatarUrl}
-		, #{email}
-		, #{phone}
-		, #{gender}
-		, #{fullname}
-		, #{birthday}
-		, #{address}
-		, #{role_id}
-		, #{created_at}
-		, #{updated_at}
+		, #{user.password}
+		, #{user.email}
+		, #{user.fullname}
 		)
 	</insert>
 

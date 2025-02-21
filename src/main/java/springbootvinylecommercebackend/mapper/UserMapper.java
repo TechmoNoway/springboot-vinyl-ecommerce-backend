@@ -17,7 +17,7 @@ public interface UserMapper {
 
 	Boolean existsByEmail(@Param("email") String email);
 
-	void saveUser(User userParam);
+	void saveUser(User user);
 	
 	void updateUser(User user);
 	

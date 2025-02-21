@@ -15,7 +15,6 @@ public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSenderImpl mailSender;
 
-
     public String sendRegistrationEmail(String toEmail) throws MessagingException {
         String generatedPassword = RandomStringUtils.randomAlphanumeric(8); // Generate random password
         String resetLink = "http://localhost:5173/reset-password?email=" + toEmail;
