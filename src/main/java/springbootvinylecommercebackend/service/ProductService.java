@@ -18,4 +18,8 @@ public interface ProductService {
 
 	List<Product> getAllProductsFilteredAndSorted(String title, String category, String platform, String stockStatus, String studioName, String manufactureYear, String status, String sortType);
 
+	void addProduct(Product product);
+
+	void deleteProduct(Long id);
+
 }

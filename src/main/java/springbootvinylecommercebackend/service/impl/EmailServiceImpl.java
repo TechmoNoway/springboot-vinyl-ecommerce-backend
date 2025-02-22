@@ -21,10 +21,12 @@ public class EmailServiceImpl implements EmailService {
         String username = toEmail.substring(0, toEmail.indexOf("@"));
 
         String emailContent = "<p>Chào mừng tới Vọc Records</p>"
-                + "<p>Xin chào " + username + ",</p>" // You might want to replace this with a dynamic username
-                + "<p>Cảm ơn bạn đã tạo tài khoản ở Vọc Records. Tên tài khoản của bạn là " + username + ".</p>" // Again, replace with dynamic username
+                + "<p>Xin chào " + username + ",</p>"
+                + "<p>Cảm ơn bạn đã tạo tài khoản ở Vọc Records. </p>"
+                + "Tên tài khoản của bạn là " + username + ".</p>"
+                + "<p>Mật khẩu tạm thời của bạn là: " + generatedPassword + "</p>"
                 + "<p>Bạn có thể truy cập trang tài khoản để xem đơn hàng, đổi mật khẩu, và nhiều thứ khác tại: <a href='http://localhost:5173/profile/'>http://localhost:5173/profile/</a></p>"
-                + "<p>Click <a href='" + resetLink + "'>để nhập mật khẩu mới.</a></p>" // Using the resetLink variable
+                + "<p>Click <a href='" + resetLink + "'>để nhập mật khẩu mới.</a></p>"
                 + "<p>We look forward to seeing you soon.</p>";
 
         MimeMessage message = mailSender.createMimeMessage();

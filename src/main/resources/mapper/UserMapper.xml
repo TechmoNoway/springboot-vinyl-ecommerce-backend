@@ -37,13 +37,17 @@
 
 	<insert id="saveUser" >
 		INSERT INTO user (
-		, password
+		password
 		, email
 		, fullname
+		, created_at
+		, updated_at
 		) VALUES (
-		, #{user.password}
-		, #{user.email}
-		, #{user.fullname}
+		 #{password}
+		, #{email}
+		, #{fullname}
+		, NOW()
+		, NOW()
 		)
 	</insert>
 

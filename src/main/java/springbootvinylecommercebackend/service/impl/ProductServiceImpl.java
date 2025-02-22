@@ -73,6 +73,15 @@ public class ProductServiceImpl implements ProductService {
         return mapper.getAllProductsFilteredAndSorted(title, category, platform, stockStatus, studioName, manufactureYear, status, sortType);
     }
 
+    @Override
+    public void addProduct(Product product) {
+
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+
+    }
 
 
 }

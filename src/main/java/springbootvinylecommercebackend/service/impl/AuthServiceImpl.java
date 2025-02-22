@@ -2,7 +2,6 @@ package springbootvinylecommercebackend.service.impl;
 
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 import springbootvinylecommercebackend.dto.request.LoginRequest;
 import springbootvinylecommercebackend.dto.response.LoginResponse;
 import springbootvinylecommercebackend.dto.response.RegisterResponse;
+import springbootvinylecommercebackend.dto.response.TokenResponse;
 import springbootvinylecommercebackend.mapper.UserMapper;
 import springbootvinylecommercebackend.model.User;
 import springbootvinylecommercebackend.service.AuthService;
@@ -25,14 +25,12 @@ public class AuthServiceImpl implements AuthService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final ApplicationEventPublisher publisher;
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
     private final EmailService emailService;
 
     @Override
-    public void register(String email) throws MessagingException {
-
+    public RegisterResponse register(String email) throws MessagingException {
         if (userMapper.existsByEmail(email)) {
             System.out.println("Email already exists");
         } else {
@@ -49,19 +47,19 @@ public class AuthServiceImpl implements AuthService {
             String jwtToken = jwtService.generateToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
 
-            tokenService.saveToken(user.getId(), jwtToken);
-            RegisterResponse.builder()
+//            tokenService.saveToken(user.getId(), jwtToken);
+
+
+            return RegisterResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
-                    .user(UserConvert.toDto(user))
                     .build();
         }
-
-
+        return null;
     }
 
     @Override
-    public void login(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -76,11 +74,10 @@ public class AuthServiceImpl implements AuthService {
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         tokenService.revokeAllUserTokens(user.getId());
-        tokenService.saveToken(user.getId(), jwtToken);
-        LoginResponse.builder()
+//        tokenService.saveToken(user.getId(), jwtToken);
+        return LoginResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
-                .user(UserConvert.toDto(user))
                 .build();
     }
 }

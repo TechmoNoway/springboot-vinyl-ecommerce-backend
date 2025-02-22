@@ -2,9 +2,10 @@ package springbootvinylecommercebackend.service;
 
 import jakarta.mail.MessagingException;
 import springbootvinylecommercebackend.dto.request.LoginRequest;
-import springbootvinylecommercebackend.dto.request.RegisterRequest;
+import springbootvinylecommercebackend.dto.response.LoginResponse;
+import springbootvinylecommercebackend.dto.response.RegisterResponse;
 
 public interface AuthService {
-    void register(String email) throws MessagingException;
-    void login(LoginRequest request);
+    RegisterResponse register(String email) throws MessagingException;
+    LoginResponse login(LoginRequest request);
 }

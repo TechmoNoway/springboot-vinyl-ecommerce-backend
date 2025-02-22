@@ -21,13 +21,11 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity
 public class ApplicationConfig {
 
-
     private final UserMapper userMapper;
 
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userMapper.getUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
     }
 
     @Bean
