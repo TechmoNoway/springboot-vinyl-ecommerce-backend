@@ -33,14 +33,15 @@ public class AuthAPI {
         Map<String, Object> result = new HashMap<>();
 
         try {
-            authService.login(loginRequest);
+
             result.put("success", true);
             result.put("message", "Success to call api doLogin");
-            result.put("data", null);
+            result.put("data", authService.login(loginRequest));
         } catch (Exception e) {
             result.put("success", false);
-            result.put("message", e.getMessage());
+            result.put("message", "Failed to call api doLogin");
             result.put("data", null);
+            log.error("Error: ", e);
         }
 
         return ResponseEntity.ok(result);
@@ -53,12 +54,13 @@ public class AuthAPI {
         try {
             authService.register(email);
             result.put("success", true);
-            result.put("message", "Success to call api doLogin");
+            result.put("message", "Success to call api doRegister");
             result.put("data", null);
         } catch (Exception e) {
             result.put("success", false);
-            result.put("message", e.getMessage());
+            result.put("message", "Failed to call api doRegister");
             result.put("data", null);
+            log.error("Error: ", e);
         }
 
         return ResponseEntity.ok(result);

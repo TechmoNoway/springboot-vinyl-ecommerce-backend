@@ -13,7 +13,6 @@ import springbootvinylecommercebackend.enums.TokenType;
 public class Token {
     public Long id;
     public String accessToken;
-    public TokenType tokenType = TokenType.BEARER;
     public boolean revoked;
     public boolean expired;
     public Long userId;

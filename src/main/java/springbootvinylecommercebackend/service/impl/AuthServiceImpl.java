@@ -9,14 +9,12 @@ import org.springframework.stereotype.Service;
 import springbootvinylecommercebackend.dto.request.LoginRequest;
 import springbootvinylecommercebackend.dto.response.LoginResponse;
 import springbootvinylecommercebackend.dto.response.RegisterResponse;
-import springbootvinylecommercebackend.dto.response.TokenResponse;
 import springbootvinylecommercebackend.mapper.UserMapper;
 import springbootvinylecommercebackend.model.User;
 import springbootvinylecommercebackend.service.AuthService;
 import springbootvinylecommercebackend.service.EmailService;
 import springbootvinylecommercebackend.service.JwtService;
 import springbootvinylecommercebackend.service.TokenService;
-import springbootvinylecommercebackend.util.UserConvert;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +38,7 @@ public class AuthServiceImpl implements AuthService {
                     .email(email)
                     .fullname(email.substring(0, email.indexOf("@")))
                     .password(passwordEncoder.encode(tempPassword))
+                    .roleId(2L)
                     .build();
 
             userMapper.saveUser(user);
@@ -74,10 +73,11 @@ public class AuthServiceImpl implements AuthService {
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         tokenService.revokeAllUserTokens(user.getId());
-//        tokenService.saveToken(user.getId(), jwtToken);
+        tokenService.saveToken(user.getId(), jwtToken);
         return LoginResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
+                .userID(user.getId())
                 .build();
     }
 }

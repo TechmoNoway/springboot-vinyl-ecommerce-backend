@@ -29,7 +29,6 @@ public class TokenServiceImpl implements TokenService {
         Token token = Token.builder()
                 .userId(userId)
                 .accessToken(jwtToken)
-                .tokenType(TokenType.BEARER)
                 .expired(false)
                 .revoked(false)
                 .build();
@@ -68,7 +67,6 @@ public class TokenServiceImpl implements TokenService {
                 Token token = Token.builder()
                         .userId(user.getId())
                         .accessToken(accessToken)
-                        .tokenType(TokenType.BEARER)
                         .expired(false)
                         .revoked(false)
                         .build();

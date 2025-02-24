@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="springbootvinylecommercebackend.mapper.TokenMapper">
+    <resultMap id="tokenResultMap" type="springbootvinylecommercebackend.model.Token">
+        <result property="id" column="id"/>
+        <result property="accessToken" column="access_token"/>
+        <result property="revoked" column="revoked"/>
+        <result property="expired" column="expired"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+    <insert id="saveToken" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO token (access_token, revoked, expired, user_id)
+        VALUES (#{accessToken}, #{revoked}, #{expired}, #{userId})
+    </insert>
+
+    <update id="updateToken" useGeneratedKeys="true" keyProperty="id">
+        UPDATE token
+        SET revoked = #{revoked},
+            expired = #{expired}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getTokenById" resultMap="tokenResultMap">
+        SELECT c.id,
+               c.access_token,
+               c.revoked,
+               c.expired,
+               c.user_id
+        FROM token c
+        WHERE c.id = #{id}
+    </select>
+
+    <select id="findByToken" resultMap="tokenResultMap">
+        SELECT c.id,
+               c.access_token,
+               c.revoked,
+               c.expired,
+               c.user_id
+        FROM token c
+        WHERE c.access_token = #{accessToken}
+    </select>
+
+    <select id="findAllValidTokenByUser" resultMap="tokenResultMap">
+        SELECT c.id,
+               c.access_token,
+               c.revoked,
+               c.expired,
+               c.user_id
+        FROM token c
+        WHERE c.user_id = #{userId}
+          AND expired = false
+    </select>
+
+</mapper>

@@ -14,9 +14,9 @@
 		<result column="fullname" property="fullname"/>
 		<result column="birthday" property="birthday"/>
 		<result column="address" property="address"/>
-		<result column="role_id" property="role"/>
-		<result column="created_at" property="role" javaType="java.time.Instant"/>
-		<result column="updated_at" property="role" javaType="java.time.Instant"/>
+		<result column="role_id" property="roleId"/>
+		<result column="created_at" property="createdAt" javaType="java.time.Instant"/>
+		<result column="updated_at" property="updatedAt" javaType="java.time.Instant"/>
 	</resultMap>
 
 	<select id="getAllUsers" resultMap="userResultMap">
@@ -40,12 +40,14 @@
 		password
 		, email
 		, fullname
+		, role_id
 		, created_at
 		, updated_at
 		) VALUES (
 		 #{password}
 		, #{email}
 		, #{fullname}
+		, #{roleId}
 		, NOW()
 		, NOW()
 		)
@@ -99,7 +101,7 @@
              , usr.role_id
         	 , usr.created_at
 			 , usr.updated_at
-        FROM USER usr
+        FROM user usr
         WHERE usr.email = #{email}
     </select>
 
