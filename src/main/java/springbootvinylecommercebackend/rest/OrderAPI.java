@@ -23,7 +23,7 @@ public class OrderAPI {
 	private final OrderService orderService;
 	
 	@GetMapping("/getAllOrders")
-	ResponseEntity<?> doGetAllOrders(){
+	public ResponseEntity<?> doGetAllOrders(){
 		HashMap<String, Object> result = new HashMap<>();
 
 		try {
@@ -41,7 +41,7 @@ public class OrderAPI {
 	}
 	
 	@PostMapping("/saveOrder")
-	ResponseEntity<?> doSaveOrder(@RequestBody Order order){
+	public ResponseEntity<?> doSaveOrder(@RequestBody Order order){
 		HashMap<String, Object> result = new HashMap<>();
 
 		try {

@@ -12,8 +12,6 @@ import springbootvinylecommercebackend.model.User;
 public interface UserMapper {
 	
 	List<User> getAllUsers();
-	
-	User checkUserExist(@Param("email") String email, @Param("password") String password);
 
 	Boolean existsByEmail(@Param("email") String email);
 
@@ -22,4 +20,6 @@ public interface UserMapper {
 	void updateUser(User user);
 	
 	Optional<User> getUserByEmail(@Param("email") String email);
+
+	User getUserById(@Param("id") Long id);
 }

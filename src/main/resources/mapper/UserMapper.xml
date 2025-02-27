@@ -21,7 +21,6 @@
 
 	<select id="getAllUsers" resultMap="userResultMap">
 		SELECT usr.id
-			 , usr.password
 			 , usr.avatar_url
 			 , usr.email
 			 , usr.phone
@@ -104,6 +103,22 @@
         FROM user usr
         WHERE usr.email = #{email}
     </select>
+
+	<select id="getUserById" resultMap="userResultMap">
+		SELECT user.id
+			 , user.avatar_url
+			 , user.email
+			 , user.phone
+			 , user.gender
+			 , user.fullname
+			 , user.birthday
+			 , user.address
+			 , user.role_id
+			 , user.created_at
+			 , user.updated_at
+		FROM user usr
+		WHERE usr.id = #{id}
+	</select>
 
 	<select id="existsByEmail" resultType="boolean">
 		SELECT EXISTS(

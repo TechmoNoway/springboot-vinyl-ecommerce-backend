@@ -43,11 +43,12 @@ public class AuthServiceImpl implements AuthService {
 
             userMapper.saveUser(user);
 
-            String jwtToken = jwtService.generateToken(user);
-            String refreshToken = jwtService.generateRefreshToken(user);
+            User newUser = userMapper.getUserByEmail(email).orElseThrow();
 
-//            tokenService.saveToken(user.getId(), jwtToken);
+            String jwtToken = jwtService.generateToken(newUser);
+            String refreshToken = jwtService.generateRefreshToken(newUser);
 
+            tokenService.saveToken(newUser.getId(), jwtToken);
 
             return RegisterResponse.builder()
                     .accessToken(jwtToken)

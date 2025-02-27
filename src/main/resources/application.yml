@@ -7,8 +7,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: kyntps24779@fpt.edu.vn
-    password: etpcyqhxzlmhjsgi
+    username: 24550024@gm.uit.edu.vn
+    password: ekrdwaycukhnpnka
     properties:
       mail:
         smtp:
@@ -30,7 +30,7 @@ mybatis:
 application:
   security:
     jwt:
-      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5971
+      secret-key: eoYKMfB5plGUncSbgJ9x6RHLNEsF7JSE05l0llqBl0Q=
       expiration: 86400000
       refresh-token:
         expiration: 604800000

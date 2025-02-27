@@ -22,44 +22,44 @@ import springbootvinylecommercebackend.service.JwtService;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-	private final JwtService jwtService;
-	
-	private final UserDetailsService userDetailsService;
+    private final JwtService jwtService;
 
-	@Override
-	protected void doFilterInternal(
-		@NonNull HttpServletRequest request, 
-		@NonNull HttpServletResponse response,
-		@NonNull FilterChain filterChain
-	) throws ServletException, IOException {
+    private final UserDetailsService userDetailsService;
 
-		final String authHeader = request.getHeader("Authorization");
-		final String jwt;
-		final String username;
-		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-			filterChain.doFilter(request, response);
-			return;
-		}
+    @Override
+    protected void doFilterInternal(
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
+    ) throws ServletException, IOException {
 
-		jwt = authHeader.substring(7);
-		username = jwtService.extractUsername(jwt);
-		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-			if (jwtService.isTokenValid(jwt, userDetails)) {
-				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
-						userDetails.getAuthorities()
+        final String authHeader = request.getHeader("Authorization");
+        final String token;
+        final String username;
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-				);
-				authToken.setDetails(
-					new WebAuthenticationDetailsSource().buildDetails(request)
-						
-				);
-				SecurityContextHolder.getContext().setAuthentication(authToken);
-			}
+        token = authHeader.substring(7);
+        username = jwtService.extractUsername(token);
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+            if (jwtService.isTokenValid(token, userDetails)) {
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null,
+                        userDetails.getAuthorities()
+                );
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+                System.out.println(authToken);
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
 
-		}
-		filterChain.doFilter(request, response);
+        }
+        filterChain.doFilter(request, response);
 
-	}
+    }
+
 
 }

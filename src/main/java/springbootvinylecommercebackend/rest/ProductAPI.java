@@ -21,7 +21,7 @@ public class ProductAPI {
     private final ProductService ProductService;
 
     @GetMapping("/getAllProducts")
-    ResponseEntity<?> doGetAllProduct() {
+    public ResponseEntity<?> doGetAllProduct() {
         HashMap<String, Object> result = new HashMap<>();
 
         try {
@@ -39,7 +39,7 @@ public class ProductAPI {
     }
 
     @GetMapping("/getReadyProducts")
-    ResponseEntity<?> doGetReadyProducts() {
+    public ResponseEntity<?> doGetReadyProducts() {
         HashMap<String, Object> result = new HashMap<>();
 
         try {
@@ -57,7 +57,7 @@ public class ProductAPI {
     }
 
     @GetMapping("/getProductByTitle")
-    ResponseEntity<?> doGetProductByTitle(@RequestParam("title") String title) {
+    public ResponseEntity<?> doGetProductByTitle(@RequestParam("title") String title) {
         HashMap<String, Object> result = new HashMap<>();
 
         try {
@@ -75,7 +75,7 @@ public class ProductAPI {
     }
 
     @GetMapping("/searchProductsByTitle")
-    ResponseEntity<?> doSearchProductsByTitle(@RequestParam("title") String title) {
+    public ResponseEntity<?> doSearchProductsByTitle(@RequestParam("title") String title) {
         HashMap<String, Object> result = new HashMap<>();
 
         try {
@@ -93,7 +93,7 @@ public class ProductAPI {
     }
 
     @GetMapping("/getAllProductsFilteredAndSorted")
-    ResponseEntity<?> doGetAllProductsFilteredAndSorted(
+    public ResponseEntity<?> doGetAllProductsFilteredAndSorted(
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "platform", required = false) String platform,
@@ -120,7 +120,7 @@ public class ProductAPI {
     }
 
     @GetMapping("/getMoreProductByTitle")
-    ResponseEntity<?> doGetMoreProductByTitle(@RequestParam("title") String title) {
+    public ResponseEntity<?> doGetMoreProductByTitle(@RequestParam("title") String title) {
         HashMap<String, Object> result = new HashMap<>();
 
         try {
