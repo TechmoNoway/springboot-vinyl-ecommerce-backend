@@ -30,7 +30,7 @@ mybatis:
 application:
   security:
     jwt:
-      secret-key: eoYKMfB5plGUncSbgJ9x6RHLNEsF7JSE05l0llqBl0Q=
+      secret-key: 1sugz2yXUwLXNB6Lgtl0cLr5aXLL/sVPA3MjsGBuHFA=
       expiration: 86400000
       refresh-token:
         expiration: 604800000

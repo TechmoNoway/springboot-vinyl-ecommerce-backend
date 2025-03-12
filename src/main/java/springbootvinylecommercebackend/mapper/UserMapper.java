@@ -17,9 +17,11 @@ public interface UserMapper {
 
 	void saveUser(User user);
 	
-	void updateUser(User user);
+	void updateUserInfo(User user);
 	
 	Optional<User> getUserByEmail(@Param("email") String email);
 
 	User getUserById(@Param("id") Long id);
+
+	void changePassword(@Param("userID") Long userID, @Param("newPassword") String newPassword);
 }

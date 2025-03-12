@@ -7,7 +7,6 @@
 	<resultMap id="userResultMap" type="springbootvinylecommercebackend.model.User">
 		<result column="id" property="id"/>
 		<result column="password" property="password"/>
-		<result column="avatar_url" property="avatarUrl"/>
 		<result column="email" property="email"/>
 		<result column="phone" property="phone"/>
 		<result column="gender" property="gender"/>
@@ -21,7 +20,6 @@
 
 	<select id="getAllUsers" resultMap="userResultMap">
 		SELECT usr.id
-			 , usr.avatar_url
 			 , usr.email
 			 , usr.phone
 			 , usr.gender
@@ -52,13 +50,9 @@
 		)
 	</insert>
 
-	<update id="updateUser">
+	<update id="updateUserInfo">
 		UPDATE user
 		<set>
-			ID=#{id}
-			<if test="avatar_url != null">
-				, avatar_url=#{avatarUrl}
-			</if>
 			<if test="email != null">
 				, email=#{email}
 			</if>
@@ -77,20 +71,23 @@
 			<if test="address != null">
 				, address=#{address}
 			</if>
-			<if test="role_id != null">
-				, role_id=#{role_id}
-			</if>
 			<if test="password != null">
 				, password=#{password}
 			</if>
+			, updated_at=NOW()
 		</set>
 		WHERE id = #{id}
+	</update>
+
+	<update id="changePassword">
+		UPDATE user
+		SET password=#{newPassword}
+		WHERE id = #{userID}
 	</update>
 
 	<select id="getUserByEmail" resultMap="userResultMap">
         SELECT usr.id
              , usr.password
-             , usr.avatar_url
              , usr.email
              , usr.phone
              , usr.gender
@@ -105,17 +102,17 @@
     </select>
 
 	<select id="getUserById" resultMap="userResultMap">
-		SELECT user.id
-			 , user.avatar_url
-			 , user.email
-			 , user.phone
-			 , user.gender
-			 , user.fullname
-			 , user.birthday
-			 , user.address
-			 , user.role_id
-			 , user.created_at
-			 , user.updated_at
+		SELECT usr.id
+			 , usr.email
+			 , usr.phone
+		     , usr.password
+			 , usr.gender
+			 , usr.fullname
+			 , usr.birthday
+			 , usr.address
+			 , usr.role_id
+			 , usr.created_at
+			 , usr.updated_at
 		FROM user usr
 		WHERE usr.id = #{id}
 	</select>

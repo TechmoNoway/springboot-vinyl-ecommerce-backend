@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import springbootvinylecommercebackend.dto.request.ChangeUserPasswordRequest;
 import springbootvinylecommercebackend.model.User;
 import springbootvinylecommercebackend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -95,5 +96,24 @@ public class UserAPI {
 
 		return ResponseEntity.ok(result);
 	}
+
+	@PutMapping("/changePassword")
+	public ResponseEntity<?> doChangePassword(@RequestBody ChangeUserPasswordRequest request) {
+		HashMap<String, Object> result = new HashMap<>();
+		try {
+			userService.changePassword(request);
+			result.put("success", true);
+			result.put("message", "Success to call API Change Password");
+			result.put("data", request.getUserID());
+		} catch (Exception e) {
+			result.put("success", false);
+			result.put("message", "Fail to call API Change Password");
+			result.put("data", null);
+			log.error("Error: ", e);
+		}
+
+		return ResponseEntity.ok(result);
+	}
+
 
 }
