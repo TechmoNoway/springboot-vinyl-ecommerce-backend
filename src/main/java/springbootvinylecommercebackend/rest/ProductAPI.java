@@ -20,25 +20,7 @@ public class ProductAPI {
 
     private final ProductService ProductService;
 
-    @GetMapping("/getAllProducts")
-    public ResponseEntity<?> doGetAllProduct() {
-        HashMap<String, Object> result = new HashMap<>();
-
-        try {
-            result.put("success", true);
-            result.put("message", "Success to call API getAllProducts");
-            result.put("data", ProductService.getAllProduct());
-        } catch (Exception e) {
-            result.put("success", false);
-            result.put("message", "Fail to call API getAllProducts");
-            result.put("data", null);
-            log.error("Error: ", e);
-        }
-
-        return ResponseEntity.ok(result);
-    }
-
-    @GetMapping("/getReadyProducts")
+    @GetMapping("/ready")
     public ResponseEntity<?> doGetReadyProducts() {
         HashMap<String, Object> result = new HashMap<>();
 
@@ -92,7 +74,7 @@ public class ProductAPI {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/getAllProductsFilteredAndSorted")
+    @GetMapping("/")
     public ResponseEntity<?> doGetAllProductsFilteredAndSorted(
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "category", required = false) String category,

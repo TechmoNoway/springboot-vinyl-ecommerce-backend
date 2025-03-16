@@ -26,7 +26,7 @@ public class UserAPI {
 
 	private final UserService userService;
 
-	@GetMapping("/getAllUsers")
+	@GetMapping("/")
 	public ResponseEntity<?> doGetAllUsers() {
 		HashMap<String, Object> result = new HashMap<>();
 		try {
@@ -44,17 +44,17 @@ public class UserAPI {
 		return ResponseEntity.ok(result);
 	}
 	
-	@GetMapping("/getUserByEmail")
-	public ResponseEntity<?> doGetUserByEmail(@RequestParam("email") String email) {
+	@GetMapping("/email")
+	public ResponseEntity<?> doGetUserByEmail(@RequestParam("address") String address) {
 		HashMap<String, Object> result = new HashMap<>();
 		try {
-			Optional<User> data = userService.getUserByEmail(email);
+			Optional<User> data = userService.getUserByEmail(address);
 			result.put("success", true);
-			result.put("message", "Success to call API getUserByEmail");
+			result.put("message", "Success to call API get user by email");
 			result.put("data", data);
 		} catch (Exception e) {
 			result.put("success", false);
-			result.put("message", "Fail to call API getUserByEmail");
+			result.put("message", "Fail to call API get user by email");
 			result.put("data", null);
 			log.error("Error: ", e);
 		}
@@ -62,7 +62,7 @@ public class UserAPI {
 		return ResponseEntity.ok(result);
 	}
 
-	@GetMapping("/getUserById")
+	@GetMapping("/")
 	public ResponseEntity<?> doGetUserById(@RequestParam("id") Long id) {
 		HashMap<String, Object> result = new HashMap<>();
 		try {
@@ -78,7 +78,7 @@ public class UserAPI {
 		return ResponseEntity.ok(result);
 	}
 
-	@PutMapping("/updateUserInfo")
+	@PutMapping("/update")
 	public ResponseEntity<?> doUpdateUserInfo(@RequestBody User user) {
 		HashMap<String, Object> result = new HashMap<>();
 
@@ -97,7 +97,7 @@ public class UserAPI {
 		return ResponseEntity.ok(result);
 	}
 
-	@PutMapping("/changePassword")
+	@PutMapping("/change-password")
 	public ResponseEntity<?> doChangePassword(@RequestBody ChangeUserPasswordRequest request) {
 		HashMap<String, Object> result = new HashMap<>();
 		try {

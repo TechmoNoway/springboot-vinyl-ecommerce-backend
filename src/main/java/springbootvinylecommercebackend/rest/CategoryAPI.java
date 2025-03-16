@@ -19,7 +19,7 @@ public class CategoryAPI {
 
     private final CategoryService categoryService;
 
-    @GetMapping("/getAllCategories")
+    @GetMapping("/")
     public ResponseEntity<?> doGetAllCategories() {
         Map<String, Object> result = new HashMap<>();
 
