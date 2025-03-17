@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import springbootvinylecommercebackend.dto.request.OrderRequest;
 import springbootvinylecommercebackend.model.Order;
 import springbootvinylecommercebackend.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ public class OrderAPI {
 
 	private final OrderService orderService;
 	
-	@GetMapping("/")
+	@GetMapping("")
 	public ResponseEntity<?> doGetAllOrders(){
 		HashMap<String, Object> result = new HashMap<>();
 
@@ -40,19 +41,19 @@ public class OrderAPI {
 		return ResponseEntity.ok(result);
 	}
 	
-	@PostMapping("/save-order")
-	public ResponseEntity<?> doSaveOrder(@RequestBody Order order){
+	@PostMapping("/place-order")
+	public ResponseEntity<?> doSaveOrder(@RequestBody OrderRequest orderRequest){
 		HashMap<String, Object> result = new HashMap<>();
 
 		try {
-			orderService.saveOrder(order);
-			orderService.sendOrderSuccessMail(order.getEmail());
+			orderService.saveOrder(orderRequest);
+//			orderService.sendOrderSuccessMail(order.getEmail());
 			result.put("success", true);
-			result.put("message", "Success to call API getAllOrders");
-			result.put("data", order);
+			result.put("message", "Success to call API place order");
+			result.put("data", orderRequest);
 		} catch (Exception e) {
 			result.put("success", false);
-			result.put("message", "Fail to call API getAllOrders");
+			result.put("message", "Fail to call API place order");
 			result.put("data", null);
 			log.error("Error: ", e);
 		}

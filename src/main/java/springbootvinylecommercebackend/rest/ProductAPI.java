@@ -38,7 +38,7 @@ public class ProductAPI {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/getProductByTitle")
+    @GetMapping("/title")
     public ResponseEntity<?> doGetProductByTitle(@RequestParam("title") String title) {
         HashMap<String, Object> result = new HashMap<>();
 
@@ -56,7 +56,7 @@ public class ProductAPI {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/searchProductsByTitle")
+    @GetMapping("/search")
     public ResponseEntity<?> doSearchProductsByTitle(@RequestParam("title") String title) {
         HashMap<String, Object> result = new HashMap<>();
 
@@ -74,7 +74,7 @@ public class ProductAPI {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<?> doGetAllProductsFilteredAndSorted(
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "category", required = false) String category,
@@ -83,43 +83,22 @@ public class ProductAPI {
             @RequestParam(value = "studioName", required = false) String studioName,
             @RequestParam(value = "manufactureYear", required = false) String manufactureYear,
             @RequestParam(value = "status", required = false) String status,
-            @RequestParam(value = "sortType") String sortType
+            @RequestParam(value = "sortType", required = false) String sortType
     ) {
         HashMap<String, Object> result = new HashMap<>();
 
         try {
             result.put("success", true);
-            result.put("message", "Success to call API getProductByNameFiltered");
+            result.put("message", "Success to call API get all products filtered and sorted");
             result.put("data", ProductService.getAllProductsFilteredAndSorted(title, category, platform, stockStatus, studioName, manufactureYear, status, sortType));
         } catch (Exception e) {
             result.put("success", false);
-            result.put("message", "Fail to call API getProductByNameFiltered");
+            result.put("message", "Fail to call API get all products filtered and sorted");
             result.put("data", null);
             log.error("Error", e);
         }
 
         return ResponseEntity.ok(result);
     }
-
-    @GetMapping("/getMoreProductByTitle")
-    public ResponseEntity<?> doGetMoreProductByTitle(@RequestParam("title") String title) {
-        HashMap<String, Object> result = new HashMap<>();
-
-        try {
-            result.put("success", true);
-            result.put("message", "Success to call API getMoreProductByName");
-            result.put("data", ProductService.getProductByTitle(title));
-        } catch (Exception e) {
-            result.put("success", false);
-            result.put("message", "Fail to call API getMoreProductByName");
-            result.put("data", null);
-            log.error("Error: ", e);
-        }
-
-        return ResponseEntity.ok(result);
-    }
-
-
-
 
 }

@@ -50,9 +50,8 @@
                , #{note}
                , #{totalPrice}
                , #{fullname}
-               , #{orderDate}
+               , NOW()
                , #{email}
-               , #{createdAt});
-
+               , NOW());
     </insert>
 </mapper>

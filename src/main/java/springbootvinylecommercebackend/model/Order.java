@@ -7,12 +7,9 @@ import java.util.List;
 import lombok.*;
 
 @Data
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class Order {
-	private Long id;
+	private String id;
 	private Long customerId;
 	private Long totalPrice;
 	private String status;
@@ -23,5 +20,4 @@ public class Order {
 	private Date orderDate;
 	private String email;
 	private List<OrderItem> items;
-	private Instant createdAt;
 }

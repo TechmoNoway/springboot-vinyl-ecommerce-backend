@@ -3,13 +3,10 @@ package springbootvinylecommercebackend.model;
 import lombok.*;
 
 @Data
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class OrderItem {
     private Long id;
-    private Long orderId;
+    private String orderId;
     private Long productId;
     private int quantity;
     private Long price;
