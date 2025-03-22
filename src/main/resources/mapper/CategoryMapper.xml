@@ -2,8 +2,8 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="springbootvinylecommercebackend.mapper.CategoryMapper">
-    <resultMap id="categoryResultMap" type="springbootvinylecommercebackend.model.Category">
+<mapper namespace="com.trikynguci.springbootvinylecommercebackend.mapper.CategoryMapper">
+    <resultMap id="categoryResultMap" type="com.trikynguci.springbootvinylecommercebackend.model.Category">
         <result column="category_id" property="id" />
         <result column="category_name" property="name" />
     </resultMap>

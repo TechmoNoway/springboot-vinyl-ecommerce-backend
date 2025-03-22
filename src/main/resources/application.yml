@@ -1,16 +1,16 @@
 spring:
-#  profiles:
-#    active: dev
+  profiles:
+    active: dev
   datasource:
     url: jdbc:mysql://localhost:3306/disc_shop?createDatabaseIfNotExist=true
-    username: root
-    password: 332003
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   mail:
     host: smtp.gmail.com
     port: 587
-    username: 24550024@gm.uit.edu.vn
-    password: ekrdwaycukhnpnka
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -21,21 +21,21 @@ spring:
     type: redis
   data:
     redis:
-      host: redis-19977.c295.ap-southeast-1-1.ec2.redns.redis-cloud.com
-      port: 19977
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
       timeout: 600000
-      password: a1o7fdtainqkwHAlt1Mg1J3zdzpDrIhj
-      username: default
+      password: ${REDIS_PASSWORD}
+      username: ${REDIS_USERNAME}
 mybatis:
   mapper-locations: classpath:/mapper/*Mapper.xml
   type-aliases-package: com.trikynguci.springbootvinylecommercebackend.model
 application:
   security:
     jwt:
-      secret-key: 1sugz2yXUwLXNB6Lgtl0cLr5aXLL/sVPA3MjsGBuHFA=
-      expiration: 86400000
+      secret-key: ${JWT_SECRET_KEY}
+      expiration: ${JWT_EXPIRATION}
       refresh-token:
-        expiration: 604800000
+        expiration: ${JWT_REFRESH_TOKEN_EXPIRATION}
 springdoc:
   use-fqn: true
   swagger-ui:
@@ -46,7 +46,7 @@ springdoc:
     show-extensions: true
     show-common-extensions: true
 vietqr:
-  clientId: c89a7308-c86a-4ae7-9fb5-414993c7fca3
-  apiKey: 76c40c1e-c595-4662-a777-0260ec3f1cfb
+  clientId: ${VIETQR_CLIENT_ID}
+  apiKey: ${VIETQR_API_KEY}
 server:
   port: 4242

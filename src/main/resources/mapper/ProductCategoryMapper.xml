@@ -2,9 +2,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="springbootvinylecommercebackend.mapper.ProductCategoryMapper">
+<mapper namespace="com.trikynguci.springbootvinylecommercebackend.mapper.ProductCategoryMapper">
 
-    <resultMap id="productCategoryResultMap" type="springbootvinylecommercebackend.model.ProductCategory">
+    <resultMap id="productCategoryResultMap" type="com.trikynguci.springbootvinylecommercebackend.model.ProductCategory">
         <result column="category_id" property="categoryId" />
         <result column="category_name" property="categoryName" />
     </resultMap>
