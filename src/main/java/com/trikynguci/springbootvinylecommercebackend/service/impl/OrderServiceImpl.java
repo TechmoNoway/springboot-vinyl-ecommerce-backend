@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void saveOrder(OrderRequest orderRequest) {
+    public String placeOrder(OrderRequest orderRequest) {
         String generatedOrderId = "VINYL-" + UUID.randomUUID().toString().replace("-", "").substring(0, 10);
 
         Order order = Order.builder()
@@ -61,6 +61,8 @@ public class OrderServiceImpl implements OrderService {
         }
 
         orderMapper.saveOrder(order);
+
+        return generatedOrderId;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
         MimeMessageHelper helper = null;
 
         try {
-            String htmlContent = new String(Files.readAllBytes(Path.of("C:\\Users\\ASUS\\Documents\\workspace-spring-tool-suite-4-4.14.1.RELEASE\\test\\src\\main\\resources\\templates\\MailContent.html")));
+            String htmlContent = new String(Files.readAllBytes(Path.of("D:\\STUDYSPACE\\ALLPROJECTS\\springboot-vinyl-ecommerce-backend\\src\\main\\resources\\email-template\\OrderEmail.html")));
 
             helper = new MimeMessageHelper(message, true);
             helper.setSubject("Thank You For Order Our Product");
@@ -83,6 +85,16 @@ public class OrderServiceImpl implements OrderService {
         }
 
         mailSender.send(message);
+    }
+
+    @Override
+    public List<Order> getOrdersByUserId(Long userId) {
+        return orderMapper.getOrdersByUserId(userId);
+    }
+
+    @Override
+    public Order getOrderById(String id) {
+        return orderMapper.getOrderById(id);
     }
 
 }

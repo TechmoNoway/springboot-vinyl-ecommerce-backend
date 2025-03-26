@@ -43,7 +43,7 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'vn.payos:payos-java:1.0.3'
 	implementation 'org.apache.commons:commons-lang3:3.17.0'
-
+	implementation("net.sf.jasperreports:jasperreports:7.0.2")
 }
 
 tasks.named('test') {

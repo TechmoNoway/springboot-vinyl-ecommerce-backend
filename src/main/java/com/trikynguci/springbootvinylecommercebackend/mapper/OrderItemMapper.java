@@ -7,6 +7,6 @@ import java.util.List;
 
 @Mapper
 public interface OrderItemMapper {
-    List<OrderItem> getOrderItemsById(Long orderId);
+    List<OrderItem> getOrderItemsByOrderId(Long orderId);
     void saveOrderItem(OrderItem orderItem);
 }

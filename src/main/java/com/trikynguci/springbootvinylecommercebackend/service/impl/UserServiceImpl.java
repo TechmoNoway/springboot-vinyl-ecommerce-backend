@@ -43,6 +43,8 @@ public class UserServiceImpl implements UserService {
                 System.out.println(request.getUserID() + " " + request.getNewPassword());
                 userMapper.changePassword(request.getUserID(), passwordEncoder.encode(request.getNewPassword()));
             }
+        }else {
+            throw new IllegalArgumentException("Current password is incorrect");
         }
     }
 

@@ -11,13 +11,14 @@
         <result column="price" property="price" />
     </resultMap>
 
-    <select id="getOrderItemsById">
+    <select id="getOrderItemsByOrderId">
         select ord.id
         , ord.order_id
         , ord.product_id
         , ord.quantity
         , ord.price
         from order_item ord
+        where ord.id = #{orderId}
     </select>
 
     <insert id="saveOrderItem">

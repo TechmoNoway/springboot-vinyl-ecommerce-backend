@@ -15,6 +15,7 @@
 		<result column="fullname" property="fullname" />
 		<result column="order_date" property="orderDate" />
 		<result column="email" property="email" />
+		<collection column="id" property="items" javaType="List" ofType="OrderItem" select="com.trikynguci.springbootvinylecommercebackend.mapper.OrderItemMapper.getOrderItemsByOrderId"/>
 	</resultMap>
 
 	<select id="getAllOrders">
@@ -27,8 +28,21 @@
 		, ord.fullname
 		, ord.order_date
 		, ord.email
-		, ord.created_at
 		from `order` ord
+	</select>
+
+	<select id="getOrdersByUserId">
+		select ord.id
+			 , ord.customer_id
+			 , ord.customer_address
+			 , ord.customer_phone
+			 , ord.note
+			 , ord.total_price
+			 , ord.fullname
+			 , ord.order_date
+			 , ord.email
+		from `order` ord
+		where ord.customer_id = #{userId}
 	</select>
 
 	<insert id="saveOrder">
@@ -41,8 +55,7 @@
         , total_price
         , fullname
         , order_date
-        , email
-        , created_at)
+        , email)
         VALUES ( #{id}
                , #{customerId}
                , #{customerAddress}
@@ -52,6 +65,20 @@
                , #{fullname}
                , NOW()
                , #{email}
-               , NOW());
+               );
     </insert>
+
+	<select id="getOrderById" resultMap="orderResultMap">
+		select ord.id
+			 , ord.customer_id
+			 , ord.customer_address
+			 , ord.customer_phone
+			 , ord.note
+			 , ord.total_price
+			 , ord.fullname
+			 , ord.order_date
+			 , ord.email
+		from `order` ord
+		where ord.id = #{orderId}
+	</select>
 </mapper>
