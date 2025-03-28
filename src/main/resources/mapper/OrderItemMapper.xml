@@ -11,14 +11,14 @@
         <result column="price" property="price" />
     </resultMap>
 
-    <select id="getOrderItemsByOrderId">
+    <select id="getOrderItemsByOrderId" resultMap="orderItemsResultMap">
         select ord.id
         , ord.order_id
         , ord.product_id
         , ord.quantity
         , ord.price
         from order_item ord
-        where ord.id = #{orderId}
+        where ord.order_id = #{orderId}
     </select>
 
     <insert id="saveOrderItem">
@@ -35,6 +35,15 @@
             , #{price}
         );
     </insert>
+
+    <select id="getAllOrderItems" resultMap="orderItemsResultMap">
+        select ord.id
+        , ord.order_id
+        , ord.product_id
+        , ord.quantity
+        , ord.price
+        from order_item ord
+    </select>
 
 
 </mapper>
