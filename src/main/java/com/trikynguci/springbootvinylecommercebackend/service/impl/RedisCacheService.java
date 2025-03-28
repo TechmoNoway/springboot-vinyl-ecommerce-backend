@@ -11,11 +11,10 @@ public class RedisCacheService {
 
     private final CacheManager cacheManager;
 
-    // Method responsible for refreshing the cache
     public void refreshCache(String cacheName) {
         Cache cache = cacheManager.getCache(cacheName);
         if (cache != null) {
-            cache.clear(); // Clears all entries from the cache, effectively refreshing it
+            cache.clear();
         }
     }
 

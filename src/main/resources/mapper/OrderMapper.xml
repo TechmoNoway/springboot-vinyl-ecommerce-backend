@@ -8,65 +8,69 @@
 		id="orderResultMap">
 		<result column="id" property="id" />
 		<result column="customer_id" property="customerId" />
-		<result column="user_address" property="customerAddress" />
+		<result column="customer_address" property="customerAddress" />
 		<result column="customer_phone" property="customerPhone" />
 		<result column="note" property="note" />
 		<result column="total_price" property="totalPrice" />
+		<result column="status" property="status" />
 		<result column="fullname" property="fullname" />
 		<result column="order_date" property="orderDate" />
 		<result column="email" property="email" />
 		<collection column="id" property="items" javaType="List" ofType="OrderItem" select="com.trikynguci.springbootvinylecommercebackend.mapper.OrderItemMapper.getOrderItemsByOrderId"/>
 	</resultMap>
 
-	<select id="getAllOrders">
+	<select id="getAllOrders" resultMap="orderResultMap">
 		select ord.id
 		, ord.customer_id
 		, ord.customer_address
 		, ord.customer_phone
 		, ord.note
 		, ord.total_price
+		, ord.status
 		, ord.fullname
 		, ord.order_date
 		, ord.email
-		from `order` ord
+		from orders ord
 	</select>
 
-	<select id="getOrdersByUserId">
+	<select id="getOrdersByUserId" resultMap="orderResultMap">
 		select ord.id
 			 , ord.customer_id
 			 , ord.customer_address
 			 , ord.customer_phone
 			 , ord.note
 			 , ord.total_price
+		     , ord.status
 			 , ord.fullname
 			 , ord.order_date
 			 , ord.email
-		from `order` ord
+		from orders ord
 		where ord.customer_id = #{userId}
 	</select>
 
 	<insert id="saveOrder">
-        insert into `order`
-        ( id
-        , customer_id
-        , customer_address
-        , customer_phone
-        , note
-        , total_price
-        , fullname
-        , order_date
-        , email)
-        VALUES ( #{id}
-               , #{customerId}
-               , #{customerAddress}
-               , #{customerPhone}
-               , #{note}
-               , #{totalPrice}
-               , #{fullname}
-               , NOW()
-               , #{email}
-               );
-    </insert>
+		insert into orders
+		( id
+		, customer_id
+		, customer_address
+		, customer_phone
+		, note
+		, total_price
+		, status
+		, fullname
+		, order_date
+		, email)
+		VALUES ( #{id}
+			   , #{customerId}
+			   , #{customerAddress}
+			   , #{customerPhone}
+			   , #{note}
+			   , #{totalPrice}
+			   , #{status}
+			   , #{fullname}
+			   , NOW()
+			   , #{email});
+	</insert>
 
 	<select id="getOrderById" resultMap="orderResultMap">
 		select ord.id
@@ -75,10 +79,11 @@
 			 , ord.customer_phone
 			 , ord.note
 			 , ord.total_price
+			 , ord.status
 			 , ord.fullname
 			 , ord.order_date
 			 , ord.email
-		from `order` ord
+		from orders ord
 		where ord.id = #{orderId}
 	</select>
 </mapper>

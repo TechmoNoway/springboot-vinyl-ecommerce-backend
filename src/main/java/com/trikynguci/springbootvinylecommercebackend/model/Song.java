@@ -2,7 +2,6 @@ package com.trikynguci.springbootvinylecommercebackend.model;
 
 import lombok.*;
 
-@Data
 @Getter
 @Setter
 @AllArgsConstructor

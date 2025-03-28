@@ -15,19 +15,15 @@ import java.time.Duration;
 @EnableCaching
 @RequiredArgsConstructor
 public class RedisConfig {
-    // Auto-wiring the RedisConnectionFactory
 
     private final RedisConnectionFactory redisConnectionFactory;
 
-    // Bean definition for CacheManager
     @Bean
     public CacheManager cacheManager() {
-        // Define cache configuration
         RedisCacheConfiguration cacheConfiguration =
                 RedisCacheConfiguration.defaultCacheConfig()
-                        .entryTtl(Duration.ofMinutes(10)); // This sets the time to live for cache entries
+                        .entryTtl(Duration.ofMinutes(10));
 
-        // Return a new RedisCacheManager built with default configurations and transaction awareness
         return RedisCacheManager.builder(redisConnectionFactory)
                 .cacheDefaults(cacheConfiguration)
                 .transactionAware()

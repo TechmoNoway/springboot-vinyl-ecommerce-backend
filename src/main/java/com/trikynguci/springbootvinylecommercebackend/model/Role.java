@@ -1,10 +1,13 @@
 package com.trikynguci.springbootvinylecommercebackend.model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
+
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Role {
     private Long id;
     private String name;

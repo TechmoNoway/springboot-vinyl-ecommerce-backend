@@ -44,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
                 .customerId(orderRequest.getCustomerId())
                 .totalPrice(orderRequest.getTotalPrice())
                 .fullname(orderRequest.getFullname())
+                .status("Đã thanh toán")
                 .customerAddress(orderRequest.getCustomerAddress())
                 .customerPhone(orderRequest.getCustomerPhone())
                 .note(orderRequest.getNote())
