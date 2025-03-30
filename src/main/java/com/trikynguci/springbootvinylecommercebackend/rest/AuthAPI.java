@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import com.trikynguci.springbootvinylecommercebackend.dto.request.LoginRequest;
 import com.trikynguci.springbootvinylecommercebackend.service.AuthService;
@@ -38,6 +40,24 @@ public class AuthAPI {
         } catch (Exception e) {
             result.put("success", false);
             result.put("message", "Failed to call api doLogin");
+            result.put("data", null);
+            log.error("Error: ", e);
+        }
+
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/google-login")
+    public ResponseEntity<?> doGoogleLogin(@AuthenticationPrincipal OAuth2User principal){
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+            result.put("success", true);
+            result.put("message", "Success to call api doGoogleLogin");
+            result.put("data", principal.getAttributes());
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", "Failed to call api doGoogleLogin");
             result.put("data", null);
             log.error("Error: ", e);
         }

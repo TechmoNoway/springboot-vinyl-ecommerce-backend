@@ -7,39 +7,45 @@
         <result column="id" property="id" />
         <result column="order_id" property="orderId" />
         <result column="product_id" property="productId" />
+        <result column="product_title" property="productTitle" />
+        <result column="product_poster_url" property="productPosterUrl" />
         <result column="quantity" property="quantity" />
         <result column="price" property="price" />
     </resultMap>
 
     <select id="getOrderItemsByOrderId" resultMap="orderItemsResultMap">
         select ord.id
-        , ord.order_id
-        , ord.product_id
-        , ord.quantity
-        , ord.price
+             , ord.order_id
+             , ord.product_id
+             , ord.product_title
+             , ord.product_poster_url
+             , ord.quantity
+             , ord.price
         from order_item ord
         where ord.order_id = #{orderId}
     </select>
 
     <insert id="saveOrderItem">
-        insert into order_item(
-            order_id
-            , product_id
-            , quantity
-            , price
-        )
-        VALUES (
-            #{orderId}
-            , #{productId}
-            , #{quantity}
-            , #{price}
-        );
+        insert into order_item( order_id
+                              , product_id
+                              , ord.product_title
+                              , ord.product_poster_url
+                              , quantity
+                              , price)
+        VALUES ( #{orderId}
+               , #{productId}
+               , #{productName}
+               , #{productPosterUrl}
+               , #{quantity}
+               , #{price});
     </insert>
 
     <select id="getAllOrderItems" resultMap="orderItemsResultMap">
         select ord.id
         , ord.order_id
         , ord.product_id
+        , ord.product_title
+        , ord.product_poster_url
         , ord.quantity
         , ord.price
         from order_item ord
