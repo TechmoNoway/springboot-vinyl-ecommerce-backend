@@ -15,6 +15,6 @@ public interface OrderService {
 
 	List<Order> getOrdersByUserId(Long userId);
 
-	Order getOrderById(String id);
+	Order getOrderById(String orderId);
 
 }

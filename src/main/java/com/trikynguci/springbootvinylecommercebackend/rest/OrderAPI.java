@@ -75,7 +75,7 @@ public class OrderAPI {
 	}
 
 	@GetMapping("/user/{userId}")
-	public ResponseEntity<?> doGetOrdersById(@PathVariable Long userId){
+	public ResponseEntity<?> doGetOrdersByUserId(@PathVariable Long userId){
 		HashMap<String, Object> result = new HashMap<>();
 
 		try {

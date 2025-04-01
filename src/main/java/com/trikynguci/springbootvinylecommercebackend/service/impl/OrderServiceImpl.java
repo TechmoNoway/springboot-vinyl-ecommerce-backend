@@ -94,8 +94,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrderById(String id) {
-        return orderMapper.getOrderById(id);
+    public Order getOrderById(String orderId) {
+        return orderMapper.getOrderById(orderId);
     }
 
 }
