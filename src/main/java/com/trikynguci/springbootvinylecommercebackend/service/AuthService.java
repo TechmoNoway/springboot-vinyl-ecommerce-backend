@@ -8,4 +8,5 @@ import com.trikynguci.springbootvinylecommercebackend.dto.response.RegisterRespo
 public interface AuthService {
     RegisterResponse register(String email) throws MessagingException;
     LoginResponse login(LoginRequest request);
+    LoginResponse loginWithGoogle(String email, String fullname, String avatarUrl);
 }

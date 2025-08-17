@@ -49,18 +49,19 @@ public class AuthAPI {
     @PostMapping("/google-login")
     public ResponseEntity<?> doGoogleLogin(@AuthenticationPrincipal OAuth2User principal){
         Map<String, Object> result = new HashMap<>();
-
         try {
+            String email = (String) principal.getAttribute("email");
+            String fullname = (String) principal.getAttribute("name");
+            String avatarUrl = (String) principal.getAttribute("picture");
             result.put("success", true);
             result.put("message", "Success to call api doGoogleLogin");
-            result.put("data", principal.getAttributes());
+            result.put("data", authService.loginWithGoogle(email, fullname, avatarUrl));
         } catch (Exception e) {
             result.put("success", false);
             result.put("message", "Failed to call api doGoogleLogin");
             result.put("data", null);
             log.error("Error: ", e);
         }
-
         return ResponseEntity.ok(result);
     }
 

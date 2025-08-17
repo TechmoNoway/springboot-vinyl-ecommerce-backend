@@ -85,4 +85,37 @@ public class AuthServiceImpl implements AuthService {
         .avatar(user.getAvatar()) // Có thể null nếu chưa có avatar
         .build();
     }
+    @Override
+    public LoginResponse loginWithGoogle(String email, String fullname, String avatarUrl) {
+        User user = userMapper.getUserByEmail(email).orElse(null);
+        if (user == null) {
+            user = User.builder()
+                    .email(email)
+                    .fullname(fullname)
+                    .avatar(avatarUrl)
+                    .roleId(2L)
+                    .password(passwordEncoder.encode("GOOGLE_LOGIN")) // dummy password
+                    .build();
+            userMapper.saveUser(user);
+            user = userMapper.getUserByEmail(email).orElseThrow();
+        } else {
+            if (avatarUrl != null && (user.getAvatar() == null || !avatarUrl.equals(user.getAvatar()))) {
+                user.setAvatar(avatarUrl);
+                userMapper.updateUserProfile(user);
+            }
+        }
+        String jwtToken = jwtService.generateToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+        tokenService.revokeAllUserTokens(user.getId());
+        tokenService.saveToken(user.getId(), jwtToken);
+        return LoginResponse.builder()
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
+                .userID(user.getId())
+                .email(user.getEmail())
+                .fullname(user.getFullname())
+                .roleId(user.getRoleId())
+                .avatar(user.getAvatar())
+                .build();
+    }
 }

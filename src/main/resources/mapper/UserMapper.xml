@@ -73,9 +73,6 @@
 			<if test="address != null">
 				, address=#{address}
 			</if>
-			<if test="password != null">
-				, password=#{password}
-			</if>
 			<if test="avatar != null">
 				, avatar=#{avatar}
 			</if>
