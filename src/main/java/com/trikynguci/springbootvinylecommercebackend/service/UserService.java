@@ -5,11 +5,12 @@ import java.util.Optional;
 
 import com.trikynguci.springbootvinylecommercebackend.dto.request.ChangeUserPasswordRequest;
 import com.trikynguci.springbootvinylecommercebackend.model.User;
+import com.trikynguci.springbootvinylecommercebackend.dto.request.UpdateUserProfileRequest;
 
 public interface UserService {
 	List<User> getAllUsers();
 
-	void updateUserProfile(User user);
+	void updateUserProfile(UpdateUserProfileRequest request);
 
 	Optional<User> getUserByEmail(String email);
 

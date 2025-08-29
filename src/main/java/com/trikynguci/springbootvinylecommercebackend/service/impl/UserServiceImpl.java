@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import com.trikynguci.springbootvinylecommercebackend.dto.request.ChangeUserPasswordRequest;
 import com.trikynguci.springbootvinylecommercebackend.mapper.UserMapper;
 import com.trikynguci.springbootvinylecommercebackend.model.User;
+import com.trikynguci.springbootvinylecommercebackend.dto.request.UpdateUserProfileRequest;
 import com.trikynguci.springbootvinylecommercebackend.service.UserService;
 
 @Service
@@ -25,7 +26,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserProfile(User user) {
+    public void updateUserProfile(UpdateUserProfileRequest request) {
+        User user = userMapper.getUserById(request.getId());
+        if (user == null) throw new IllegalArgumentException("User not found");
+        if (request.getEmail() != null) user.setEmail(request.getEmail());
+        if (request.getPhone() != null) user.setPhone(request.getPhone());
+        if (request.getGender() != null) user.setGender(request.getGender());
+        if (request.getFullname() != null) user.setFullname(request.getFullname());
+        if (request.getBirthday() != null) user.setBirthday(request.getBirthday());
+        if (request.getAddress() != null) user.setAddress(request.getAddress());
+        if (request.getAvatar() != null) user.setAvatar(request.getAvatar());
         userMapper.updateUserProfile(user);
     }
 
