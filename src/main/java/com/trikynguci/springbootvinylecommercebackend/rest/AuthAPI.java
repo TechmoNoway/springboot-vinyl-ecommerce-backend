@@ -33,7 +33,6 @@ public class AuthAPI {
         Map<String, Object> result = new HashMap<>();
 
         try {
-
             result.put("success", true);
             result.put("message", "Success to call api doLogin");
             result.put("data", authService.login(loginRequest));

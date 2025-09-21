@@ -73,18 +73,18 @@ public class UserAPI {
 		return ResponseEntity.ok(result);
 	}
 
-	@PutMapping("/update")
-	public ResponseEntity<?> doUpdateUserInfo(@RequestBody User user) {
+	@PutMapping("/profile")
+	public ResponseEntity<?> doUpdateUserProfile(@RequestBody User user) {
 		HashMap<String, Object> result = new HashMap<>();
 
 		try {
-			userService.updateUserInfo(user);
+			userService.updateUserProfile(user);
 			result.put("success", true);
-			result.put("message", "Success to call API Update User Info");
+			result.put("message", "Success to call API Update User Profile");
 			result.put("data", user);
 		} catch (Exception e) {
 			result.put("success", false);
-			result.put("message", "Fail to call API Update User Info");
+			result.put("message", "Fail to call API Update User Profile");
 			result.put("data", null);
 			log.error("Error: ", e);
 		}

@@ -60,25 +60,29 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginResponse login(LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+    authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(
+            request.getEmail(),
+            request.getPassword()
+        )
+    );
 
-        User user = userMapper.getUserByEmail(request.getEmail()).orElseThrow();
-        if (!user.isEnabled()) {
-            throw new RuntimeException();
-        }
-        String jwtToken = jwtService.generateToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
-        tokenService.revokeAllUserTokens(user.getId());
-        tokenService.saveToken(user.getId(), jwtToken);
-        return LoginResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .userID(user.getId())
-                .build();
+    User user = userMapper.getUserByEmail(request.getEmail()).orElseThrow();
+    if (!user.isEnabled()) {
+        throw new RuntimeException();
+    }
+    String jwtToken = jwtService.generateToken(user);
+    String refreshToken = jwtService.generateRefreshToken(user);
+    tokenService.revokeAllUserTokens(user.getId());
+    tokenService.saveToken(user.getId(), jwtToken);
+    return LoginResponse.builder()
+        .accessToken(jwtToken)
+        .refreshToken(refreshToken)
+        .userID(user.getId())
+        .email(user.getEmail())
+        .fullname(user.getFullname())
+        .roleId(user.getRoleId())
+        .avatar(user.getAvatar()) // Có thể null nếu chưa có avatar
+        .build();
     }
 }

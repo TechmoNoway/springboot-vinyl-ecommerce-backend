@@ -9,7 +9,7 @@ import com.trikynguci.springbootvinylecommercebackend.model.User;
 public interface UserService {
 	List<User> getAllUsers();
 
-	void updateUserInfo(User user);
+	void updateUserProfile(User user);
 
 	Optional<User> getUserByEmail(String email);
 

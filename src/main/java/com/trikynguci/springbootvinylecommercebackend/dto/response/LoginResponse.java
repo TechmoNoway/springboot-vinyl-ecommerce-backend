@@ -9,4 +9,8 @@ public class LoginResponse {
 	private String accessToken;
 	private String refreshToken;
 	private Long userID;
+	private String email;
+	private String fullname;
+	private Long roleId;
+	private String avatar; 
 }

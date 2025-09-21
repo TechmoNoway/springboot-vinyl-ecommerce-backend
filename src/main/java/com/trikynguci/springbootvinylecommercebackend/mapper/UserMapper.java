@@ -17,7 +17,7 @@ public interface UserMapper {
 
 	void saveUser(User user);
 	
-	void updateUserInfo(User user);
+	void updateUserProfile(User user);
 	
 	Optional<User> getUserByEmail(@Param("email") String email);
 
