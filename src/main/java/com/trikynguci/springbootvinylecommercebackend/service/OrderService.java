@@ -9,8 +9,8 @@ public interface OrderService {
 	
 	List<Order> getAllOrders();
 	
-	String placeOrder(OrderRequest order);
-	
+	Order placeOrder(OrderRequest order);
+
 	void sendOrderSuccessMail(String userEmail);
 
 	List<Order> getOrdersByUserId(Long userId);

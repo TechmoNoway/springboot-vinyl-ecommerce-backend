@@ -21,4 +21,10 @@ public interface ProductMapper {
 		@Param("limit") Integer limit,
 		@Param("offset") Integer offset
 	);
+
+	Product getProductById(@Param("id") Long id);
+
+	Product getProductForUpdate(@Param("id") Long id);
+
+	int decrementStockQuantity(@Param("id") Long id, @Param("quantity") Integer quantity);
 }

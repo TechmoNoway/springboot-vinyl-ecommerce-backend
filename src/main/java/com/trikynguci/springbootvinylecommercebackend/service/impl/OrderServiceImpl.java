@@ -7,14 +7,18 @@ import java.util.List;
 import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import com.trikynguci.springbootvinylecommercebackend.dto.request.OrderRequest;
 import com.trikynguci.springbootvinylecommercebackend.mapper.OrderItemMapper;
+import com.trikynguci.springbootvinylecommercebackend.mapper.ProductMapper;
 import com.trikynguci.springbootvinylecommercebackend.mapper.OrderMapper;
 import com.trikynguci.springbootvinylecommercebackend.model.Order;
 import com.trikynguci.springbootvinylecommercebackend.model.OrderItem;
@@ -22,11 +26,14 @@ import com.trikynguci.springbootvinylecommercebackend.service.OrderService;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     private final OrderMapper orderMapper;
 
     private final OrderItemMapper orderItemMapper;
+
+    private final ProductMapper productMapper;
 
     private final JavaMailSender mailSender;
 
@@ -36,20 +43,39 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public String placeOrder(OrderRequest orderRequest) {
-        String generatedOrderId = "VINYL-" + UUID.randomUUID().toString().replace("-", "").substring(0, 10);
+    @Transactional
+    public Order placeOrder(OrderRequest orderRequest) {
+        // validate input
+        if (orderRequest.getItems() == null || orderRequest.getItems().isEmpty()) {
+            throw new com.trikynguci.springbootvinylecommercebackend.exception.BadRequestException("Order must contain at least one item");
+        }
+
+        // Check stock for every item using SELECT ... FOR UPDATE to lock rows
+        for (OrderItem item : orderRequest.getItems()) {
+            var product = productMapper.getProductForUpdate(item.getProductId());
+            if (product == null) {
+                throw new com.trikynguci.springbootvinylecommercebackend.exception.NotFoundException("Product not found: " + item.getProductId());
+            }
+            if (product.getStockQuantity() == null || product.getStockQuantity() < item.getQuantity()) {
+                throw new com.trikynguci.springbootvinylecommercebackend.exception.InsufficientStockException("Not enough stock for product: " + product.getTitle());
+            }
+        }
+
+    String generatedOrderId = "VINYL-" + UUID.randomUUID().toString().replace("-", "").substring(0, 10);
 
         Order order = Order.builder()
                 .id(generatedOrderId)
                 .customerId(orderRequest.getCustomerId())
                 .totalPrice(orderRequest.getTotalPrice())
                 .fullname(orderRequest.getFullname())
-                .status("Đã thanh toán")
+                .status("PAID")
                 .customerAddress(orderRequest.getCustomerAddress())
                 .customerPhone(orderRequest.getCustomerPhone())
                 .note(orderRequest.getNote())
                 .email(orderRequest.getEmail())
                 .build();
+
+    orderMapper.saveOrder(order);
 
         for (OrderItem item : orderRequest.getItems()) {
             OrderItem orderItem = OrderItem.builder()
@@ -59,33 +85,55 @@ public class OrderServiceImpl implements OrderService {
                     .price(item.getPrice())
                     .build();
             orderItemMapper.saveOrderItem(orderItem);
+
+            // decrement stock in DB and check rows affected to detect concurrent stock depletion
+            int updated = productMapper.decrementStockQuantity(item.getProductId(), item.getQuantity());
+            if (updated == 0) {
+                // This means either not enough stock or concurrent update. Fail the whole transaction.
+                throw new com.trikynguci.springbootvinylecommercebackend.exception.InsufficientStockException("Not enough stock for product (concurrent update): " + item.getProductId());
+            }
         }
 
-        orderMapper.saveOrder(order);
-
-        return generatedOrderId;
+        // Load and return the saved order
+        return orderMapper.getOrderById(generatedOrderId);
     }
 
     @Override
+    @Async
     public void sendOrderSuccessMail(String userEmail) {
         String from = "nguyentriky0604@gmail";
+        int attempts = 0;
+        int maxAttempts = 3;
+        while (attempts < maxAttempts) {
+            attempts++;
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = null;
+            try {
+                String htmlContent = new String(Files.readAllBytes(Path.of("D:\\STUDYSPACE\\ALLPROJECTS\\springboot-vinyl-ecommerce-backend\\src\\main\\resources\\email-template\\OrderEmail.html")));
 
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = null;
+                helper = new MimeMessageHelper(message, true);
+                helper.setSubject("Thank You For Order Our Product");
+                helper.setFrom(from);
+                helper.setTo(userEmail);
+                helper.setText(htmlContent, true);
 
-        try {
-            String htmlContent = new String(Files.readAllBytes(Path.of("D:\\STUDYSPACE\\ALLPROJECTS\\springboot-vinyl-ecommerce-backend\\src\\main\\resources\\email-template\\OrderEmail.html")));
-
-            helper = new MimeMessageHelper(message, true);
-            helper.setSubject("Thank You For Order Our Product");
-            helper.setFrom(from);
-            helper.setTo(userEmail);
-            helper.setText(htmlContent, true);
-        } catch (MessagingException | IOException e) {
-            e.printStackTrace();
+                mailSender.send(message);
+                log.info("Order confirmation email sent to {} on attempt {}", userEmail, attempts);
+                break;
+            } catch (MessagingException | IOException ex) {
+                log.error("Failed to send order email to {} on attempt {}: {}", userEmail, attempts, ex.getMessage());
+                if (attempts >= maxAttempts) {
+                    log.error("Giving up sending order email to {} after {} attempts", userEmail, attempts);
+                } else {
+                    try {
+                        Thread.sleep(1000L * attempts); // backoff
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+            }
         }
-
-        mailSender.send(message);
     }
 
     @Override

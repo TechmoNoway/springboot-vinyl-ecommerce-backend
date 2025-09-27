@@ -18,7 +18,7 @@ public class OrderAPI {
 
 	private final OrderService orderService;
 	
-	@GetMapping("")
+	@GetMapping("/")
 	public ResponseEntity<?> doGetAllOrders(){
 		HashMap<String, Object> result = new HashMap<>();
 
@@ -38,21 +38,13 @@ public class OrderAPI {
 	
 	@PostMapping("/place-order")
 	public ResponseEntity<?> doSaveOrder(@RequestBody OrderRequest orderRequest){
+		var order = orderService.placeOrder(orderRequest);
+		// send email asynchronously
+		orderService.sendOrderSuccessMail(orderRequest.getEmail());
 		HashMap<String, Object> result = new HashMap<>();
-
-		try {
-			String orderId = orderService.placeOrder(orderRequest);
-			orderService.sendOrderSuccessMail(orderRequest.getEmail());
-			result.put("success", true);
-			result.put("message", "Success to call API place order");
-			result.put("data", orderId);
-		} catch (Exception e) {
-			result.put("success", false);
-			result.put("message", "Fail to call API place order");
-			result.put("data", null);
-			log.error("Error: ", e);
-		}
-
+		result.put("success", true);
+		result.put("message", "Success to call API place order");
+		result.put("data", order);
 		return ResponseEntity.ok(result);
 	}
 
