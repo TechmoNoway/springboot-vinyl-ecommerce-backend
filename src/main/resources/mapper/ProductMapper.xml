@@ -27,30 +27,8 @@
 		<collection column="id" property="categories" javaType="List" ofType="ProductCategory" select="com.trikynguci.springbootvinylecommercebackend.mapper.ProductCategoryMapper.getAllCategoriesByProductId"/>
 	</resultMap>
 
+
 	<select id="getAllProducts" resultMap="productResultMap">
-        select dsc.id
-             , dsc.title
-             , dsc.price
-             , dsc.stock_quantity
-             , dsc.poster_url
-             , dsc.region
-             , dsc.artist
-             , dsc.release_year
-             , dsc.status
-             , dsc.platform
-             , dsc.demo_audio_url
-             , dsc.studio_name
-             , dsc.manufacture_year
-             , dsc.stock_status
-             , dsc.description
-             , dsc.mood
-             , dsc.created_at
-             , dsc.updated_at
-             , dsc.tracklist_id
-        from product dsc
-    </select>
-
-	<select id="getReadyProducts" resultMap="productResultMap">
 		select dsc.id
 			 , dsc.title
 			 , dsc.price
@@ -61,82 +39,7 @@
 			 , dsc.release_year
 			 , dsc.status
 			 , dsc.platform
-			 , dsc.demo_audio_url
-			 , dsc.studio_name
-			 , dsc.manufacture_year
-			 , dsc.stock_status
-			 , dsc.description
-			 , dsc.mood
-			 , dsc.created_at
-			 , dsc.updated_at
-			 , dsc.tracklist_id
-		from product dsc
-		limit 8
-	</select>
-
-	<select id="getProductByTitle" resultMap="productResultMap">
-		select dsc.id
-			 , dsc.title
-			 , dsc.price
-			 , dsc.stock_quantity
-			 , dsc.poster_url
-			 , dsc.region
-			 , dsc.artist
-			 , dsc.release_year
-			 , dsc.status
-			 , dsc.platform
-		     , dsc.set
-			 , dsc.demo_audio_url
-			 , dsc.studio_name
-			 , dsc.manufacture_year
-			 , dsc.stock_status
-			 , dsc.description
-			 , dsc.mood
-			 , dsc.created_at
-			 , dsc.updated_at
-			 , dsc.tracklist_id
-		from product dsc
-		where upper(dsc.title) = upper(#{title})
-	</select>
-
-	<select id="searchProductsByTitle" resultMap="productResultMap">
-		select dsc.id
-			 , dsc.title
-			 , dsc.price
-			 , dsc.stock_quantity
-			 , dsc.poster_url
-			 , dsc.region
-			 , dsc.artist
-			 , dsc.release_year
-			 , dsc.status
-			 , dsc.platform
-			 , dsc.demo_audio_url
-			 , dsc.studio_name
-			 , dsc.manufacture_year
-			 , dsc.stock_status
-			 , dsc.description
-			 , dsc.mood
-			 , dsc.created_at
-			 , dsc.updated_at
-			 , dsc.tracklist_id
-		from product dsc
-		where upper(dsc.title) like upper(concat('%', #{searchParam}, '%'))
-		OR upper(dsc.title) LIKE upper(concat('%', #{searchParam}, '%'))
-		limit 5
-	</select>
-	
-	<select id="getAllProductsFilteredAndSorted" resultMap="productResultMap">
-		select dsc.id
-			 , dsc.title
-			 , dsc.price
-			 , dsc.stock_quantity
-			 , dsc.poster_url
-			 , dsc.region
-			 , dsc.artist
-			 , dsc.release_year
-			 , dsc.status
-			 , dsc.platform
-		     , dsc.set
+			 , dsc.set
 			 , dsc.demo_audio_url
 			 , dsc.studio_name
 			 , dsc.manufacture_year
@@ -152,27 +55,21 @@
 			<if test="!title.isEmpty()">
 				and upper(dsc.title) like upper(concat('%', #{title}, '%'))
 			</if>
-
 			<if test="!category.isEmpty()">
 				and upper(pc.category_name) = upper(#{category})
 			</if>
-
-		    <if test="!platform.isEmpty()">
+			<if test="!platform.isEmpty()">
 				and upper(dsc.platform) = upper(#{platform})
 			</if>
-
 			<if test="!stockStatus.isEmpty()">
 				and upper(dsc.stock_status) = upper(#{stockStatus})
 			</if>
-
-		    <if test="!studioName.isEmpty()">
+			<if test="!studioName.isEmpty()">
 				and upper(dsc.studio_name) = upper(#{studioName})
 			</if>
-
-		    <if test="!manufactureYear.isEmpty()">
+			<if test="!manufactureYear.isEmpty()">
 				and upper(dsc.manufacture_year) = upper(#{manufactureYear})
 			</if>
-
 			<if test="!status.isEmpty()">
 				and upper(dsc.status) = upper(#{status})
 			</if>
@@ -187,6 +84,7 @@
 			<when test="sortType == 'DEFAULT'">
 			</when>
 		</choose>
+		limit #{limit} offset #{offset}
 	</select>
 
 
