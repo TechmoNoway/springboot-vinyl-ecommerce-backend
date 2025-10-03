@@ -1,4 +1,4 @@
-package com.trikynguci.springbootvinylecommercebackend.rest;
+package com.trikynguci.springbootvinylecommercebackend.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,4 +1,4 @@
-package com.trikynguci.springbootvinylecommercebackend.rest;
+package com.trikynguci.springbootvinylecommercebackend.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

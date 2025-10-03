@@ -17,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import com.trikynguci.springbootvinylecommercebackend.dto.request.OrderRequest;
+import com.trikynguci.springbootvinylecommercebackend.exception.BadRequestException;
+import com.trikynguci.springbootvinylecommercebackend.exception.InsufficientStockException;
+import com.trikynguci.springbootvinylecommercebackend.exception.NotFoundException;
 import com.trikynguci.springbootvinylecommercebackend.mapper.OrderItemMapper;
 import com.trikynguci.springbootvinylecommercebackend.mapper.ProductMapper;
 import com.trikynguci.springbootvinylecommercebackend.mapper.OrderMapper;
@@ -45,23 +48,20 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order placeOrder(OrderRequest orderRequest) {
-        // validate input
         if (orderRequest.getItems() == null || orderRequest.getItems().isEmpty()) {
-            throw new com.trikynguci.springbootvinylecommercebackend.exception.BadRequestException("Order must contain at least one item");
+            throw new BadRequestException("Order must contain at least one item");
         }
 
-        // Try optimistic updates first (version-based) to handle high-concurrency paths.
-        // If optimistic retries fail, fall back to pessimistic locking (SELECT FOR UPDATE).
         for (OrderItem item : orderRequest.getItems()) {
             int maxOptimisticAttempts = 3;
             boolean optimisticSucceeded = false;
             for (int attempt = 0; attempt < maxOptimisticAttempts; attempt++) {
                 var current = productMapper.getProductById(item.getProductId());
                 if (current == null) {
-                    throw new com.trikynguci.springbootvinylecommercebackend.exception.NotFoundException("Product not found: " + item.getProductId());
+                    throw new NotFoundException("Product not found: " + item.getProductId());
                 }
                 if (current.getStockQuantity() == null || current.getStockQuantity() < item.getQuantity()) {
-                    throw new com.trikynguci.springbootvinylecommercebackend.exception.InsufficientStockException("Not enough stock for product: " + current.getTitle());
+                    throw new InsufficientStockException("Not enough stock for product: " + current.getTitle());
                 }
 
                 int updated = productMapper.decrementStockQuantityWithVersion(item.getProductId(), item.getQuantity(), current.getVersion());
@@ -69,7 +69,6 @@ public class OrderServiceImpl implements OrderService {
                     optimisticSucceeded = true;
                     break;
                 }
-                // small backoff before retry
                 try {
                     Thread.sleep(50L * (attempt + 1));
                 } catch (InterruptedException ie) {
@@ -79,22 +78,21 @@ public class OrderServiceImpl implements OrderService {
             }
 
             if (!optimisticSucceeded) {
-                // fallback to pessimistic locking: SELECT FOR UPDATE then safe decrement
                 var product = productMapper.getProductForUpdate(item.getProductId());
                 if (product == null) {
-                    throw new com.trikynguci.springbootvinylecommercebackend.exception.NotFoundException("Product not found: " + item.getProductId());
+                    throw new NotFoundException("Product not found: " + item.getProductId());
                 }
                 if (product.getStockQuantity() == null || product.getStockQuantity() < item.getQuantity()) {
-                    throw new com.trikynguci.springbootvinylecommercebackend.exception.InsufficientStockException("Not enough stock for product: " + product.getTitle());
+                    throw new InsufficientStockException("Not enough stock for product: " + product.getTitle());
                 }
                 int updated = productMapper.decrementStockQuantity(item.getProductId(), item.getQuantity());
                 if (updated == 0) {
-                    throw new com.trikynguci.springbootvinylecommercebackend.exception.InsufficientStockException("Not enough stock for product (concurrent update): " + item.getProductId());
+                    throw new InsufficientStockException("Not enough stock for product (concurrent update): " + item.getProductId());
                 }
             }
         }
 
-    String generatedOrderId = "VINYL-" + UUID.randomUUID().toString().replace("-", "").substring(0, 10);
+        String generatedOrderId = "VINYL-" + UUID.randomUUID().toString().replace("-", "").substring(0, 10);
 
         Order order = Order.builder()
                 .id(generatedOrderId)
@@ -108,7 +106,7 @@ public class OrderServiceImpl implements OrderService {
                 .email(orderRequest.getEmail())
                 .build();
 
-    orderMapper.saveOrder(order);
+        orderMapper.saveOrder(order);
 
         for (OrderItem item : orderRequest.getItems()) {
             OrderItem orderItem = OrderItem.builder()
@@ -118,16 +116,8 @@ public class OrderServiceImpl implements OrderService {
                     .price(item.getPrice())
                     .build();
             orderItemMapper.saveOrderItem(orderItem);
-
-            // decrement stock in DB and check rows affected to detect concurrent stock depletion
-            int updated = productMapper.decrementStockQuantity(item.getProductId(), item.getQuantity());
-            if (updated == 0) {
-                // This means either not enough stock or concurrent update. Fail the whole transaction.
-                throw new com.trikynguci.springbootvinylecommercebackend.exception.InsufficientStockException("Not enough stock for product (concurrent update): " + item.getProductId());
-            }
         }
 
-        // Load and return the saved order
         return orderMapper.getOrderById(generatedOrderId);
     }
 
@@ -159,7 +149,7 @@ public class OrderServiceImpl implements OrderService {
                     log.error("Giving up sending order email to {} after {} attempts", userEmail, attempts);
                 } else {
                     try {
-                        Thread.sleep(1000L * attempts); // backoff
+                        Thread.sleep(1000L * attempts); 
                     } catch (InterruptedException ie) {
                         Thread.currentThread().interrupt();
                         break;

@@ -82,7 +82,7 @@ public class AuthServiceImpl implements AuthService {
         .email(user.getEmail())
         .fullname(user.getFullname())
         .roleId(user.getRoleId())
-        .avatar(user.getAvatar()) // Có thể null nếu chưa có avatar
+        .avatar(user.getAvatar())
         .build();
     }
     @Override
@@ -94,7 +94,7 @@ public class AuthServiceImpl implements AuthService {
                     .fullname(fullname)
                     .avatar(avatarUrl)
                     .roleId(2L)
-                    .password(passwordEncoder.encode("GOOGLE_LOGIN")) // dummy password
+                    .password(passwordEncoder.encode("GOOGLE_LOGIN"))
                     .build();
             userMapper.saveUser(user);
             user = userMapper.getUserByEmail(email).orElseThrow();

@@ -1,4 +1,4 @@
-package com.trikynguci.springbootvinylecommercebackend.rest;
+package com.trikynguci.springbootvinylecommercebackend.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

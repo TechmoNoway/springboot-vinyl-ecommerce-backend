@@ -1,4 +1,4 @@
-package com.trikynguci.springbootvinylecommercebackend.rest;
+package com.trikynguci.springbootvinylecommercebackend.controller;
 
 import java.util.HashMap;
 

@@ -145,7 +145,6 @@
 		where id = #{id} and stock_quantity >= #{quantity}
 	</update>
 
-	<!-- optimistic update using version for high-concurrency scenarios -->
 	<update id="decrementStockQuantityWithVersion">
 		update product
 		set stock_quantity = stock_quantity - #{quantity}, version = version + 1
