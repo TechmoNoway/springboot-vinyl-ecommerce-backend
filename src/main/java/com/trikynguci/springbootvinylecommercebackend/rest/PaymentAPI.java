@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import com.trikynguci.springbootvinylecommercebackend.dto.response.VietQRGenerateResponse;
 import com.trikynguci.springbootvinylecommercebackend.service.PaymentService;
 
@@ -21,8 +20,6 @@ public class PaymentAPI {
 
     @Value("${vietqr.apiKey}")
     private String apiKey;
-
-    private final RestTemplate restTemplate;
 
     private final PaymentService paymentService;
 

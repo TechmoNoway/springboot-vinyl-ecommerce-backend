@@ -24,6 +24,7 @@
 		<result column="mood" property="mood" />
 		<result column="created_at" property="createdAt" />
 		<result column="updated_at" property="updatedAt" />
+		<result column="version" property="version" />
 		<collection column="id" property="categories" javaType="List" ofType="ProductCategory" select="com.trikynguci.springbootvinylecommercebackend.mapper.ProductCategoryMapper.getAllCategoriesByProductId"/>
 	</resultMap>
 
@@ -142,6 +143,13 @@
 		update product
 		set stock_quantity = stock_quantity - #{quantity}
 		where id = #{id} and stock_quantity >= #{quantity}
+	</update>
+
+	<!-- optimistic update using version for high-concurrency scenarios -->
+	<update id="decrementStockQuantityWithVersion">
+		update product
+		set stock_quantity = stock_quantity - #{quantity}, version = version + 1
+		where id = #{id} and version = #{version} and stock_quantity >= #{quantity}
 	</update>
 
 

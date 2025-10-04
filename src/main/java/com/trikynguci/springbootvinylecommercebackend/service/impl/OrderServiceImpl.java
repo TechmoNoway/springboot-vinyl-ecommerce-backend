@@ -50,14 +50,47 @@ public class OrderServiceImpl implements OrderService {
             throw new com.trikynguci.springbootvinylecommercebackend.exception.BadRequestException("Order must contain at least one item");
         }
 
-        // Check stock for every item using SELECT ... FOR UPDATE to lock rows
+        // Try optimistic updates first (version-based) to handle high-concurrency paths.
+        // If optimistic retries fail, fall back to pessimistic locking (SELECT FOR UPDATE).
         for (OrderItem item : orderRequest.getItems()) {
-            var product = productMapper.getProductForUpdate(item.getProductId());
-            if (product == null) {
-                throw new com.trikynguci.springbootvinylecommercebackend.exception.NotFoundException("Product not found: " + item.getProductId());
+            int maxOptimisticAttempts = 3;
+            boolean optimisticSucceeded = false;
+            for (int attempt = 0; attempt < maxOptimisticAttempts; attempt++) {
+                var current = productMapper.getProductById(item.getProductId());
+                if (current == null) {
+                    throw new com.trikynguci.springbootvinylecommercebackend.exception.NotFoundException("Product not found: " + item.getProductId());
+                }
+                if (current.getStockQuantity() == null || current.getStockQuantity() < item.getQuantity()) {
+                    throw new com.trikynguci.springbootvinylecommercebackend.exception.InsufficientStockException("Not enough stock for product: " + current.getTitle());
+                }
+
+                int updated = productMapper.decrementStockQuantityWithVersion(item.getProductId(), item.getQuantity(), current.getVersion());
+                if (updated > 0) {
+                    optimisticSucceeded = true;
+                    break;
+                }
+                // small backoff before retry
+                try {
+                    Thread.sleep(50L * (attempt + 1));
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
             }
-            if (product.getStockQuantity() == null || product.getStockQuantity() < item.getQuantity()) {
-                throw new com.trikynguci.springbootvinylecommercebackend.exception.InsufficientStockException("Not enough stock for product: " + product.getTitle());
+
+            if (!optimisticSucceeded) {
+                // fallback to pessimistic locking: SELECT FOR UPDATE then safe decrement
+                var product = productMapper.getProductForUpdate(item.getProductId());
+                if (product == null) {
+                    throw new com.trikynguci.springbootvinylecommercebackend.exception.NotFoundException("Product not found: " + item.getProductId());
+                }
+                if (product.getStockQuantity() == null || product.getStockQuantity() < item.getQuantity()) {
+                    throw new com.trikynguci.springbootvinylecommercebackend.exception.InsufficientStockException("Not enough stock for product: " + product.getTitle());
+                }
+                int updated = productMapper.decrementStockQuantity(item.getProductId(), item.getQuantity());
+                if (updated == 0) {
+                    throw new com.trikynguci.springbootvinylecommercebackend.exception.InsufficientStockException("Not enough stock for product (concurrent update): " + item.getProductId());
+                }
             }
         }
 

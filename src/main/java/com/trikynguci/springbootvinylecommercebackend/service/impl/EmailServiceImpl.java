@@ -3,7 +3,8 @@ package com.trikynguci.springbootvinylecommercebackend.service.impl;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.RandomStringUtils;
+import java.security.SecureRandom;
+import java.util.Base64;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,11 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSenderImpl mailSender;
 
     public String sendRegistrationEmail(String toEmail) throws MessagingException {
-        String generatedPassword = RandomStringUtils.randomAlphanumeric(8); // Generate random password
+    // Generate a URL-safe temporary password using SecureRandom
+    SecureRandom secureRandom = new SecureRandom();
+    byte[] token = new byte[6]; // 6 bytes ~ 8 chars when base64-url encoded
+    secureRandom.nextBytes(token);
+    String generatedPassword = Base64.getUrlEncoder().withoutPadding().encodeToString(token);
         String resetLink = "http://localhost:5173/reset-password?email=" + toEmail;
         String username = toEmail.substring(0, toEmail.indexOf("@"));
 

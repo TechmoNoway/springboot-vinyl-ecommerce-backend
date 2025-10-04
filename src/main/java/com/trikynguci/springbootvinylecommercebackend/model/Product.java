@@ -36,4 +36,6 @@ public class Product implements Serializable {
 	private Instant updatedAt;
 	private Long tracklistId;
 	private List<Category> categories;
+	// optimistic locking version
+	private Long version;
 }

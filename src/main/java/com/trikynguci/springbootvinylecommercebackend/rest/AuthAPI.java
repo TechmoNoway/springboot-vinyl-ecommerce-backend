@@ -10,7 +10,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import com.trikynguci.springbootvinylecommercebackend.dto.request.LoginRequest;
 import com.trikynguci.springbootvinylecommercebackend.service.AuthService;
-import com.trikynguci.springbootvinylecommercebackend.service.EmailService;
 import com.trikynguci.springbootvinylecommercebackend.service.TokenService;
 
 import java.util.HashMap;
@@ -25,8 +24,7 @@ public class AuthAPI {
     private final AuthService authService;
 
     private final TokenService tokenService;
-
-    private final EmailService emailService;
+    
 
     @PostMapping("/login")
     public ResponseEntity<?> doLogin(@RequestBody LoginRequest loginRequest){

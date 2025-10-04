@@ -27,4 +27,6 @@ public interface ProductMapper {
 	Product getProductForUpdate(@Param("id") Long id);
 
 	int decrementStockQuantity(@Param("id") Long id, @Param("quantity") Integer quantity);
+
+	int decrementStockQuantityWithVersion(@Param("id") Long id, @Param("quantity") Integer quantity, @Param("version") Long version);
 }

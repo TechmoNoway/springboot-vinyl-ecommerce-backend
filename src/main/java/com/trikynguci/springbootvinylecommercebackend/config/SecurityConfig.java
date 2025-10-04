@@ -23,12 +23,7 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
-    private static final String[] WHITE_LIST_URL = {"/api/**",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/swagger-ui.html"};
+        // whitelist URLs are configured inline in the securityFilterChain; removed unused constant to satisfy linter
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
