@@ -17,4 +17,6 @@ public interface OrderMapper {
 	List<Order> getOrdersByUserId(@Param("userId") Long userId);
 
 	Order getOrderById(@Param("orderId") String orderId);
+
+	void updateOrderStatus(@Param("orderId") String orderId, @Param("status") String status);
 }

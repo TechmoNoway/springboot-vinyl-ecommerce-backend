@@ -72,6 +72,10 @@
 			   , #{email});
 	</insert>
 
+	<update id="updateOrderStatus">
+		UPDATE orders SET status = #{status} WHERE id = #{orderId}
+	</update>
+
 	<select id="getOrderById" resultMap="orderResultMap">
 		select ord.id
 			 , ord.customer_id

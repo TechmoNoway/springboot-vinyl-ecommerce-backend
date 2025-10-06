@@ -15,4 +15,6 @@ public interface PaymentTransactionMapper {
     PaymentTransaction getByProviderTransactionId(@Param("provider") String provider, @Param("providerTxId") String providerTxId);
 
     void updateStatusById(@Param("id") Long id, @Param("status") String status, @Param("providerTxId") String providerTxId, @Param("responsePayload") String responsePayload);
+
+    void updateStatusByProviderTxId(@Param("provider") String provider, @Param("providerTxId") String providerTxId, @Param("status") String status, @Param("responsePayload") String responsePayload);
 }

@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -60,8 +60,71 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void handleProviderCallback(String provider, String rawPayload) {
-        // Provider-specific parsing/verification should be done by provider class
-        // For now this is a stub: you should parse provider payload, find transaction and update status.
+        try {
+            // parse rawPayload into map (supports query-string or JSON key=value pairs)
+            Map<String, String> params = new java.util.HashMap<>();
+            if (rawPayload == null) return;
+            rawPayload = rawPayload.trim();
+            if (rawPayload.startsWith("{") || rawPayload.startsWith("[")) {
+                // JSON
+                com.fasterxml.jackson.databind.ObjectMapper om = new com.fasterxml.jackson.databind.ObjectMapper();
+                java.util.Map<String, Object> json = om.readValue(rawPayload, java.util.Map.class);
+                for (java.util.Map.Entry<String, Object> e : json.entrySet()) {
+                    params.put(e.getKey(), e.getValue() == null ? null : e.getValue().toString());
+                }
+            } else {
+                // simple query string parsing: k1=v1&k2=v2
+                String[] pairs = rawPayload.split("&");
+                for (String p : pairs) {
+                    int idx = p.indexOf('=');
+                    if (idx > 0) {
+                        String k = java.net.URLDecoder.decode(p.substring(0, idx), java.nio.charset.StandardCharsets.UTF_8);
+                        String v = java.net.URLDecoder.decode(p.substring(idx + 1), java.nio.charset.StandardCharsets.UTF_8);
+                        params.put(k, v);
+                    }
+                }
+            }
+
+            boolean verified = false;
+            String providerTxId = null;
+            String orderId = null;
+            if ("VNPAY".equalsIgnoreCase(provider)) {
+                verified = vnPayProvider.verifyCallback(params);
+                providerTxId = params.get("vnp_TransactionNo");
+                orderId = params.get("vnp_TxnRef");
+                if (providerTxId == null) providerTxId = params.get("vnp_TransId");
+            } else if ("MOMO".equalsIgnoreCase(provider)) {
+                verified = momoProvider.verifyCallback(params);
+                providerTxId = params.get("orderId"); // Momo may return partner's orderId and momo trans id in other fields
+                orderId = params.get("orderId");
+                if (params.get("transId") != null) providerTxId = params.get("transId");
+            }
+
+            if (!verified) {
+                return;
+            }
+
+            // Find transaction: prefer provider_transaction_id, else lookup by orderId
+            com.trikynguci.springbootvinylecommercebackend.model.PaymentTransaction tx = null;
+            if (providerTxId != null) {
+                tx = paymentTransactionMapper.getByProviderTransactionId(provider, providerTxId);
+            }
+            if (tx == null && orderId != null) {
+                tx = paymentTransactionMapper.getLatestByOrderId(orderId);
+            }
+
+            if (tx == null) return;
+
+            // Update transaction to PAID if not already
+            paymentTransactionMapper.updateStatusById(tx.getId(), "PAID", providerTxId, rawPayload);
+
+            // Update order status to PAID as full immediate payment
+            orderMapper.updateOrderStatus(tx.getOrderId(), "PAID");
+        } catch (Exception ex) {
+            // log and ignore - provider callbacks should be resilient
+            // Use logging if available
+            ex.printStackTrace();
+        }
     }
 }
 

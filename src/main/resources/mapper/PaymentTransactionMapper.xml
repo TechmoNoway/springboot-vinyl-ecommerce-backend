@@ -44,4 +44,10 @@
     WHERE id = #{id} AND status != 'PAID'
   </update>
 
+  <update id="updateStatusByProviderTxId">
+    UPDATE payment_transaction
+    SET status = #{status}, response_payload = #{responsePayload}, updated_at = NOW()
+    WHERE provider = #{provider} AND provider_transaction_id = #{providerTxId} AND status != 'PAID'
+  </update>
+
 </mapper>
