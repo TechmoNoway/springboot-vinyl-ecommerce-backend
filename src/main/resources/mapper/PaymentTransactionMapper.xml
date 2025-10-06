@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trikynguci.springbootvinylecommercebackend.mapper.PaymentTransactionMapper">
+
+  <resultMap id="PaymentTransactionResult" type="com.trikynguci.springbootvinylecommercebackend.model.PaymentTransaction">
+    <id property="id" column="id" />
+    <result property="orderId" column="order_id" />
+    <result property="provider" column="provider" />
+    <result property="providerTransactionId" column="provider_transaction_id" />
+    <result property="idempotencyKey" column="idempotency_key" />
+    <result property="amount" column="amount" />
+    <result property="currency" column="currency" />
+    <result property="status" column="status" />
+    <result property="paymentMethod" column="payment_method" />
+    <result property="requestPayload" column="request_payload" />
+    <result property="responsePayload" column="response_payload" />
+    <result property="callbackPayload" column="callback_payload" />
+    <result property="attemptCount" column="attempt_count" />
+    <result property="createdAt" column="created_at" />
+    <result property="updatedAt" column="updated_at" />
+    <result property="paidAt" column="paid_at" />
+  </resultMap>
+
+  <insert id="savePaymentTransaction" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO payment_transaction (order_id, provider, idempotency_key, amount, currency, status, payment_method, request_payload)
+    VALUES (#{orderId}, #{provider}, #{idempotencyKey}, #{amount}, #{currency}, #{status}, #{paymentMethod}, #{requestPayload})
+  </insert>
+
+  <select id="getById" resultMap="PaymentTransactionResult">
+    SELECT * FROM payment_transaction WHERE id = #{id}
+  </select>
+
+  <select id="getLatestByOrderId" resultMap="PaymentTransactionResult">
+    SELECT * FROM payment_transaction WHERE order_id = #{orderId} ORDER BY id DESC LIMIT 1
+  </select>
+
+  <select id="getByProviderTransactionId" resultMap="PaymentTransactionResult">
+    SELECT * FROM payment_transaction WHERE provider = #{provider} AND provider_transaction_id = #{providerTxId} LIMIT 1
+  </select>
+
+  <update id="updateStatusById">
+    UPDATE payment_transaction
+    SET status = #{status}, provider_transaction_id = #{providerTxId}, response_payload = #{responsePayload}, updated_at = NOW()
+    WHERE id = #{id} AND status != 'PAID'
+  </update>
+
+</mapper>

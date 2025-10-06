@@ -1,66 +1,67 @@
 package com.trikynguci.springbootvinylecommercebackend.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import com.trikynguci.springbootvinylecommercebackend.dto.response.VietQRGenerateResponse;
+import com.trikynguci.springbootvinylecommercebackend.mapper.PaymentTransactionMapper;
+import com.trikynguci.springbootvinylecommercebackend.mapper.OrderMapper;
+import com.trikynguci.springbootvinylecommercebackend.model.PaymentTransaction;
+import com.trikynguci.springbootvinylecommercebackend.payment.MomoProvider;
+import com.trikynguci.springbootvinylecommercebackend.payment.VNPayProvider;
 import com.trikynguci.springbootvinylecommercebackend.service.PaymentService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
 
-    @Value("${vietqr.clientId}")
-    private String clientId;
-
-    @Value("${vietqr.apiKey}")
-    private String apiKey;
-
-    private final RestTemplate restTemplate;
+    private final PaymentTransactionMapper paymentTransactionMapper;
+    private final OrderMapper orderMapper;
+    private final VNPayProvider vnPayProvider;
+    private final MomoProvider momoProvider;
 
     @Override
-    public VietQRGenerateResponse generateVietQR(String amount) throws JsonProcessingException {
-        String url = "https://api.vietqr.io/v2/generate";
+    public PaymentTransaction createPayment(String orderId, Long amount, String currency, String method, String idempotencyKey, String returnUrl) {
+        PaymentTransaction tx = PaymentTransaction.builder()
+                .orderId(orderId)
+                .provider(method)
+                .amount(amount)
+                .currency(currency == null ? "VND" : currency)
+                .status("PENDING")
+                .idempotencyKey(idempotencyKey)
+                .createdAt(Instant.now())
+                .build();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("x-client-id", clientId);
-        headers.set("x-api-key", apiKey);
-        headers.set("Content-Type", "application/json");
+        paymentTransactionMapper.savePaymentTransaction(tx);
 
+        // provider-specific URL
+        String paymentUrl = null;
+        if ("VNPAY".equalsIgnoreCase(method)) {
+            paymentUrl = vnPayProvider.buildPaymentUrl(returnUrl, orderId, amount);
+        } else if ("MOMO".equalsIgnoreCase(method)) {
+            paymentUrl = momoProvider.buildPaymentUrl(returnUrl, orderId, amount);
+        }
 
-//        String requestBody = "{"
-//                + "\"accountNo\": \"5907281009073\","
-//                + "\"accountName\": \"Vinyl Record\","
-//                + "\"acqId\": \"970405\","
-//                + "\"addInfo\": \"Send\","
-//                + "\"amount\":" + amount + ","
-//                + "\"template\": \"compact2\""
-//                + "}";
+        // store request/response payload placeholders if needed (omitted here for brevity)
+        PaymentTransaction created = paymentTransactionMapper.getById(tx.getId());
+        // For convenience, we temporarily put the paymentUrl into responsePayload (not ideal long-term)
+        if (paymentUrl != null) {
+            created.setResponsePayload("{\"paymentUrl\":\"" + paymentUrl + "\"}");
+        }
+        return created;
+    }
 
-        String requestBody = "{"
-                + "\"accountNo\": \"5907281009073\","
-                + "\"accountName\": \"Vinyl Record\","
-                + "\"acqId\": \"970405\","
-                + "\"addInfo\": \"Send\","
-                + "\"amount\":" + "1000" + ","
-                + "\"template\": \"compact2\""
-                + "}";
+    @Override
+    public PaymentTransaction getLatestByOrderId(String orderId) {
+        return paymentTransactionMapper.getLatestByOrderId(orderId);
+    }
 
-        HttpEntity<?> entity = new HttpEntity<>(requestBody, headers);
-
-        ResponseEntity<?> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        return objectMapper.readValue(Objects.requireNonNull(response.getBody()).toString(), VietQRGenerateResponse.class);
+    @Override
+    public void handleProviderCallback(String provider, String rawPayload) {
+        // Provider-specific parsing/verification should be done by provider class
+        // For now this is a stub: you should parse provider payload, find transaction and update status.
     }
 }
+

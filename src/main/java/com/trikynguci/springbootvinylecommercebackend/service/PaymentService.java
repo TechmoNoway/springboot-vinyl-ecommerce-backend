@@ -1,8 +1,11 @@
 package com.trikynguci.springbootvinylecommercebackend.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.trikynguci.springbootvinylecommercebackend.dto.response.VietQRGenerateResponse;
+import com.trikynguci.springbootvinylecommercebackend.model.PaymentTransaction;
 
 public interface PaymentService {
-    VietQRGenerateResponse generateVietQR(String amount) throws JsonProcessingException;
+    PaymentTransaction createPayment(String orderId, Long amount, String currency, String method, String idempotencyKey, String returnUrl);
+
+    PaymentTransaction getLatestByOrderId(String orderId);
+
+    void handleProviderCallback(String provider, String rawPayload);
 }
