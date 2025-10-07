@@ -15,6 +15,7 @@
     <result property="requestPayload" column="request_payload" />
     <result property="responsePayload" column="response_payload" />
     <result property="callbackPayload" column="callback_payload" />
+  <result property="paymentUrl" column="payment_url" />
     <result property="attemptCount" column="attempt_count" />
     <result property="createdAt" column="created_at" />
     <result property="updatedAt" column="updated_at" />
@@ -22,8 +23,8 @@
   </resultMap>
 
   <insert id="savePaymentTransaction" useGeneratedKeys="true" keyProperty="id">
-    INSERT INTO payment_transaction (order_id, provider, idempotency_key, amount, currency, status, payment_method, request_payload)
-    VALUES (#{orderId}, #{provider}, #{idempotencyKey}, #{amount}, #{currency}, #{status}, #{paymentMethod}, #{requestPayload})
+    INSERT INTO payment_transaction (order_id, provider, idempotency_key, amount, currency, status, payment_method, request_payload, payment_url)
+    VALUES (#{orderId}, #{provider}, #{idempotencyKey}, #{amount}, #{currency}, #{status}, #{paymentMethod}, #{requestPayload}, #{paymentUrl})
   </insert>
 
   <select id="getById" resultMap="PaymentTransactionResult">
@@ -38,6 +39,10 @@
     SELECT * FROM payment_transaction WHERE provider = #{provider} AND provider_transaction_id = #{providerTxId} LIMIT 1
   </select>
 
+  <select id="getByIdempotencyKey" resultMap="PaymentTransactionResult">
+    SELECT * FROM payment_transaction WHERE order_id = #{orderId} AND idempotency_key = #{idempotencyKey} LIMIT 1
+  </select>
+
   <update id="updateStatusById">
     UPDATE payment_transaction
     SET status = #{status}, provider_transaction_id = #{providerTxId}, response_payload = #{responsePayload}, updated_at = NOW()
@@ -48,6 +53,12 @@
     UPDATE payment_transaction
     SET status = #{status}, response_payload = #{responsePayload}, updated_at = NOW()
     WHERE provider = #{provider} AND provider_transaction_id = #{providerTxId} AND status != 'PAID'
+  </update>
+
+  <update id="updatePaymentUrlById">
+    UPDATE payment_transaction
+    SET payment_url = #{paymentUrl}, response_payload = #{responsePayload}, updated_at = NOW()
+    WHERE id = #{id}
   </update>
 
 </mapper>

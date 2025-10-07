@@ -1,6 +1,7 @@
 package com.trikynguci.springbootvinylecommercebackend.service.impl;
 
 import com.trikynguci.springbootvinylecommercebackend.mapper.PaymentTransactionMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trikynguci.springbootvinylecommercebackend.mapper.OrderMapper;
 import com.trikynguci.springbootvinylecommercebackend.model.PaymentTransaction;
 import com.trikynguci.springbootvinylecommercebackend.payment.MomoProvider;
@@ -9,9 +10,10 @@ import com.trikynguci.springbootvinylecommercebackend.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Map;
-import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,14 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentTransaction createPayment(String orderId, Long amount, String currency, String method, String idempotencyKey, String returnUrl) {
+        // idempotency: if a transaction with same orderId + idempotencyKey exists, return it
+        if (idempotencyKey != null && !idempotencyKey.isEmpty()) {
+            PaymentTransaction existing = paymentTransactionMapper.getByIdempotencyKey(orderId, idempotencyKey);
+            if (existing != null) {
+                return existing;
+            }
+        }
+
         PaymentTransaction tx = PaymentTransaction.builder()
                 .orderId(orderId)
                 .provider(method)
@@ -46,8 +56,10 @@ public class PaymentServiceImpl implements PaymentService {
 
         // store request/response payload placeholders if needed (omitted here for brevity)
         PaymentTransaction created = paymentTransactionMapper.getById(tx.getId());
-        // For convenience, we temporarily put the paymentUrl into responsePayload (not ideal long-term)
+        // Persist paymentUrl directly
         if (paymentUrl != null) {
+            paymentTransactionMapper.updatePaymentUrlById(created.getId(), paymentUrl, "{\"paymentUrl\":\"" + paymentUrl + "\"}");
+            created.setPaymentUrl(paymentUrl);
             created.setResponsePayload("{\"paymentUrl\":\"" + paymentUrl + "\"}");
         }
         return created;
@@ -67,9 +79,9 @@ public class PaymentServiceImpl implements PaymentService {
             rawPayload = rawPayload.trim();
             if (rawPayload.startsWith("{") || rawPayload.startsWith("[")) {
                 // JSON
-                com.fasterxml.jackson.databind.ObjectMapper om = new com.fasterxml.jackson.databind.ObjectMapper();
-                java.util.Map<String, Object> json = om.readValue(rawPayload, java.util.Map.class);
-                for (java.util.Map.Entry<String, Object> e : json.entrySet()) {
+                ObjectMapper om = new ObjectMapper();
+                Map<String, Object> json = om.readValue(rawPayload, Map.class);
+                for (Map.Entry<String, Object> e : json.entrySet()) {
                     params.put(e.getKey(), e.getValue() == null ? null : e.getValue().toString());
                 }
             } else {
@@ -78,8 +90,8 @@ public class PaymentServiceImpl implements PaymentService {
                 for (String p : pairs) {
                     int idx = p.indexOf('=');
                     if (idx > 0) {
-                        String k = java.net.URLDecoder.decode(p.substring(0, idx), java.nio.charset.StandardCharsets.UTF_8);
-                        String v = java.net.URLDecoder.decode(p.substring(idx + 1), java.nio.charset.StandardCharsets.UTF_8);
+                        String k = URLDecoder.decode(p.substring(0, idx), StandardCharsets.UTF_8);
+                        String v = URLDecoder.decode(p.substring(idx + 1), StandardCharsets.UTF_8);
                         params.put(k, v);
                     }
                 }
@@ -105,7 +117,7 @@ public class PaymentServiceImpl implements PaymentService {
             }
 
             // Find transaction: prefer provider_transaction_id, else lookup by orderId
-            com.trikynguci.springbootvinylecommercebackend.model.PaymentTransaction tx = null;
+            PaymentTransaction tx = null;
             if (providerTxId != null) {
                 tx = paymentTransactionMapper.getByProviderTransactionId(provider, providerTxId);
             }

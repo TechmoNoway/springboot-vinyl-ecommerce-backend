@@ -22,6 +22,7 @@ public class PaymentTransaction {
     private String requestPayload; // JSON string
     private String responsePayload; // JSON string
     private String callbackPayload; // JSON string
+    private String paymentUrl;
     private Integer attemptCount;
     private Instant createdAt;
     private Instant updatedAt;

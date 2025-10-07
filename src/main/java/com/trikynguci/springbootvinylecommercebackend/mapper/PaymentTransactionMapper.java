@@ -14,6 +14,10 @@ public interface PaymentTransactionMapper {
 
     PaymentTransaction getByProviderTransactionId(@Param("provider") String provider, @Param("providerTxId") String providerTxId);
 
+    PaymentTransaction getByIdempotencyKey(@Param("orderId") String orderId, @Param("idempotencyKey") String idempotencyKey);
+
+    void updatePaymentUrlById(@Param("id") Long id, @Param("paymentUrl") String paymentUrl, @Param("responsePayload") String responsePayload);
+
     void updateStatusById(@Param("id") Long id, @Param("status") String status, @Param("providerTxId") String providerTxId, @Param("responsePayload") String responsePayload);
 
     void updateStatusByProviderTxId(@Param("provider") String provider, @Param("providerTxId") String providerTxId, @Param("status") String status, @Param("responsePayload") String responsePayload);
