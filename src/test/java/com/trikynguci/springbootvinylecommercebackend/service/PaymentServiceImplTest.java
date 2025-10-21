@@ -17,10 +17,11 @@ class PaymentServiceImplTest {
     void createPayment_idempotency_returnsExisting() {
         PaymentTransactionMapper mapper = Mockito.mock(PaymentTransactionMapper.class);
         OrderMapper orderMapper = Mockito.mock(OrderMapper.class);
-        VNPayProvider vn = Mockito.mock(VNPayProvider.class);
-        MomoProvider momo = Mockito.mock(MomoProvider.class);
+    VNPayProvider vn = Mockito.mock(VNPayProvider.class);
+    MomoProvider momo = Mockito.mock(MomoProvider.class);
+    com.trikynguci.springbootvinylecommercebackend.payment.ZaloPayProvider zalo = Mockito.mock(com.trikynguci.springbootvinylecommercebackend.payment.ZaloPayProvider.class);
 
-        PaymentServiceImpl svc = new PaymentServiceImpl(mapper, orderMapper, vn, momo);
+    PaymentServiceImpl svc = new PaymentServiceImpl(mapper, orderMapper, vn, momo, zalo);
 
         PaymentTransaction existing = PaymentTransaction.builder().id(100L).orderId("O1").idempotencyKey("key1").build();
         Mockito.when(mapper.getByIdempotencyKey("O1", "key1")).thenReturn(existing);

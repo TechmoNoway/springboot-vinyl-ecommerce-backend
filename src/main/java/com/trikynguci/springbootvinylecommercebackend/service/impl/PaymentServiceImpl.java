@@ -23,6 +23,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final OrderMapper orderMapper;
     private final VNPayProvider vnPayProvider;
     private final MomoProvider momoProvider;
+    private final com.trikynguci.springbootvinylecommercebackend.payment.ZaloPayProvider zaloPayProvider;
 
     @Override
     public PaymentTransaction createPayment(String orderId, Long amount, String currency, String method, String idempotencyKey, String returnUrl) {
@@ -52,6 +53,8 @@ public class PaymentServiceImpl implements PaymentService {
             paymentUrl = vnPayProvider.buildPaymentUrl(returnUrl, orderId, amount);
         } else if ("MOMO".equalsIgnoreCase(method)) {
             paymentUrl = momoProvider.buildPaymentUrl(returnUrl, orderId, amount);
+        } else if ("ZALOPAY".equalsIgnoreCase(method)) {
+            paymentUrl = zaloPayProvider.buildPaymentUrl(returnUrl, orderId, amount);
         }
 
         // store request/response payload placeholders if needed (omitted here for brevity)
@@ -110,6 +113,11 @@ public class PaymentServiceImpl implements PaymentService {
                 providerTxId = params.get("orderId"); // Momo may return partner's orderId and momo trans id in other fields
                 orderId = params.get("orderId");
                 if (params.get("transId") != null) providerTxId = params.get("transId");
+            } else if ("ZALOPAY".equalsIgnoreCase(provider)) {
+                verified = zaloPayProvider.verifyCallback(params);
+                providerTxId = params.get("zp_transid");
+                orderId = params.get("zp_orderid");
+            }
             }
 
             if (!verified) {
