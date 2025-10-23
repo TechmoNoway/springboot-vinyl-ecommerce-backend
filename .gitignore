@@ -6,6 +6,14 @@ build/
 !**/src/test/**/build/
 src/main/resources/application-dev.yml
 
+### Environment Variables & Secrets ###
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+secrets/
+
 ### STS ###
 .apt_generated
 .classpath

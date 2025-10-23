@@ -48,5 +48,28 @@ springdoc:
 vietqr:
   clientId: ${VIETQR_CLIENT_ID}
   apiKey: ${VIETQR_API_KEY}
+
+# Payment Provider Configuration
+vnpay:
+  url: ${VNPAY_URL:https://sandbox.vnpayment.vn/paygate/vpc.htm}
+  returnUrl: ${VNPAY_RETURN_URL:http://localhost:4242/api/v1/payments/webhook/vnpay}
+  tmnCode: ${VNPAY_TMN_CODE}
+  hashSecret: ${VNPAY_HASH_SECRET}
+
+momo:
+  endpoint: ${MOMO_ENDPOINT:https://test-payment.momo.vn/v2/gateway/api/create}
+  returnUrl: ${MOMO_RETURN_URL:http://localhost:4242/api/v1/payments/webhook/momo}
+  partnerCode: ${MOMO_PARTNER_CODE}
+  accessKey: ${MOMO_ACCESS_KEY}
+  secretKey: ${MOMO_SECRET_KEY}
+
+zalopay:
+  endpoint: ${ZALOPAY_ENDPOINT:https://sb-openapi.zalopay.vn/v2/create}
+  returnUrl: ${ZALOPAY_RETURN_URL:http://localhost:4242/api/v1/payments/webhook/zalopay}
+  appId: ${ZALOPAY_APP_ID}
+  key1: ${ZALOPAY_KEY1}
+  key2: ${ZALOPAY_KEY2}
+
 server:
   port: 4242
+
