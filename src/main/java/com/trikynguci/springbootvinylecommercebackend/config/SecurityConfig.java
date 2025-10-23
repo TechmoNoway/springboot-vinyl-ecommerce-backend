@@ -44,6 +44,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/products/**").permitAll()
                         .requestMatchers("/api/v1/categories/**").permitAll()
                         .requestMatchers("/api/v1/payments/**").permitAll()
+                        // Actuator endpoints (health, metrics) - public for monitoring
+                        .requestMatchers("/actuator/health/**", "/actuator/prometheus", "/actuator/metrics").permitAll()
+                        // Other actuator endpoints require authentication
+                        .requestMatchers("/actuator/**").authenticated()
                         // All other endpoints require authentication
                         .anyRequest()
                         .authenticated()

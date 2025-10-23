@@ -38,6 +38,14 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.flywaydb:flyway-core'
+	
+	// Observability: Actuator, Metrics, Monitoring
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
+	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+	
+	// JSON Logging
+	implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
 	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'org.springframework.security:spring-security-test'
