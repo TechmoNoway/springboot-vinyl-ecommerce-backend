@@ -2,6 +2,7 @@ package com.trikynguci.springbootvinylecommercebackend.service.impl;
 
 import com.trikynguci.springbootvinylecommercebackend.mapper.PaymentTransactionMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.trikynguci.springbootvinylecommercebackend.mapper.OrderMapper;
 import com.trikynguci.springbootvinylecommercebackend.model.PaymentTransaction;
 import com.trikynguci.springbootvinylecommercebackend.payment.MomoProvider;
@@ -83,7 +84,7 @@ public class PaymentServiceImpl implements PaymentService {
             if (rawPayload.startsWith("{") || rawPayload.startsWith("[")) {
                 // JSON
                 ObjectMapper om = new ObjectMapper();
-                Map<String, Object> json = om.readValue(rawPayload, Map.class);
+                Map<String, Object> json = om.readValue(rawPayload, new TypeReference<Map<String, Object>>() {});
                 for (Map.Entry<String, Object> e : json.entrySet()) {
                     params.put(e.getKey(), e.getValue() == null ? null : e.getValue().toString());
                 }
@@ -117,7 +118,6 @@ public class PaymentServiceImpl implements PaymentService {
                 verified = zaloPayProvider.verifyCallback(params);
                 providerTxId = params.get("zp_transid");
                 orderId = params.get("zp_orderid");
-            }
             }
 
             if (!verified) {
